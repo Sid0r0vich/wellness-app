@@ -1,32 +1,25 @@
-package com.example.my_first_firebase_project
+package com.example.MyFirebaseProject
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.my_first_firebase_project.ui.theme.My_first_firebase_projectTheme
+import com.example.MyFirebaseProject.ui.screens.MyApp
+import com.example.MyFirebaseProject.ui.theme.MyFirebaseProjectTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            My_first_firebase_projectTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            MyFirebaseProjectTheme {
+                MyApp()
             }
         }
     }
@@ -48,7 +41,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    My_first_firebase_projectTheme {
+    MyFirebaseProjectTheme {
         Greeting("Android")
     }
 }

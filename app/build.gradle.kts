@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.my_first_firebase_project"
+    namespace = "com.example.MyFirebaseProject"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.my_first_firebase_project"
+        applicationId = "com.example.MyFirebaseProject"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -73,4 +73,5 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.ui.auth)
 }

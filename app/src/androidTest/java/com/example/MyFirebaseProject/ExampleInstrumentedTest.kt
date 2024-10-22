@@ -1,4 +1,4 @@
-package com.example.my_first_firebase_project
+package com.example.MyFirebaseProject
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

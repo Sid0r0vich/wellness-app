@@ -1,4 +1,4 @@
-package com.example.my_first_firebase_project
+package com.example.MyFirebaseProject
 
 import org.junit.Test
 

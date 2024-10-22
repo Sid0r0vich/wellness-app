@@ -1,4 +1,4 @@
-package com.example.my_first_firebase_project.ui.theme
+package com.example.MyFirebaseProject.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

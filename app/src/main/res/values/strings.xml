@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">my_first_firebase_project</string>
+    <string name="app_name">MyFirebaseProject</string>
+    <string name="bottom_navigation_home">home</string>
+    <string name="bottom_navigation_profile">profile</string>
 </resources>
