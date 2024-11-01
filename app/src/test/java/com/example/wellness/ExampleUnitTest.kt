@@ -1,4 +1,4 @@
-package com.example.MyFirebaseProject
+package com.example.wellness
 
 import org.junit.Test
 

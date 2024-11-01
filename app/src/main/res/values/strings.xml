@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyFirebaseProject</string>
+    <string name="app_name">wellness</string>
     <string name="bottom_navigation_home">home</string>
     <string name="bottom_navigation_profile">profile</string>
     <string name="bottom_navigation_chat">chat</string>

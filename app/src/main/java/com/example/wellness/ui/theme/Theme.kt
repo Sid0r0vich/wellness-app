@@ -1,4 +1,4 @@
-package com.example.MyFirebaseProject.ui.theme
+package com.example.wellness.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -33,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun MyFirebaseProjectTheme(
+fun WellnessAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

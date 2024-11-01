@@ -1,4 +1,4 @@
-package com.example.MyFirebaseProject.ui.screens
+package com.example.wellness.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -29,15 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.MyFirebaseProject.R
-import com.example.MyFirebaseProject.ui.theme.MyFirebaseProjectTheme
+import com.example.wellness.R
+import com.example.wellness.ui.theme.WellnessAppTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp() {
-    MyFirebaseProjectTheme {
+    WellnessAppTheme {
         Scaffold(
             topBar = { TopAppBar(scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()) },
             bottomBar = { BottomNavigation() },
@@ -52,6 +53,12 @@ fun HomeScreen(padding: PaddingValues) {
     Column {
         UserCard(modifier = Modifier.padding(padding))
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen(padding = PaddingValues(10.dp))
 }
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.MyFirebaseProject
+package com.example.wellness
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,15 +10,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.MyFirebaseProject.ui.screens.MyApp
-import com.example.MyFirebaseProject.ui.theme.MyFirebaseProjectTheme
+import com.example.wellness.ui.screens.MyApp
+import com.example.wellness.ui.theme.WellnessAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyFirebaseProjectTheme {
+            WellnessAppTheme {
                 MyApp()
             }
         }
@@ -41,7 +41,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MyFirebaseProjectTheme {
+    WellnessAppTheme {
         Greeting("Android")
     }
 }

@@ -1,4 +1,4 @@
-package com.example.MyFirebaseProject
+package com.example.wellness
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
