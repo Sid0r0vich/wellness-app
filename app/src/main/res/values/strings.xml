@@ -5,4 +5,8 @@
     <string name="bottom_navigation_chat">chat</string>
     <string name="bottom_navigation_notifications">notify</string>
     <string name="bottom_navigation_add">add</string>
+    <string name="my_documents">My documents</string>
+    <string name="dynamics">Dynamics</string>
+    <string name="health_report">Health report</string>
+    <string name="be_wellness">Be wellness</string>
 </resources>

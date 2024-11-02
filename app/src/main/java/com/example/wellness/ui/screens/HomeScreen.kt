@@ -1,17 +1,17 @@
 package com.example.wellness.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,123 +24,76 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.wellness.R
 import com.example.wellness.ui.theme.WellnessAppTheme
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyApp() {
-    WellnessAppTheme {
-        Scaffold(
-            topBar = { TopAppBar(scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()) },
-            bottomBar = { BottomNavigation() },
-        ) { padding ->
-            HomeScreen(padding)
-        }
-    }
-}
+fun HomeScreen(
+    modifier: Modifier = Modifier
+) {
+    val panelLabels = arrayOf(
+        R.string.my_documents,
+        R.string.dynamics,
+        R.string.health_report
+    )
 
-@Composable
-fun HomeScreen(padding: PaddingValues) {
-    Column {
-        UserCard(modifier = Modifier.padding(padding))
-    }
-}
+    val panelImageIds = arrayOf(
+        R.drawable.docs,
+        R.drawable.dynamics,
+        R.drawable.report
+    )
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(padding = PaddingValues(10.dp))
-}
+    val paddingColumn = PaddingValues(
+        vertical = 10.dp,
+        horizontal = 20.dp
+    )
 
-@Composable
-private fun BottomNavigation(modifier: Modifier = Modifier) {
-    NavigationBar(
-        modifier = modifier
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = null
+        Column(
+            modifier = Modifier.align(alignment = Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            UserCard(
+                modifier = Modifier
+                    .padding(PaddingValues(bottom = 40.dp))
+                    .padding(paddingColumn)
+                    .fillMaxWidth()
+            )
+
+            (panelLabels zip panelImageIds).forEach { panel ->
+                AppPanel(
+                    modifier = Modifier
+                        .padding(paddingColumn)
+                        .fillMaxWidth(),
+                    text = stringResource(panel.first),
+                    painter = painterResource(panel.second)
                 )
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.bottom_navigation_home)
-                )
-            },
-            selected = true,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.bottom_navigation_profile)
-                )
-            },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.bottom_navigation_add)
-                )
-            },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Email,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.bottom_navigation_chat)
-                )
-            },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Notifications,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.bottom_navigation_notifications)
-                )
-            },
-            selected = false,
-            onClick = {}
-        )
+            }
+        }
     }
 }
 
@@ -168,19 +121,71 @@ fun UserCard(modifier: Modifier) {
     ) {
         Row(
             modifier = Modifier
-                .padding(PaddingValues(10.dp)),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(PaddingValues(8.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Column(
+                modifier = Modifier.padding(PaddingValues(10.dp))
+            ) {
+                Text(
+                    text = "Hello, User!",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(PaddingValues(bottom = 5.dp))
+                )
+                Text(
+                    text = stringResource(R.string.be_wellness),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(PaddingValues(top = 5.dp)),
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Image(
                 painter = painterResource(R.drawable.user),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(80.dp)
+                modifier = Modifier
+                    .size(80.dp)
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape)
             )
+        }
+    }
+}
+
+@Composable
+fun AppPanel(
+    modifier: Modifier = Modifier,
+    text: String,
+    painter: Painter
+) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier.width(250.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(PaddingValues(horizontal = 25.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
             Text(
-                text = "Hello, User!",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(16.dp)
+                text = text,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(
+                    vertical = 42.dp
+                ),
+                textAlign = TextAlign.Center
+            )
+            Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(70.dp)
+                    .size(64.dp)
             )
         }
     }
