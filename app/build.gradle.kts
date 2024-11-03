@@ -77,6 +77,4 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.ui.auth)
-
-    implementation(libs.kotlinx.serialization.json)
 }

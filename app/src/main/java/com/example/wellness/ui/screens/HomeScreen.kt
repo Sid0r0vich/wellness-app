@@ -14,20 +14,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,36 +31,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
-import com.example.wellness.ui.theme.WellnessAppTheme
+import com.example.wellness.ui.AppViewModelProvider
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val panelLabels = arrayOf(
         R.string.my_documents,
         R.string.dynamics,
         R.string.health_report
     )
-
     val panelImageIds = arrayOf(
         R.drawable.docs,
         R.drawable.dynamics,
         R.drawable.report
     )
-
     val paddingColumn = PaddingValues(
         vertical = 10.dp,
         horizontal = 20.dp
     )
+
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         contentAlignment = Alignment.Center,
@@ -81,7 +70,8 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(PaddingValues(bottom = 40.dp))
                     .padding(paddingColumn)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                userName = uiState.userName
             )
 
             (panelLabels zip panelImageIds).forEach { panel ->
@@ -113,7 +103,10 @@ fun TopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modi
 }
 
 @Composable
-fun UserCard(modifier: Modifier) {
+fun UserCard(
+    modifier: Modifier = Modifier,
+    userName: String = stringResource(R.string.user_name)
+) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         modifier = modifier,
@@ -129,7 +122,7 @@ fun UserCard(modifier: Modifier) {
                 modifier = Modifier.padding(PaddingValues(10.dp))
             ) {
                 Text(
-                    text = "Hello, User!",
+                    text = "Hello, $userName!",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(PaddingValues(bottom = 5.dp))
                 )
