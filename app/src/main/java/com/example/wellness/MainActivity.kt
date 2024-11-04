@@ -10,18 +10,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.wellness.ui.screens.BottomNavigation
-import com.example.wellness.ui.screens.HomeScreen
-import com.example.wellness.ui.screens.MockScreen
-import com.example.wellness.ui.screens.ProfileScreen
-import com.example.wellness.ui.screens.Route
+import com.example.wellness.ui.navigation.BottomNavigationBar
+import com.example.wellness.ui.navigation.Home
+import com.example.wellness.ui.navigation.MyHavHost
+import com.example.wellness.ui.navigation.navDestinations
 import com.example.wellness.ui.screens.TopAppBar
-import com.example.wellness.ui.screens.get
-import com.example.wellness.ui.screens.navigationBarItemRoutes
-import com.example.wellness.ui.screens.topLevelRoutes
 import com.example.wellness.ui.theme.WellnessAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,28 +35,36 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp() {
-    val navController = rememberNavController()
     WellnessAppTheme {
+        val navController = rememberNavController()
+        val currentScreen = navDestinations.find {
+            val currentDestination = navController
+                .currentBackStackEntryAsState()
+                .value
+                ?.destination
+            it.route == currentDestination?.route
+        } ?: Home
+
         Scaffold(
             topBar = { TopAppBar(scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()) },
-            bottomBar = { BottomNavigation(navController = navController) },
-        ) { innerPadding ->
-            NavHost(
-                navController,
-                startDestination = topLevelRoutes[Route.Home],
-                modifier = Modifier.padding(innerPadding))
-            {
-                composable(topLevelRoutes[Route.Home]) {
-                    HomeScreen()
-                }
-                composable(topLevelRoutes[Route.Profile]) {
-                    ProfileScreen()
-                }
-                navigationBarItemRoutes.drop(2)
-                    .forEach {
-                    route -> composable(route) { MockScreen() }
+            bottomBar = {
+                BottomNavigationBar(
+                    currentScreen = currentScreen
+                ) { route ->
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             }
+        ) { innerPadding ->
+            MyHavHost(
+                navController = navController,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }

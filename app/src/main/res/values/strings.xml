@@ -10,4 +10,6 @@
     <string name="health_report">Health report</string>
     <string name="be_wellness">Be wellness</string>
     <string name="user_name">user</string>
+    <string name="empty_screen_title">Screen under construction</string>
+    <string name="empty_screen_subtitle">You will see the screen soon!</string>
 </resources>
