@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,7 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
@@ -51,7 +52,7 @@ fun HomeScreen(
         R.drawable.dynamics,
         R.drawable.report
     )
-    val paddingColumn = PaddingValues(
+    val paddingGrid = PaddingValues(
         vertical = 10.dp,
         horizontal = 20.dp
     )
@@ -68,16 +69,25 @@ fun HomeScreen(
         ) {
             UserCard(
                 modifier = Modifier
-                    .padding(PaddingValues(bottom = 40.dp))
-                    .padding(paddingColumn)
+                    .padding(PaddingValues(bottom = 25.dp))
+                    .padding(paddingGrid)
                     .fillMaxWidth(),
                 userName = uiState.userName
             )
-
+            IndicatorsPanel(
+                modifier = Modifier
+                    .padding(paddingGrid),
+                paddingGrid = 20.dp,
+                values = listOf(42, 13),
+                painters = listOf(
+                    painterResource(R.drawable.trace),
+                    painterResource(R.drawable.heart)
+                )
+            )
             (panelLabels zip panelImageIds).forEach { panel ->
                 AppPanel(
                     modifier = Modifier
-                        .padding(paddingColumn)
+                        .padding(paddingGrid)
                         .fillMaxWidth(),
                     text = stringResource(panel.first),
                     painter = painterResource(panel.second)
@@ -155,31 +165,51 @@ fun AppPanel(
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.width(250.dp),
+        modifier = modifier,
         color = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Row(
             modifier = Modifier
-                .padding(PaddingValues(horizontal = 25.dp)),
+                .padding(PaddingValues(
+                    horizontal = 25.dp,
+                    vertical = 20.dp,
+                )),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(
-                    vertical = 42.dp
-                ),
-                textAlign = TextAlign.Center
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier,
             )
             Image(
                 painter = painter,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(70.dp)
-                    .size(64.dp)
+                    .size(60.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun IndicatorsPanel(
+    modifier: Modifier = Modifier,
+    paddingGrid: Dp,
+    values: List<Int>,
+    painters: List<Painter>
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        (values zip painters).forEachIndexed { idx, indicator ->
+            AppPanel(
+                modifier = Modifier.weight(1.0F),
+                text = indicator.first.toString(),
+                painter = indicator.second
+            )
+            if (idx != values.size - 1) Spacer(modifier = Modifier.width(paddingGrid))
         }
     }
 }
