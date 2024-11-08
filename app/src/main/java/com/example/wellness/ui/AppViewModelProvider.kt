@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.wellness.MyApplication
+import com.example.wellness.ui.screens.AuthViewModel
 import com.example.wellness.ui.screens.HomeViewModel
 
 object AppViewModelProvider {
@@ -15,6 +16,10 @@ object AppViewModelProvider {
                 SavedStateHandle(),
                 getApplication().container.userInfoRepository
             )
+        }
+
+        initializer {
+            AuthViewModel()
         }
     }
 }

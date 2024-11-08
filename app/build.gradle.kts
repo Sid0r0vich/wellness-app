@@ -77,4 +77,6 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.ui.auth)
+
+    implementation(libs.androidx.material.icons.extended)
 }

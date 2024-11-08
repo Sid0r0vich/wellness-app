@@ -20,7 +20,7 @@ fun BottomNavigationBar(
     NavigationBar(
         modifier = modifier
     ) {
-        navDestinations
+        navBarDestinations
             .onEachIndexed { index, item ->
                 NavigationBarItem(
                     icon = {
@@ -35,7 +35,7 @@ fun BottomNavigationBar(
                             text = stringResource(item.label)
                         )
                     },
-                    selected = navDestinations.indexOf(currentScreen) == index,
+                    selected = navBarDestinations.indexOf(currentScreen) == index,
                     onClick = {
                         onClick(item.route)
                     }
