@@ -1,5 +1,7 @@
 package com.example.wellness.ui.screens
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -43,9 +46,18 @@ fun LoginScreen(
     viewModel: AuthViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onclickPerformLogin: () -> Unit,
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val authUiState = viewModel.authState.observeAsState()
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var emailIsValidated by rememberSaveable { mutableStateOf(false) }
+    var passwordIsValidated by rememberSaveable { mutableStateOf(false) }
+    val emailSource = remember { MutableInteractionSource() }
+    val passwordSource = remember { MutableInteractionSource() }
+    if (emailSource.collectIsPressedAsState().value)
+        emailIsValidated = false
+    if (passwordSource.collectIsPressedAsState().value)
+        passwordIsValidated = false
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -67,17 +79,19 @@ fun LoginScreen(
             Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { email = it; emailIsValidated = false },
                 label = {
                     Text( text = stringResource(R.string.email_label) )
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = textFieldColors,
+                interactionSource = emailSource,
+                isError = emailIsValidated && !viewModel.validateEmail(email)
             )
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = { password = it; passwordIsValidated = false },
                 label = {
                     Text( text = stringResource(R.string.password_label) )
                 },
@@ -97,7 +111,9 @@ fun LoginScreen(
                     IconButton(onClick = {passwordVisible = !passwordVisible}){
                         Icon(imageVector  = image, description)
                     }
-                }
+                },
+                interactionSource = passwordSource,
+                isError = passwordIsValidated && !viewModel.validatePassword(password)
             )
             TextButton(
                 onClick = {  },
@@ -108,7 +124,12 @@ fun LoginScreen(
                 )
             }
             Button(
-                onClick = onclickPerformLogin,
+                onClick = {
+                    viewModel.signIn(email, password)
+                    emailIsValidated = true
+                    passwordIsValidated = true
+                },
+                enabled = email.isNotEmpty() && password.isNotEmpty(),
                 contentPadding = PaddingValues()
             ) {
                 Text(
