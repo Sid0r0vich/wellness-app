@@ -1,6 +1,6 @@
 package com.example.wellness.ui.screens
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import android.widget.Toast
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,14 +22,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -39,30 +35,36 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
 import com.example.wellness.ui.AppViewModelProvider
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    onclickPerformLogin: () -> Unit,
+    onPerformLogin: () -> Unit,
 ) {
-    val authUiState = viewModel.authState.observeAsState()
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    var emailIsValidated by rememberSaveable { mutableStateOf(false) }
-    var passwordIsValidated by rememberSaveable { mutableStateOf(false) }
-    val emailSource = remember { MutableInteractionSource() }
-    val passwordSource = remember { MutableInteractionSource() }
-    if (emailSource.collectIsPressedAsState().value)
-        emailIsValidated = false
-    if (passwordSource.collectIsPressedAsState().value)
-        passwordIsValidated = false
+    val uiState = viewModel.uiState
+    if (uiState.emailSource.collectIsPressedAsState().value)
+        uiState.emailIsValidated = false
+    if (uiState.passwordSource.collectIsPressedAsState().value)
+        uiState.passwordIsValidated = false
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
     )
+
+    val authState = viewModel.authState.observeAsState()
+    val context = LocalContext.current
+    LaunchedEffect(authState.value) {
+        when(authState.value) {
+            is AuthState.Authenticated -> onPerformLogin()
+            is AuthState.Error -> Toast.makeText(
+                context,
+                (authState.value as AuthState.Error).message,
+                Toast.LENGTH_SHORT
+            ).show()
+            else -> Unit
+        }
+    }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -78,42 +80,42 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it; emailIsValidated = false },
+                value = uiState.email,
+                onValueChange = { uiState.email = it; uiState.emailIsValidated = false },
                 label = {
                     Text( text = stringResource(R.string.email_label) )
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = textFieldColors,
-                interactionSource = emailSource,
-                isError = emailIsValidated && !viewModel.validateEmail(email)
+                interactionSource = uiState.emailSource,
+                isError = uiState.emailIsValidated && !viewModel.validateEmailFormat(uiState.email)
             )
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it; passwordIsValidated = false },
+                value = uiState.password,
+                onValueChange = { uiState.password = it; uiState.passwordIsValidated = false },
                 label = {
                     Text( text = stringResource(R.string.password_label) )
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = textFieldColors,
                 visualTransformation =
-                    if (passwordVisible) VisualTransformation.None
+                    if (uiState.passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
                 trailingIcon = {
-                    val image = if (passwordVisible)
+                    val image = if (uiState.passwordVisible)
                         Icons.Filled.Visibility
                     else Icons.Filled.VisibilityOff
                     val description =
-                        if (passwordVisible) stringResource(R.string.hide_password)
+                        if (uiState.passwordVisible) stringResource(R.string.hide_password)
                         else stringResource(R.string.show_password)
 
-                    IconButton(onClick = {passwordVisible = !passwordVisible}){
+                    IconButton(onClick = {uiState.passwordVisible = !uiState.passwordVisible}){
                         Icon(imageVector  = image, description)
                     }
                 },
-                interactionSource = passwordSource,
-                isError = passwordIsValidated && !viewModel.validatePassword(password)
+                interactionSource = uiState.passwordSource,
+                isError = uiState.passwordIsValidated && !viewModel.validatePasswordFormat(uiState.password)
             )
             TextButton(
                 onClick = {  },
@@ -125,11 +127,11 @@ fun LoginScreen(
             }
             Button(
                 onClick = {
-                    viewModel.signIn(email, password)
-                    emailIsValidated = true
-                    passwordIsValidated = true
+                    viewModel.signIn(uiState.email, uiState.password)
+                    uiState.emailIsValidated = true
+                    uiState.passwordIsValidated = true
                 },
-                enabled = email.isNotEmpty() && password.isNotEmpty(),
+                enabled = uiState.email.isNotEmpty() && uiState.password.isNotEmpty(),
                 contentPadding = PaddingValues()
             ) {
                 Text(

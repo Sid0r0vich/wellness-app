@@ -11,6 +11,8 @@ class AuthViewModel() : ViewModel() {
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
 
+    val uiState = AuthUiState()
+
     init {
         checkAuthStatus()
     }
@@ -21,11 +23,11 @@ class AuthViewModel() : ViewModel() {
         else _authState.value = AuthState.Authenticated
     }
 
-    fun validateEmail(email: String): Boolean {
+    fun validateEmailFormat(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    fun validatePassword(password: String): Boolean {
+    fun validatePasswordFormat(password: String): Boolean {
         return password.length >= 6
     }
 
@@ -33,11 +35,11 @@ class AuthViewModel() : ViewModel() {
         email: String,
         password: String
     ): Boolean {
-        if (!validateEmail(email)) {
+        if (!validateEmailFormat(email)) {
             _authState.value = AuthState.Error(EMAIL_VALIDATION_EXCEPTION)
             return false
         }
-        if (!validatePassword(password)) {
+        if (!validatePasswordFormat(password)) {
             _authState.value = AuthState.Error(PASSWORD_VALIDATION_EXCEPTION)
             return false
         }
