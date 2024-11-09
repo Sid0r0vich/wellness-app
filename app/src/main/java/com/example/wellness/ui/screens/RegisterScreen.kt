@@ -8,11 +8,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,11 +32,11 @@ import com.example.wellness.ui.components.PasswordField
 import com.example.wellness.ui.components.collectIsPressedAsStateValue
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    onPerformLogin: () -> Unit,
-    onRegisterClick: () -> Unit
+    onPerformRegister: () -> Unit,
+    onLoginClick: () -> Unit
 ) {
     val uiState = viewModel.uiState
     if (uiState.emailSource.collectIsPressedAsStateValue())
@@ -38,9 +44,11 @@ fun LoginScreen(
     if (uiState.passwordSource.collectIsPressedAsStateValue())
         uiState.passwordIsValidated = false
 
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
     AuthenticationTrigger(
         authState = viewModel.authState.observeAsState(),
-        onPerformAuth = onPerformLogin
+        onPerformAuth = onPerformRegister
     )
 
     Box(
@@ -52,7 +60,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(R.string.login),
+                text = stringResource(R.string.signup),
                 style = MaterialTheme.typography.displayMedium,
             )
             Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
@@ -69,14 +77,18 @@ fun LoginScreen(
                 interactionSource = uiState.passwordSource,
                 isError = uiState.passwordIsValidated && !viewModel.validatePasswordFormat(uiState.password)
             )
-            TextButton(
-                onClick = {  },
-                modifier = Modifier.align(Alignment.Start)
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
             ) {
-                Text(
-                    text = stringResource(R.string.forget_password)
-                )
+                listOf("Man", "Woman").forEach { item ->
+                    DropdownMenuItem(
+                        text = { Text(item) },
+                        onClick = { /*TODO*/ }
+                    )
+                }
             }
+            Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
             Button(
                 onClick = {
                     viewModel.signIn(uiState.email, uiState.password)
@@ -87,15 +99,15 @@ fun LoginScreen(
                 contentPadding = PaddingValues()
             ) {
                 Text(
-                    text = stringResource(R.string.perform_login)
+                    text = stringResource(R.string.perform_register)
                 )
             }
             TextButton(
-                onClick = onRegisterClick,
+                onClick = onLoginClick,
                 contentPadding = PaddingValues()
             ) {
                 Text(
-                    text = stringResource(R.string.have_not_account)
+                    text = stringResource(R.string.have_account)
                 )
             }
         }

@@ -46,6 +46,11 @@ object Login : NavDestination {
     override val route = "login"
 }
 
+object Register : NavDestination {
+    override val label = R.string.navigation_register
+    override val route = "register"
+}
+
 val navBarDestinations = listOf(
     Home,
     Profile,

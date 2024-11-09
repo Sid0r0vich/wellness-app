@@ -10,6 +10,7 @@ import com.example.wellness.ui.screens.EmptyScreen
 import com.example.wellness.ui.screens.HomeScreen
 import com.example.wellness.ui.screens.LoginScreen
 import com.example.wellness.ui.screens.ProfileScreen
+import com.example.wellness.ui.screens.RegisterScreen
 
 @Composable
 fun MyHavHost(
@@ -27,9 +28,16 @@ fun MyHavHost(
             composable(dest.route) { EmptyScreen() }
         }
         composable("login") {
-            LoginScreen {
-                navController.navigateSingleTopWithPopUp(Home.route)
-            }
+            LoginScreen (
+                onPerformLogin = { navController.navigateSingleTopWithPopUp(Home.route) },
+                onRegisterClick = { navController.navigateSingleTopWithPopUp(Register.route) }
+            )
+        }
+        composable("register") {
+            RegisterScreen (
+                onPerformRegister = { navController.navigateSingleTopWithPopUp(Home.route) },
+                onLoginClick = { navController.navigateSingleTopWithPopUp(Login.route) }
+            )
         }
     }
 }
