@@ -4,23 +4,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,7 +35,7 @@ import com.example.wellness.ui.components.collectIsPressedAsStateValue
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: RegisterViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onPerformRegister: () -> Unit,
     onLoginClick: () -> Unit
 ) {
@@ -43,8 +44,6 @@ fun RegisterScreen(
         uiState.emailIsValidated = false
     if (uiState.passwordSource.collectIsPressedAsStateValue())
         uiState.passwordIsValidated = false
-
-    var expanded by rememberSaveable { mutableStateOf(false) }
 
     AuthenticationTrigger(
         authState = viewModel.authState.observeAsState(),
@@ -77,31 +76,10 @@ fun RegisterScreen(
                 interactionSource = uiState.passwordSource,
                 isError = uiState.passwordIsValidated && !viewModel.validatePasswordFormat(uiState.password)
             )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                listOf("Man", "Woman").forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(item) },
-                        onClick = { /*TODO*/ }
-                    )
-                }
-            }
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            Button(
-                onClick = {
-                    viewModel.signIn(uiState.email, uiState.password)
-                    uiState.emailIsValidated = true
-                    uiState.passwordIsValidated = true
-                },
-                enabled = uiState.email.isNotEmpty() && uiState.password.isNotEmpty(),
-                contentPadding = PaddingValues()
-            ) {
-                Text(
-                    text = stringResource(R.string.perform_register)
-                )
-            }
+            SexChoice(selected = uiState.selectedSex)
+            Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
+            AgeChoice(value = uiState.age, valueRange = RegisterUiState.AGE_RANGE)
             TextButton(
                 onClick = onLoginClick,
                 contentPadding = PaddingValues()
@@ -110,6 +88,65 @@ fun RegisterScreen(
                     text = stringResource(R.string.have_account)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun SexChoice(
+    selected: MutableState<Sex>,
+    modifier: Modifier = Modifier
+) {
+    var selectedSex by selected
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Button(
+            onClick = { selectedSex = Sex.Man },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (selectedSex == Sex.Man) Color.Black else Color.Gray
+            )
+        ) {
+            Text(text = stringResource(R.string.man_sex))
+        }
+        Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
+        Button(
+            onClick = { selectedSex = Sex.Woman },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (selectedSex == Sex.Woman) Color.Black else Color.Gray
+            )
+        ) {
+            Text(text = stringResource(R.string.woman_sex))
+        }
+    }
+}
+
+@Composable
+fun AgeChoice(
+    value: MutableState<Int>,
+    valueRange: IntRange,
+    modifier: Modifier = Modifier,
+) {
+    var age by value
+
+    Box(
+        modifier = modifier.padding(PaddingValues(horizontal = 60.dp))
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+            ) {
+            Text(
+                text = "${stringResource(R.string.age)}: ${age}",
+                style = MaterialTheme.typography.titleLarge
+            )
+            Slider(
+                value = age.toFloat(),
+                onValueChange = { age = it.toInt() },
+                valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
+                steps = valueRange.last - valueRange.first - 1
+            )
         }
     }
 }

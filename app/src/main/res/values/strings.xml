@@ -26,4 +26,7 @@
     <string name="signup">Sign up</string>
     <string name="navigation_register">register</string>
     <string name="perform_register">Sign up</string>
+    <string name="man_sex">Man</string>
+    <string name="woman_sex">Woman</string>
+    <string name="age">Age</string>
 </resources>

@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-class AuthUiState(
+open class AuthUiState(
     email: MutableState<String> = mutableStateOf(""),
     password: MutableState<String> = mutableStateOf(""),
     emailIsValidated: MutableState<Boolean> = mutableStateOf(false),
@@ -18,4 +18,19 @@ class AuthUiState(
     var password by password
     var emailIsValidated by emailIsValidated
     var passwordIsValidated by passwordIsValidated
+}
+
+sealed class Sex {
+    data object Man: Sex()
+    data object Woman: Sex()
+}
+
+class RegisterUiState: AuthUiState() {
+    val selectedSex: MutableState<Sex> = mutableStateOf(Sex.Man)
+    val age: MutableState<Int> = mutableStateOf(DEFAULT_AGE)
+
+    companion object {
+        private const val DEFAULT_AGE = 18
+        val AGE_RANGE = 14..120
+    }
 }

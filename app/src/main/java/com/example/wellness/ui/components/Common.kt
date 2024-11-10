@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WellnessTextFieldColors(): TextFieldColors {
+fun wellnessTextFieldColors(): TextFieldColors {
     return OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -37,7 +37,7 @@ fun WellnessTextFiled(
             Text( text = stringResource(textId) )
         },
         shape = RoundedCornerShape(20.dp),
-        colors = WellnessTextFieldColors(),
+        colors = wellnessTextFieldColors(),
         interactionSource = interactionSource,
         isError = isError
     )

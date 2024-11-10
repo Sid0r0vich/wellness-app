@@ -28,7 +28,7 @@ import com.example.wellness.ui.components.collectIsPressedAsStateValue
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onPerformLogin: () -> Unit,
     onRegisterClick: () -> Unit
 ) {

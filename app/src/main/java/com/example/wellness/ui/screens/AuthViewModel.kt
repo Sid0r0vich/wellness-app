@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
-class AuthViewModel() : ViewModel() {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _authState = MutableLiveData<AuthState>()
+abstract class AuthViewModel : ViewModel() {
+    protected  val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    protected  val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
 
-    val uiState = AuthUiState()
+    open val uiState = AuthUiState()
 
     init {
         checkAuthStatus()
@@ -31,7 +31,7 @@ class AuthViewModel() : ViewModel() {
         return password.length >= 6
     }
 
-    private fun validateEmailAndPassword(
+    protected  fun validateEmailAndPassword(
         email: String,
         password: String
     ): Boolean {
@@ -56,26 +56,9 @@ class AuthViewModel() : ViewModel() {
 
         auth.signInWithEmailAndPassword(email, password)
             .addAuthenticateListener()
-
     }
 
-    fun signUp(
-        email: String,
-        password: String,
-    ) {
-        _authState.value = AuthState.Loading
-        if (!validateEmailAndPassword(email, password)) return
-
-        auth.createUserWithEmailAndPassword(email, password)
-            .addAuthenticateListener()
-    }
-
-    fun signOut() {
-        auth.signOut()
-        _authState.value = AuthState.Unauthenticated
-    }
-
-    private fun <TResult> Task<TResult>.addAuthenticateListener() {
+    protected fun <TResult> Task<TResult>.addAuthenticateListener() {
         this.addOnCompleteListener { task ->
             if (task.isSuccessful)
                 _authState.value = AuthState.Authenticated
@@ -87,15 +70,39 @@ class AuthViewModel() : ViewModel() {
     }
 
     companion object {
-        private const val UNKNOWN_EXCEPTION = "Something went wrong"
-        private const val EMAIL_VALIDATION_EXCEPTION = "Wrong email!"
-        private const val PASSWORD_VALIDATION_EXCEPTION = "Short password!"
+        protected  const val UNKNOWN_EXCEPTION = "Something went wrong"
+        protected  const val EMAIL_VALIDATION_EXCEPTION = "Wrong email!"
+        protected  const val PASSWORD_VALIDATION_EXCEPTION = "Short password!"
+    }
+}
+
+class LoginViewModel : AuthViewModel()
+
+class RegisterViewModel : AuthViewModel() {
+    override val uiState = RegisterUiState()
+
+    fun signUp(
+        email: String,
+        password: String,
+    ) {
+        _authState.value = AuthState.Loading
+        if (!validateEmailAndPassword(email, password)) return
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .addAuthenticateListener()
+    }
+}
+
+class SignOutViewModel : AuthViewModel() {
+    fun signOut() {
+        auth.signOut()
+        _authState.value = AuthState.Unauthenticated
     }
 }
 
 sealed class AuthState {
-    object Authenticated: AuthState()
-    object Unauthenticated: AuthState()
-    object Loading: AuthState()
+    data object Authenticated: AuthState()
+    data object Unauthenticated: AuthState()
+    data object Loading: AuthState()
     data class Error(val message: String): AuthState()
 }

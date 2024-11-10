@@ -6,8 +6,9 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.wellness.MyApplication
-import com.example.wellness.ui.screens.AuthViewModel
 import com.example.wellness.ui.screens.HomeViewModel
+import com.example.wellness.ui.screens.LoginViewModel
+import com.example.wellness.ui.screens.RegisterViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -19,7 +20,11 @@ object AppViewModelProvider {
         }
 
         initializer {
-            AuthViewModel()
+            LoginViewModel()
+        }
+
+        initializer {
+            RegisterViewModel()
         }
     }
 }
