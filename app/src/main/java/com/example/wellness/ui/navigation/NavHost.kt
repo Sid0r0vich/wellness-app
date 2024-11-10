@@ -23,7 +23,9 @@ fun MyHavHost(
         modifier = modifier
     ) {
         composable(Home.route) { HomeScreen() }
-        composable(Profile.route) { ProfileScreen() }
+        composable(Profile.route) {
+            ProfileScreen { navController.navigateSingleTopWithPopUp(Login.route) }
+        }
         navBarDestinations.drop(2).forEach { dest ->
             composable(dest.route) { EmptyScreen() }
         }

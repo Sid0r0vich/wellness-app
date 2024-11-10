@@ -1,14 +1,18 @@
 package com.example.wellness.ui
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.wellness.MyApplication
+import com.example.wellness.WellnessApplication
+import com.example.wellness.data.WellnessAppContainer
+import com.example.wellness.ui.screens.AuthState
 import com.example.wellness.ui.screens.HomeViewModel
 import com.example.wellness.ui.screens.LoginViewModel
 import com.example.wellness.ui.screens.RegisterViewModel
+import com.example.wellness.ui.screens.SignOutViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -20,14 +24,21 @@ object AppViewModelProvider {
         }
 
         initializer {
-            LoginViewModel()
+            LoginViewModel(getAuthState())
         }
 
         initializer {
-            RegisterViewModel()
+            RegisterViewModel(getAuthState())
+        }
+
+        initializer {
+            SignOutViewModel(getAuthState())
         }
     }
 }
 
-fun CreationExtras.getApplication(): MyApplication =
-    (this[AndroidViewModelFactory.APPLICATION_KEY] as MyApplication)
+fun CreationExtras.getApplication(): WellnessApplication =
+    (this[APPLICATION_KEY] as WellnessApplication)
+
+fun CreationExtras.getAuthState(): MutableLiveData<AuthState> =
+    (getApplication().container as WellnessAppContainer).authState

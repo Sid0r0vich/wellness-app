@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -64,15 +65,11 @@ fun HomeScreen(
         modifier = modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.align(alignment = Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            UserCard(
-                modifier = Modifier
-                    .padding(PaddingValues(bottom = 25.dp))
-                    .padding(paddingGrid)
-                    .fillMaxWidth(),
-                userName = uiState.userName
+            HomeUserCard(
+                userName = uiState.userName,
+                modifier = Modifier.padding(paddingGrid)
             )
             IndicatorsPanel(
                 modifier = Modifier
@@ -115,7 +112,10 @@ fun TopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modi
 @Composable
 fun UserCard(
     modifier: Modifier = Modifier,
-    userName: String = stringResource(R.string.user_name)
+    userName: String = stringResource(R.string.user_name),
+    addButton: Boolean = false,
+    buttonOnClick: () -> Unit = {},
+    avatarModifier: Modifier = Modifier
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -134,27 +134,46 @@ fun UserCard(
                 Text(
                     text = "Hello, $userName!",
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(PaddingValues(bottom = 5.dp))
                 )
+                Spacer(modifier = Modifier.padding(PaddingValues(5.dp)))
                 Text(
                     text = stringResource(R.string.be_wellness),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(PaddingValues(top = 5.dp)),
                     fontWeight = FontWeight.Bold
                 )
+                Spacer(modifier = Modifier.padding(PaddingValues(5.dp)))
+                if (addButton) {
+                    Button(
+                        onClick = buttonOnClick,
+                    ) {
+                        Text(text = stringResource(R.string.sign_out))
+                    }
+                }
             }
             Image(
                 painter = painterResource(R.drawable.user),
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(80.dp)
-                    .size(64.dp)
+                modifier = avatarModifier
+                    .padding(PaddingValues(8.dp))
                     .clip(CircleShape)
                     .border(2.dp, Color.Gray, CircleShape)
             )
         }
     }
+}
+
+@Composable
+fun HomeUserCard(
+    modifier: Modifier = Modifier,
+    userName: String
+) {
+    UserCard(
+        modifier = modifier
+            .padding(PaddingValues(bottom = 5.dp))
+            .fillMaxWidth(),
+        userName = userName,
+        avatarModifier = Modifier.size(100.dp)
+    )
 }
 
 @Composable

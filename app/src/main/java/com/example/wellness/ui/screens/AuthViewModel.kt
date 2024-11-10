@@ -1,17 +1,18 @@
 package com.example.wellness.ui.screens
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
-abstract class AuthViewModel : ViewModel() {
+abstract class AuthViewModel(
+    authState: MutableLiveData<AuthState>
+) : ViewModel() {
     protected  val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    protected  val _authState = MutableLiveData<AuthState>()
-    val authState: LiveData<AuthState> = _authState
+    var authState: MutableLiveData<AuthState> = authState
+        protected set
 
-    open val uiState = AuthUiState()
+    open val uiState: LoginUiState = LoginUiState()
 
     init {
         checkAuthStatus()
@@ -19,8 +20,8 @@ abstract class AuthViewModel : ViewModel() {
 
     private fun checkAuthStatus() {
         if (auth.currentUser == null)
-            _authState.value = AuthState.Unauthenticated
-        else _authState.value = AuthState.Authenticated
+            authState.value = AuthState.Unauthenticated
+        else authState.value = AuthState.Authenticated
     }
 
     fun validateEmailFormat(email: String): Boolean {
@@ -36,11 +37,11 @@ abstract class AuthViewModel : ViewModel() {
         password: String
     ): Boolean {
         if (!validateEmailFormat(email)) {
-            _authState.value = AuthState.Error(EMAIL_VALIDATION_EXCEPTION)
+            authState.value = AuthState.Error(EMAIL_VALIDATION_EXCEPTION)
             return false
         }
         if (!validatePasswordFormat(password)) {
-            _authState.value = AuthState.Error(PASSWORD_VALIDATION_EXCEPTION)
+            authState.value = AuthState.Error(PASSWORD_VALIDATION_EXCEPTION)
             return false
         }
 
@@ -51,7 +52,7 @@ abstract class AuthViewModel : ViewModel() {
         email: String,
         password: String,
     ) {
-        _authState.value = AuthState.Loading
+        authState.value = AuthState.Loading
         if (!validateEmailAndPassword(email, password)) return
 
         auth.signInWithEmailAndPassword(email, password)
@@ -61,9 +62,9 @@ abstract class AuthViewModel : ViewModel() {
     protected fun <TResult> Task<TResult>.addAuthenticateListener() {
         this.addOnCompleteListener { task ->
             if (task.isSuccessful)
-                _authState.value = AuthState.Authenticated
+                authState.value = AuthState.Authenticated
             else
-                _authState.value = AuthState.Error(
+                authState.value = AuthState.Error(
                     task.exception?.message ?: UNKNOWN_EXCEPTION
                 )
         }
@@ -76,16 +77,22 @@ abstract class AuthViewModel : ViewModel() {
     }
 }
 
-class LoginViewModel : AuthViewModel()
+class LoginViewModel(
+    authState: MutableLiveData<AuthState>
+) : AuthViewModel(authState)
 
-class RegisterViewModel : AuthViewModel() {
-    override val uiState = RegisterUiState()
+class RegisterViewModel(
+    authState: MutableLiveData<AuthState>
+) : AuthViewModel(authState) {
+    override val uiState: RegisterUiState = RegisterUiState()
 
     fun signUp(
         email: String,
         password: String,
+        sex: Sex,
+        age: Int
     ) {
-        _authState.value = AuthState.Loading
+        authState.value = AuthState.Loading
         if (!validateEmailAndPassword(email, password)) return
 
         auth.createUserWithEmailAndPassword(email, password)
@@ -93,10 +100,12 @@ class RegisterViewModel : AuthViewModel() {
     }
 }
 
-class SignOutViewModel : AuthViewModel() {
+class SignOutViewModel(
+    authState: MutableLiveData<AuthState>
+) : AuthViewModel(authState) {
     fun signOut() {
         auth.signOut()
-        _authState.value = AuthState.Unauthenticated
+        authState.value = AuthState.Unauthenticated
     }
 }
 

@@ -38,6 +38,8 @@ fun WellnessTextFiled(
         },
         shape = RoundedCornerShape(20.dp),
         colors = wellnessTextFieldColors(),
+        visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon,
         interactionSource = interactionSource,
         isError = isError
     )

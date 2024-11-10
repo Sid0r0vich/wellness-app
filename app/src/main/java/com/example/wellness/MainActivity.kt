@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WellnessAppTheme {
-                MyApp()
+                WellnessApp()
             }
         }
     }
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyApp() {
+fun WellnessApp() {
     WellnessAppTheme {
         val registered = false
         val navController = rememberNavController()

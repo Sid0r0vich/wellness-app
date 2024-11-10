@@ -10,20 +10,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
+import com.example.wellness.ui.AppViewModelProvider
+import com.example.wellness.ui.components.UnauthenticatedTrigger
 
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SignOutViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    onUnauthenticated: () -> Unit
 ) {
     val paddingColumn = PaddingValues(
         vertical = 10.dp,
         horizontal = 20.dp
+    )
+
+    UnauthenticatedTrigger(
+        authState = viewModel.authState.observeAsState(),
+        onUnauthenticated = onUnauthenticated
     )
 
     Box(
@@ -31,14 +42,15 @@ fun ProfileScreen(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.align(alignment = Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             UserCard(
                 modifier = Modifier
-                    .padding(PaddingValues(bottom = 40.dp))
+                    .padding(PaddingValues(bottom = 10.dp))
                     .padding(paddingColumn)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                addButton = true,
+                buttonOnClick = { viewModel.signOut() }
             )
         }
     }

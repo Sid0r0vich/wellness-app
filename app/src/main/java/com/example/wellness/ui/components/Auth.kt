@@ -92,6 +92,21 @@ fun AuthenticationTrigger(
 }
 
 @Composable
+fun UnauthenticatedTrigger(
+    authState: State<AuthState?>,
+    onUnauthenticated: () -> Unit
+) {
+    val context = LocalContext.current
+
+    LaunchedEffect(authState.value) {
+        when(authState.value) {
+            is AuthState.Unauthenticated -> onUnauthenticated()
+            else -> Unit
+        }
+    }
+}
+
+@Composable
 fun MutableInteractionSource.collectIsPressedAsStateValue(): Boolean {
     return this.collectIsPressedAsState().value
 }

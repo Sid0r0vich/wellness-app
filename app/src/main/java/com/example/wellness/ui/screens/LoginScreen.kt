@@ -83,7 +83,10 @@ fun LoginScreen(
                     uiState.emailIsValidated = true
                     uiState.passwordIsValidated = true
                 },
-                enabled = uiState.email.isNotEmpty() && uiState.password.isNotEmpty(),
+                enabled =
+                    uiState.email.isNotEmpty() &&
+                    uiState.password.isNotEmpty() &&
+                    viewModel.authState.value != AuthState.Loading,
                 contentPadding = PaddingValues()
             ) {
                 Text(

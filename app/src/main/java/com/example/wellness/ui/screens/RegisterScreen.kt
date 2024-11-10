@@ -15,10 +15,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -77,9 +74,37 @@ fun RegisterScreen(
                 isError = uiState.passwordIsValidated && !viewModel.validatePasswordFormat(uiState.password)
             )
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            SexChoice(selected = uiState.selectedSex)
+            SexChoice(
+                value = uiState.selectedSex,
+                onChangeValue = { value -> uiState.selectedSex = value }
+            )
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            AgeChoice(value = uiState.age, valueRange = RegisterUiState.AGE_RANGE)
+            AgeChoice(
+                value = uiState.age,
+                valueRange = RegisterUiState.AGE_RANGE,
+                onChangeValue = { value -> uiState.age = value }
+            )
+            Button(
+                onClick = {
+                    viewModel.signUp(
+                        uiState.email,
+                        uiState.password,
+                        uiState.selectedSex,
+                        uiState.age
+                    )
+                    uiState.emailIsValidated = true
+                    uiState.passwordIsValidated = true
+                },
+                enabled =
+                    uiState.email.isNotEmpty() &&
+                    uiState.password.isNotEmpty() &&
+                    viewModel.authState.value != AuthState.Loading,
+                contentPadding = PaddingValues()
+            ) {
+                Text(
+                    text = stringResource(R.string.perform_register)
+                )
+            }
             TextButton(
                 onClick = onLoginClick,
                 contentPadding = PaddingValues()
@@ -94,27 +119,26 @@ fun RegisterScreen(
 
 @Composable
 fun SexChoice(
-    selected: MutableState<Sex>,
+    value: Sex,
+    onChangeValue: (Sex) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedSex by selected
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Button(
-            onClick = { selectedSex = Sex.Man },
+            onClick = { onChangeValue(Sex.Man) },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (selectedSex == Sex.Man) Color.Black else Color.Gray
+                containerColor = if (value == Sex.Man) Color.Black else Color.Gray
             )
         ) {
             Text(text = stringResource(R.string.man_sex))
         }
         Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
         Button(
-            onClick = { selectedSex = Sex.Woman },
+            onClick = { onChangeValue(Sex.Woman) },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (selectedSex == Sex.Woman) Color.Black else Color.Gray
+                containerColor = if (value == Sex.Woman) Color.Black else Color.Gray
             )
         ) {
             Text(text = stringResource(R.string.woman_sex))
@@ -124,12 +148,11 @@ fun SexChoice(
 
 @Composable
 fun AgeChoice(
-    value: MutableState<Int>,
+    value: Int,
     valueRange: IntRange,
+    onChangeValue: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var age by value
-
     Box(
         modifier = modifier.padding(PaddingValues(horizontal = 60.dp))
     ) {
@@ -138,12 +161,12 @@ fun AgeChoice(
 
             ) {
             Text(
-                text = "${stringResource(R.string.age)}: ${age}",
+                text = "${stringResource(R.string.age)}: ${value}",
                 style = MaterialTheme.typography.titleLarge
             )
             Slider(
-                value = age.toFloat(),
-                onValueChange = { age = it.toInt() },
+                value = value.toFloat(),
+                onValueChange = { onChangeValue(it.toInt()) },
                 valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
                 steps = valueRange.last - valueRange.first - 1
             )
