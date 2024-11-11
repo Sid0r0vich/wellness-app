@@ -30,4 +30,6 @@
     <string name="woman_sex">Woman</string>
     <string name="age">Age</string>
     <string name="sign_out">Sign out</string>
+    <string name="navigation_user">user</string>
+    <string name="navigation_auth">auth</string>
 </resources>

@@ -22,6 +22,7 @@ import com.example.wellness.R
 import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.UnauthenticatedTrigger
 import com.example.wellness.ui.components.UserCard
+import com.example.wellness.ui.viewModels.ProfileViewModel
 
 @Composable
 fun ProfileScreen(

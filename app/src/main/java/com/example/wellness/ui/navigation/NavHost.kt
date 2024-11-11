@@ -6,6 +6,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.example.wellness.ui.screens.EmptyScreen
 import com.example.wellness.ui.screens.HomeScreen
 import com.example.wellness.ui.screens.LoginScreen
@@ -19,27 +20,37 @@ fun MyHavHost(
 ) {
     NavHost(
         navController,
-        startDestination = "login",
+        startDestination = Auth.route,
         modifier = modifier
     ) {
-        composable(Home.route) { HomeScreen() }
-        composable(Profile.route) {
-            ProfileScreen { navController.navigateSingleTopWithPopUp(Login.route) }
+        navigation(
+            route = Auth.route,
+            startDestination = Login.route
+        ) {
+            composable(Login.route) {
+                LoginScreen (
+                    onPerformLogin = { navController.navigateSingleTopWithPopUp(User.route) },
+                    onRegisterClick = { navController.navigateSingleTopWithPopUp(Register.route) }
+                )
+            }
+            composable(Register.route) {
+                RegisterScreen (
+                    onPerformRegister = { navController.navigateSingleTopWithPopUp(Home.route) },
+                    onLoginClick = { navController.navigateSingleTopWithPopUp(Login.route) }
+                )
+            }
         }
-        navBarDestinations.drop(2).forEach { dest ->
-            composable(dest.route) { EmptyScreen() }
-        }
-        composable("login") {
-            LoginScreen (
-                onPerformLogin = { navController.navigateSingleTopWithPopUp(Home.route) },
-                onRegisterClick = { navController.navigateSingleTopWithPopUp(Register.route) }
-            )
-        }
-        composable("register") {
-            RegisterScreen (
-                onPerformRegister = { navController.navigateSingleTopWithPopUp(Home.route) },
-                onLoginClick = { navController.navigateSingleTopWithPopUp(Login.route) }
-            )
+        navigation(
+            route = User.route,
+            startDestination = Home.route
+        ) {
+            composable(Home.route) { HomeScreen() }
+            composable(Profile.route) {
+                ProfileScreen { navController.navigateSingleTopWithPopUp(Auth.route) }
+            }
+            navBarDestinations.drop(2).forEach { dest ->
+                composable(dest.route) { EmptyScreen() }
+            }
         }
     }
 }

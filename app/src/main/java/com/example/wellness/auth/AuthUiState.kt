@@ -1,4 +1,4 @@
-package com.example.wellness.ui.screens
+package com.example.wellness.auth
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.MutableState

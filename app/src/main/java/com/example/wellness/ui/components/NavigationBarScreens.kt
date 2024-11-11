@@ -44,7 +44,6 @@ fun TopAppBar(
                 style = MaterialTheme.typography.headlineSmall,
             )
         },
-        modifier = modifier
     )
 }
 

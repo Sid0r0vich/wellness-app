@@ -7,12 +7,12 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.wellness.WellnessApplication
+import com.example.wellness.auth.AuthState
 import com.example.wellness.data.WellnessAppContainer
-import com.example.wellness.ui.screens.AuthState
-import com.example.wellness.ui.screens.HomeViewModel
-import com.example.wellness.ui.screens.LoginViewModel
-import com.example.wellness.ui.screens.ProfileViewModel
-import com.example.wellness.ui.screens.RegisterViewModel
+import com.example.wellness.ui.viewModels.HomeViewModel
+import com.example.wellness.ui.viewModels.LoginViewModel
+import com.example.wellness.ui.viewModels.ProfileViewModel
+import com.example.wellness.ui.viewModels.RegisterViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {

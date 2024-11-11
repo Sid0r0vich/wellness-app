@@ -19,11 +19,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
+import com.example.wellness.auth.AuthState
+import com.example.wellness.auth.AuthUiState
 import com.example.wellness.ui.AppViewModelProvider
-import com.example.wellness.ui.components.AuthenticationTrigger
-import com.example.wellness.ui.components.EmailField
-import com.example.wellness.ui.components.PasswordField
+import com.example.wellness.ui.components.AuthEmailField
+import com.example.wellness.ui.components.AuthPasswordField
+import com.example.wellness.ui.components.AuthTrigger
 import com.example.wellness.ui.components.collectIsPressedAsStateValue
+import com.example.wellness.ui.viewModels.LoginViewModel
+
+@Composable
+fun AuthFieldsInvalidation(
+    uiState: AuthUiState
+) {
+    if (uiState.emailSource.collectIsPressedAsStateValue())
+        uiState.emailIsValidated = false
+    if (uiState.passwordSource.collectIsPressedAsStateValue())
+        uiState.passwordIsValidated = false
+}
 
 @Composable
 fun LoginScreen(
@@ -33,12 +46,9 @@ fun LoginScreen(
     onRegisterClick: () -> Unit
 ) {
     val uiState = viewModel.uiState
-    if (uiState.emailSource.collectIsPressedAsStateValue())
-        uiState.emailIsValidated = false
-    if (uiState.passwordSource.collectIsPressedAsStateValue())
-        uiState.passwordIsValidated = false
+    AuthFieldsInvalidation(uiState)
 
-    AuthenticationTrigger(
+    AuthTrigger(
         authState = viewModel.authState.observeAsState(),
         onPerformAuth = onPerformLogin
     )
@@ -56,19 +66,9 @@ fun LoginScreen(
                 style = MaterialTheme.typography.displayMedium,
             )
             Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
-            EmailField(
-                value = uiState.email,
-                onValueChange = { uiState.email = it; uiState.emailIsValidated = false },
-                interactionSource = uiState.emailSource,
-                isError = uiState.emailIsValidated && !DataValidator.validateEmailFormat(uiState.email)
-            )
+            AuthEmailField(uiState = uiState)
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            PasswordField(
-                value = uiState.password,
-                onValueChange = { uiState.password = it; uiState.passwordIsValidated = false },
-                interactionSource = uiState.passwordSource,
-                isError = uiState.passwordIsValidated && !DataValidator.validatePasswordFormat(uiState.password)
-            )
+            AuthPasswordField(uiState = uiState)
             TextButton(
                 onClick = {  },
                 modifier = Modifier.align(Alignment.Start)

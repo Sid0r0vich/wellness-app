@@ -1,4 +1,4 @@
-package com.example.wellness.ui.screens
+package com.example.wellness.ui.viewModels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

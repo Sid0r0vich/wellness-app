@@ -31,6 +31,7 @@ import com.example.wellness.R
 import com.example.wellness.data.HomeScreenData
 import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.UserCard
+import com.example.wellness.ui.viewModels.HomeViewModel
 
 @Composable
 fun HomeScreen(

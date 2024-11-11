@@ -1,7 +1,11 @@
-package com.example.wellness.ui.screens
+package com.example.wellness.ui.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.wellness.auth.AuthState
+import com.example.wellness.auth.AuthUiState
+import com.example.wellness.auth.RegisterUiState
+import com.example.wellness.auth.Sex
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
@@ -90,13 +94,6 @@ class RegisterViewModel(
         auth.createUserWithEmailAndPassword(email, password)
             .addAuthenticateListener()
     }
-}
-
-sealed class AuthState {
-    data object Authenticated: AuthState()
-    data object Unauthenticated: AuthState()
-    data object Loading: AuthState()
-    data class Error(val message: String): AuthState()
 }
 
 object DataValidator {

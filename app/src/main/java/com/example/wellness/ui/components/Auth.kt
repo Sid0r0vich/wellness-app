@@ -20,7 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.wellness.R
-import com.example.wellness.ui.screens.AuthState
+import com.example.wellness.auth.AuthState
+import com.example.wellness.auth.AuthUiState
+import com.example.wellness.ui.viewModels.DataValidator
 
 @Composable
 fun EmailField(
@@ -72,7 +74,27 @@ fun PasswordField(
 }
 
 @Composable
-fun AuthenticationTrigger(
+fun AuthEmailField(uiState: AuthUiState) {
+    EmailField(
+        value = uiState.email,
+        onValueChange = { uiState.email = it; uiState.emailIsValidated = false },
+        interactionSource = uiState.emailSource,
+        isError = uiState.emailIsValidated && !DataValidator.validateEmailFormat(uiState.email)
+    )
+}
+
+@Composable
+fun AuthPasswordField(uiState: AuthUiState) {
+    PasswordField(
+        value = uiState.password,
+        onValueChange = { uiState.password = it; uiState.passwordIsValidated = false },
+        interactionSource = uiState.passwordSource,
+        isError = uiState.passwordIsValidated && !DataValidator.validatePasswordFormat(uiState.password)
+    )
+}
+
+@Composable
+fun AuthTrigger(
     authState: State<AuthState?>,
     onPerformAuth: () -> Unit
 ) {

@@ -11,6 +11,16 @@ interface NavBarDestination : NavDestination {
     val iconId: Int
 }
 
+object User : NavDestination {
+    override val label = R.string.navigation_user
+    override val route = "user"
+}
+
+object Auth : NavDestination {
+    override val label = R.string.navigation_auth
+    override val route = "auth"
+}
+
 object Home : NavBarDestination {
     override val label = R.string.bottom_navigation_home
     override val iconId = R.drawable.home

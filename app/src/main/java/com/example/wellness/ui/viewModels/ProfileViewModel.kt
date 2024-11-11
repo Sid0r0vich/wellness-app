@@ -1,6 +1,7 @@
-package com.example.wellness.ui.screens
+package com.example.wellness.ui.viewModels
 
 import androidx.lifecycle.MutableLiveData
+import com.example.wellness.auth.AuthState
 
 class ProfileViewModel(
     authState: MutableLiveData<AuthState>
