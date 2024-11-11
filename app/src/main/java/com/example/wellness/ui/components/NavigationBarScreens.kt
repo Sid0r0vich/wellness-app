@@ -34,13 +34,13 @@ import com.example.wellness.ui.navigation.NavDestination
 fun TopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     currentScreen: NavDestination,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
             Text(
-                text = stringResource(R.string.app_name),
+                text = currentScreen.route,
                 style = MaterialTheme.typography.headlineSmall,
             )
         },

@@ -2,64 +2,68 @@ package com.example.wellness.ui.navigation
 
 import com.example.wellness.R
 
-interface NavDestination {
-    val label: Int
-    val route: String
+open class NavDestination(
+    open val label: Int,
+    open val route: String
+) {
+    operator fun plus(navDestination: NavDestination): NavDestination {
+        return NavDestination(
+            label = navDestination.label,
+            route = this.route + "/" + navDestination.route
+        )
+    }
 }
 
-interface NavBarDestination : NavDestination {
-    val iconId: Int
-}
+open class NavBarDestination(
+    override val label: Int,
+    override val route: String,
+    open val iconId: Int
+) : NavDestination(label = label, route = route)
 
-object User : NavDestination {
-    override val label = R.string.navigation_user
-    override val route = "user"
-}
 
-object Auth : NavDestination {
-    override val label = R.string.navigation_auth
-    override val route = "auth"
-}
+object Auth : NavDestination(
+    label = R.string.navigation_auth,
+    route = "auth"
+)
+object User : NavDestination(
+    label = R.string.navigation_user,
+    route = "user"
+)
 
-object Home : NavBarDestination {
-    override val label = R.string.bottom_navigation_home
-    override val iconId = R.drawable.home
-    override val route = "home"
-}
+object Login : NavDestination(
+    label = R.string.navigation_login,
+    route = "login"
+)
+object Register : NavDestination(
+    label = R.string.navigation_register,
+    route = "register"
+)
 
-object Profile : NavBarDestination {
-    override val label = R.string.bottom_navigation_profile
-    override val iconId = R.drawable.user_profile
-    override val route = "profile"
-}
-
-object Add : NavBarDestination {
-    override val label = R.string.bottom_navigation_add
-    override val iconId = R.drawable.add
-    override val route = "add"
-}
-
-object Chat : NavBarDestination {
-    override val label = R.string.bottom_navigation_chat
-    override val iconId = R.drawable.chat
-    override val route = "chat"
-}
-
-object Notifications : NavBarDestination {
-    override val label = R.string.bottom_navigation_notifications
-    override val iconId = R.drawable.notify
-    override val route = "notify"
-}
-
-object Login : NavDestination {
-    override val label = R.string.navigation_login
-    override val route = "login"
-}
-
-object Register : NavDestination {
-    override val label = R.string.navigation_register
-    override val route = "register"
-}
+object Home : NavBarDestination(
+    label = R.string.bottom_navigation_home,
+    iconId = R.drawable.home,
+    route = "home"
+)
+object Profile : NavBarDestination(
+    label = R.string.bottom_navigation_profile,
+    iconId = R.drawable.user_profile,
+    route = "profile"
+)
+object Add : NavBarDestination(
+    label = R.string.bottom_navigation_add,
+    iconId = R.drawable.add,
+    route = "add"
+)
+object Chat : NavBarDestination(
+    label = R.string.bottom_navigation_chat,
+    iconId = R.drawable.chat,
+    route = "chat"
+)
+object Notifications : NavBarDestination(
+    label = R.string.bottom_navigation_notifications,
+    iconId = R.drawable.notify,
+    route = "notify"
+)
 
 val navBarDestinations = listOf(
     Home,

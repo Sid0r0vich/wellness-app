@@ -29,14 +29,14 @@ fun MyHavHost(
         ) {
             composable(Login.route) {
                 LoginScreen (
-                    onPerformLogin = { navController.navigateSingleTopWithPopUp(User.route) },
-                    onRegisterClick = { navController.navigateSingleTopWithPopUp(Register.route) }
+                    onPerformLogin = { navController.navigate(User.route) { popUpTo(Auth.route) } },
+                    onRegisterClick = { navController.navigate(Register.route) { popUpTo(Auth.route) } }
                 )
             }
             composable(Register.route) {
                 RegisterScreen (
-                    onPerformRegister = { navController.navigateSingleTopWithPopUp(Home.route) },
-                    onLoginClick = { navController.navigateSingleTopWithPopUp(Login.route) }
+                    onPerformRegister = { navController.navigate(User.route) { popUpTo(Auth.route) } },
+                    onLoginClick = { navController.navigate(Login.route) { popUpTo(Auth.route) } }
                 )
             }
         }
@@ -46,7 +46,7 @@ fun MyHavHost(
         ) {
             composable(Home.route) { HomeScreen() }
             composable(Profile.route) {
-                ProfileScreen { navController.navigateSingleTopWithPopUp(Auth.route) }
+                ProfileScreen { navController.navigate(Auth.route) { popUpTo(User.route) { inclusive = true } } }
             }
             navBarDestinations.drop(2).forEach { dest ->
                 composable(dest.route) { EmptyScreen() }

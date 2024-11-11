@@ -1,6 +1,7 @@
 package com.example.wellness
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,7 +21,6 @@ import com.example.wellness.ui.navigation.MyHavHost
 import com.example.wellness.ui.navigation.NavDestination
 import com.example.wellness.ui.navigation.navBarDestinations
 import com.example.wellness.ui.navigation.navDestinations
-import com.example.wellness.ui.navigation.navigateSingleTopWithPopUp
 import com.example.wellness.ui.theme.WellnessAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +41,14 @@ fun WellnessApp() {
     WellnessAppTheme {
         val registered = false
         val navController = rememberNavController()
+        navController.addOnDestinationChangedListener { controller, _, _ ->
+            val routes = controller
+                .currentBackStack.value
+                .map { it.destination.route }
+                .joinToString(", ")
+
+            Log.d("BackStackLog", "BackStack: $routes")
+        }
         val currentScreen: NavDestination = navDestinations.find {
             val currentDestination = navController
                 .currentBackStackEntryAsState()
@@ -53,13 +61,16 @@ fun WellnessApp() {
         Scaffold(
             topBar = { TopAppBar(
                 scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
-                currentScreen = currentScreen
+                currentScreen = currentScreen,
                 ) },
             bottomBar = {
                 if (bottomBarVisibility) BottomNavigationBar(
                     currentScreen = currentScreen
                 ) { route ->
-                    navController.navigateSingleTopWithPopUp(route)
+                    navController.navigate(route) {
+                        popUpTo(Home.route)
+                        launchSingleTop = true
+                    }
                 }
             }
         ) { innerPadding ->
