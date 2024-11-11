@@ -64,14 +64,14 @@ fun RegisterScreen(
                 value = uiState.email,
                 onValueChange = { uiState.email = it; uiState.emailIsValidated = false },
                 interactionSource = uiState.emailSource,
-                isError = uiState.emailIsValidated && !viewModel.validateEmailFormat(uiState.email)
+                isError = uiState.emailIsValidated && !DataValidator.validateEmailFormat(uiState.email)
             )
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
             PasswordField(
                 value = uiState.password,
                 onValueChange = { uiState.password = it; uiState.passwordIsValidated = false },
                 interactionSource = uiState.passwordSource,
-                isError = uiState.passwordIsValidated && !viewModel.validatePasswordFormat(uiState.password)
+                isError = uiState.passwordIsValidated && !DataValidator.validatePasswordFormat(uiState.password)
             )
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
             SexChoice(

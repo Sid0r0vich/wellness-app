@@ -16,7 +16,7 @@ class HomeViewModel(
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
 
-    //private val profile = savedStateHandle.toRoute<Profile>()
+    // private val profile = savedStateHandle.toRoute<Profile>() TODO
     private val userInfo: Flow<UserInfo> = userInfoRepository.getUserInfo(0)
 
     val uiState: StateFlow<HomeUiState> =

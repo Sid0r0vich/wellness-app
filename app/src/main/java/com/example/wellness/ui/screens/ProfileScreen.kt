@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ import com.example.wellness.ui.components.UnauthenticatedTrigger
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignOutViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onUnauthenticated: () -> Unit
 ) {
     val paddingColumn = PaddingValues(
@@ -46,11 +47,11 @@ fun ProfileScreen(
         ) {
             UserCard(
                 modifier = Modifier
-                    .padding(PaddingValues(bottom = 10.dp))
                     .padding(paddingColumn)
                     .fillMaxWidth(),
                 addButton = true,
-                buttonOnClick = { viewModel.signOut() }
+                buttonOnClick = { viewModel.signOut() },
+                avatarModifier = Modifier.size(150.dp)
             )
         }
     }

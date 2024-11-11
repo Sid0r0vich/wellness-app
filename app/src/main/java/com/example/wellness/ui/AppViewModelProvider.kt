@@ -11,8 +11,8 @@ import com.example.wellness.data.WellnessAppContainer
 import com.example.wellness.ui.screens.AuthState
 import com.example.wellness.ui.screens.HomeViewModel
 import com.example.wellness.ui.screens.LoginViewModel
+import com.example.wellness.ui.screens.ProfileViewModel
 import com.example.wellness.ui.screens.RegisterViewModel
-import com.example.wellness.ui.screens.SignOutViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -32,7 +32,7 @@ object AppViewModelProvider {
         }
 
         initializer {
-            SignOutViewModel(getAuthState())
+            ProfileViewModel(getAuthState())
         }
     }
 }

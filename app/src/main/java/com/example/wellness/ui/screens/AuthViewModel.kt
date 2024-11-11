@@ -12,8 +12,6 @@ abstract class AuthViewModel(
     var authState: MutableLiveData<AuthState> = authState
         protected set
 
-    open val uiState: LoginUiState = LoginUiState()
-
     init {
         checkAuthStatus()
     }
@@ -23,24 +21,22 @@ abstract class AuthViewModel(
             authState.value = AuthState.Unauthenticated
         else authState.value = AuthState.Authenticated
     }
+}
 
-    fun validateEmailFormat(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    fun validatePasswordFormat(password: String): Boolean {
-        return password.length >= 6
-    }
+open class LoginViewModel(
+    authState: MutableLiveData<AuthState>
+) : AuthViewModel(authState) {
+    open val uiState: AuthUiState = AuthUiState()
 
     protected  fun validateEmailAndPassword(
         email: String,
         password: String
     ): Boolean {
-        if (!validateEmailFormat(email)) {
+        if (!DataValidator.validateEmailFormat(email)) {
             authState.value = AuthState.Error(EMAIL_VALIDATION_EXCEPTION)
             return false
         }
-        if (!validatePasswordFormat(password)) {
+        if (!DataValidator.validatePasswordFormat(password)) {
             authState.value = AuthState.Error(PASSWORD_VALIDATION_EXCEPTION)
             return false
         }
@@ -77,13 +73,9 @@ abstract class AuthViewModel(
     }
 }
 
-class LoginViewModel(
-    authState: MutableLiveData<AuthState>
-) : AuthViewModel(authState)
-
 class RegisterViewModel(
     authState: MutableLiveData<AuthState>
-) : AuthViewModel(authState) {
+) : LoginViewModel(authState) {
     override val uiState: RegisterUiState = RegisterUiState()
 
     fun signUp(
@@ -100,18 +92,19 @@ class RegisterViewModel(
     }
 }
 
-class SignOutViewModel(
-    authState: MutableLiveData<AuthState>
-) : AuthViewModel(authState) {
-    fun signOut() {
-        auth.signOut()
-        authState.value = AuthState.Unauthenticated
-    }
-}
-
 sealed class AuthState {
     data object Authenticated: AuthState()
     data object Unauthenticated: AuthState()
     data object Loading: AuthState()
     data class Error(val message: String): AuthState()
+}
+
+object DataValidator {
+    fun validateEmailFormat(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun validatePasswordFormat(password: String): Boolean {
+        return password.length >= 6
+    }
 }

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
+import com.example.wellness.data.HomeScreenData
 import com.example.wellness.ui.AppViewModelProvider
 
 @Composable
@@ -43,48 +46,36 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val panelLabels = arrayOf(
-        R.string.my_documents,
-        R.string.dynamics,
-        R.string.health_report
-    )
-    val panelImageIds = arrayOf(
-        R.drawable.docs,
-        R.drawable.dynamics,
-        R.drawable.report
-    )
-    val paddingGrid = PaddingValues(
-        vertical = 10.dp,
-        horizontal = 20.dp
-    )
-
     val uiState by viewModel.uiState.collectAsState()
+    val gridPadding: Dp = 10.dp
+    val userCardPadding: Dp = 10.dp
 
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(PaddingValues(gridPadding * 2))
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            HomeUserCard(
-                userName = uiState.userName,
-                modifier = Modifier.padding(paddingGrid)
-            )
-            IndicatorsPanel(
-                modifier = Modifier
-                    .padding(paddingGrid),
-                paddingGrid = 20.dp,
-                values = listOf(42, 13),
-                painters = listOf(
-                    painterResource(R.drawable.trace),
-                    painterResource(R.drawable.heart)
+        LazyColumn {
+            item {
+                HomeUserCard(
+                    userName = uiState.userName,
                 )
-            )
-            (panelLabels zip panelImageIds).forEach { panel ->
+            }
+            item {
+                Spacer(modifier = Modifier.padding(PaddingValues(userCardPadding)))
+                IndicatorsPanel(
+                    paddingGrid = gridPadding * 2,
+                    values = listOf(42, 13),
+                    painters = listOf(
+                        painterResource(R.drawable.trace),
+                        painterResource(R.drawable.heart)
+                    )
+                )
+            }
+            items(HomeScreenData.panelLabels zip HomeScreenData.panelImageIds) { panel ->
+                Spacer(modifier = Modifier.padding(PaddingValues(gridPadding)))
                 AppPanel(
                     modifier = Modifier
-                        .padding(paddingGrid)
                         .fillMaxWidth(),
                     text = stringResource(panel.first),
                     painter = painterResource(panel.second)
@@ -117,32 +108,31 @@ fun UserCard(
     buttonOnClick: () -> Unit = {},
     avatarModifier: Modifier = Modifier
 ) {
+    val paddingText: Dp = 5.dp
     Surface(
         shape = MaterialTheme.shapes.medium,
         modifier = modifier,
         color = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Row(
-            modifier = Modifier
-                .padding(PaddingValues(8.dp)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier.padding(PaddingValues(10.dp))
+                modifier = Modifier.padding(PaddingValues(20.dp))
             ) {
                 Text(
                     text = "Hello, $userName!",
                     style = MaterialTheme.typography.titleMedium,
                 )
-                Spacer(modifier = Modifier.padding(PaddingValues(5.dp)))
+                Spacer(modifier = Modifier.padding(PaddingValues(paddingText)))
                 Text(
                     text = stringResource(R.string.be_wellness),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.padding(PaddingValues(5.dp)))
                 if (addButton) {
+                    Spacer(modifier = Modifier.padding(PaddingValues(paddingText)))
                     Button(
                         onClick = buttonOnClick,
                     ) {
@@ -154,7 +144,7 @@ fun UserCard(
                 painter = painterResource(R.drawable.user),
                 contentDescription = null,
                 modifier = avatarModifier
-                    .padding(PaddingValues(8.dp))
+                    .padding(PaddingValues(10.dp))
                     .clip(CircleShape)
                     .border(2.dp, Color.Gray, CircleShape)
             )
@@ -169,10 +159,9 @@ fun HomeUserCard(
 ) {
     UserCard(
         modifier = modifier
-            .padding(PaddingValues(bottom = 5.dp))
             .fillMaxWidth(),
         userName = userName,
-        avatarModifier = Modifier.size(100.dp)
+        avatarModifier = Modifier.size(110.dp)
     )
 }
 
