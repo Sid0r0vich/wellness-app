@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
 import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.UnauthenticatedTrigger
+import com.example.wellness.ui.components.UserCard
 
 @Composable
 fun ProfileScreen(
@@ -28,10 +29,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onUnauthenticated: () -> Unit
 ) {
-    val paddingColumn = PaddingValues(
-        vertical = 10.dp,
-        horizontal = 20.dp
-    )
+    val paddingColumn =
 
     UnauthenticatedTrigger(
         authState = viewModel.authState.observeAsState(),
@@ -45,16 +43,28 @@ fun ProfileScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            UserCard(
-                modifier = Modifier
-                    .padding(paddingColumn)
-                    .fillMaxWidth(),
-                addButton = true,
-                buttonOnClick = { viewModel.signOut() },
-                avatarModifier = Modifier.size(150.dp)
-            )
+            ProfileUserCard { viewModel.signOut() }
         }
     }
+}
+
+@Composable
+fun ProfileUserCard(
+    buttonOnClick: () -> Unit
+) {
+    UserCard(
+        modifier = Modifier
+            .padding(
+                PaddingValues(
+                    vertical = 10.dp,
+                    horizontal = 20.dp
+                )
+            )
+            .fillMaxWidth(),
+        addButton = true,
+        buttonOnClick = buttonOnClick,
+        avatarModifier = Modifier.size(150.dp)
+    )
 }
 
 @Composable

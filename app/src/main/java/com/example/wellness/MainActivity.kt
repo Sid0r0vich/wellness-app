@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.wellness.ui.components.TopAppBar
 import com.example.wellness.ui.navigation.BottomNavigationBar
 import com.example.wellness.ui.navigation.Home
 import com.example.wellness.ui.navigation.Login
@@ -20,7 +21,6 @@ import com.example.wellness.ui.navigation.NavDestination
 import com.example.wellness.ui.navigation.navBarDestinations
 import com.example.wellness.ui.navigation.navDestinations
 import com.example.wellness.ui.navigation.navigateSingleTopWithPopUp
-import com.example.wellness.ui.screens.TopAppBar
 import com.example.wellness.ui.theme.WellnessAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +51,10 @@ fun WellnessApp() {
         val bottomBarVisibility = currentScreen in navBarDestinations
 
         Scaffold(
-            topBar = { TopAppBar(scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()) },
+            topBar = { TopAppBar(
+                scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+                currentScreen = currentScreen
+                ) },
             bottomBar = {
                 if (bottomBarVisibility) BottomNavigationBar(
                     currentScreen = currentScreen
