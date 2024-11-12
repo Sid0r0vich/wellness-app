@@ -88,5 +88,5 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.extensions)
     implementation(libs.kotlinx.serialization.json)
-    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.2.0")
+    annotationProcessor(libs.androidx.lifecycle.compiler)
 }

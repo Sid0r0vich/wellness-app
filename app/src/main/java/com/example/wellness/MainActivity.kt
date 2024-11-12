@@ -1,7 +1,6 @@
 package com.example.wellness
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,8 +18,10 @@ import com.example.wellness.ui.navigation.Home
 import com.example.wellness.ui.navigation.Login
 import com.example.wellness.ui.navigation.MyHavHost
 import com.example.wellness.ui.navigation.NavDestination
+import com.example.wellness.ui.navigation.addLogger
 import com.example.wellness.ui.navigation.navBarDestinations
 import com.example.wellness.ui.navigation.navDestinations
+import com.example.wellness.ui.navigation.navigateFromHome
 import com.example.wellness.ui.theme.WellnessAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,20 +42,13 @@ fun WellnessApp() {
     WellnessAppTheme {
         val registered = false
         val navController = rememberNavController()
-        navController.addOnDestinationChangedListener { controller, _, _ ->
-            val routes = controller
-                .currentBackStack.value
-                .map { it.destination.route }
-                .joinToString(", ")
-
-            Log.d("BackStackLog", "BackStack: $routes")
-        }
+        navController.addLogger()
         val currentScreen: NavDestination = navDestinations.find {
-            val currentDestination = navController
+            navController
                 .currentBackStackEntryAsState()
                 .value
                 ?.destination
-            it.route == currentDestination?.route
+                ?.route == it.route
         } ?: if (registered) Home else Login
         val bottomBarVisibility = currentScreen in navBarDestinations
 
@@ -67,10 +61,7 @@ fun WellnessApp() {
                 if (bottomBarVisibility) BottomNavigationBar(
                     currentScreen = currentScreen
                 ) { route ->
-                    navController.navigate(route) {
-                        popUpTo(Home.route)
-                        launchSingleTop = true
-                    }
+                    navController.navigateFromHome(route)
                 }
             }
         ) { innerPadding ->

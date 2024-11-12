@@ -2,7 +2,6 @@ package com.example.wellness.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,14 +28,14 @@ fun MyHavHost(
         ) {
             composable(Login.route) {
                 LoginScreen (
-                    onPerformLogin = { navController.navigate(User.route) { popUpTo(Auth.route) } },
-                    onRegisterClick = { navController.navigate(Register.route) { popUpTo(Auth.route) } }
+                    onPerformLogin = { navController.navigateToUser() },
+                    onRegisterClick = { navController.navigateToRegister() }
                 )
             }
             composable(Register.route) {
                 RegisterScreen (
-                    onPerformRegister = { navController.navigate(User.route) { popUpTo(Auth.route) } },
-                    onLoginClick = { navController.navigate(Login.route) { popUpTo(Auth.route) } }
+                    onPerformRegister = { navController.navigateToUser() },
+                    onLoginClick = { navController.navigateToLogin() }
                 )
             }
         }
@@ -46,22 +45,11 @@ fun MyHavHost(
         ) {
             composable(Home.route) { HomeScreen() }
             composable(Profile.route) {
-                ProfileScreen { navController.navigate(Auth.route) { popUpTo(User.route) { inclusive = true } } }
+                ProfileScreen { navController.navigateToAuth() }
             }
             navBarDestinations.drop(2).forEach { dest ->
                 composable(dest.route) { EmptyScreen() }
             }
         }
-    }
-}
-
-fun NavHostController.navigateSingleTopWithPopUp(route: String) {
-    val navController = this
-    this.navigate(route) {
-        this.popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = true
     }
 }
