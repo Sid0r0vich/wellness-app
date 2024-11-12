@@ -2,15 +2,20 @@ package com.example.wellness.ui.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.wellness.auth.AuthState
 import com.example.wellness.auth.AuthUiState
 import com.example.wellness.auth.RegisterUiState
 import com.example.wellness.auth.Sex
+import com.example.wellness.data.UserInfo
+import com.example.wellness.data.UserInfoRepository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 abstract class AuthViewModel(
-    authState: MutableLiveData<AuthState>
+    authState: MutableLiveData<AuthState>,
+    private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
     protected  val auth: FirebaseAuth = FirebaseAuth.getInstance()
     var authState: MutableLiveData<AuthState> = authState
@@ -28,8 +33,9 @@ abstract class AuthViewModel(
 }
 
 open class LoginViewModel(
-    authState: MutableLiveData<AuthState>
-) : AuthViewModel(authState) {
+    authState: MutableLiveData<AuthState>,
+    private val userInfoRepository: UserInfoRepository
+) : AuthViewModel(authState, userInfoRepository) {
     open val uiState: AuthUiState = AuthUiState()
 
     protected  fun validateEmailAndPassword(
@@ -78,11 +84,13 @@ open class LoginViewModel(
 }
 
 class RegisterViewModel(
-    authState: MutableLiveData<AuthState>
-) : LoginViewModel(authState) {
+    authState: MutableLiveData<AuthState>,
+    private val userInfoRepository: UserInfoRepository
+) : LoginViewModel(authState, userInfoRepository) {
     override val uiState: RegisterUiState = RegisterUiState()
 
     fun signUp(
+        name: String,
         email: String,
         password: String,
         sex: Sex,
@@ -93,6 +101,18 @@ class RegisterViewModel(
 
         auth.createUserWithEmailAndPassword(email, password)
             .addAuthenticateListener()
+
+        viewModelScope.launch {
+            userInfoRepository.insertUser(
+                UserInfo(
+                    name = name,
+                    email = email,
+                    password = password,
+                    sex = sex,
+                    age = age
+                )
+            )
+        }
     }
 }
 

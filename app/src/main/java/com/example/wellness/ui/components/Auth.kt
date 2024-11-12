@@ -118,8 +118,6 @@ fun UnauthenticatedTrigger(
     authState: State<AuthState?>,
     onUnauthenticated: () -> Unit
 ) {
-    val context = LocalContext.current
-
     LaunchedEffect(authState.value) {
         when(authState.value) {
             is AuthState.Unauthenticated -> onUnauthenticated()

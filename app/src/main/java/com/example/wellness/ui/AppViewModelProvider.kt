@@ -24,15 +24,24 @@ object AppViewModelProvider {
         }
 
         initializer {
-            LoginViewModel(getAuthState())
+            LoginViewModel(
+                getAuthState(),
+                getApplication().container.userInfoRepository
+            )
         }
 
         initializer {
-            RegisterViewModel(getAuthState())
+            RegisterViewModel(
+                getAuthState(),
+                getApplication().container.userInfoRepository
+            )
         }
 
         initializer {
-            ProfileViewModel(getAuthState())
+            ProfileViewModel(
+                getAuthState(),
+                getApplication().container.userInfoRepository
+            )
         }
     }
 }

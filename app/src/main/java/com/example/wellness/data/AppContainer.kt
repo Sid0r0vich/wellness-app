@@ -10,7 +10,7 @@ interface AppContainer {
 
 class WellnessAppContainer(private val context: Context) : AppContainer {
     override val userInfoRepository: UserInfoRepository by lazy {
-        UserInfoMockRepository()
+        UserInfoFirebaseRepository(UserDatabase())
     }
 
     val authState: MutableLiveData<AuthState> = MutableLiveData()

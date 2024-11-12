@@ -17,11 +17,11 @@ class HomeViewModel(
 ) : ViewModel() {
 
     // private val profile = savedStateHandle.toRoute<Profile>() TODO
-    private val userInfo: Flow<UserInfo> = userInfoRepository.getUserInfo(0)
+    private val userInfo: Flow<UserInfo?> = userInfoRepository.getUserStream(0)
 
     val uiState: StateFlow<HomeUiState> =
         userInfo
-            .map { HomeUiState(it.name) }
+            .map { HomeUiState(it?.name ?: "User") }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),

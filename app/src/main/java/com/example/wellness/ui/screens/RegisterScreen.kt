@@ -77,6 +77,7 @@ fun RegisterScreen(
             Button(
                 onClick = {
                     viewModel.signUp(
+                        "userName",
                         uiState.email,
                         uiState.password,
                         uiState.selectedSex,

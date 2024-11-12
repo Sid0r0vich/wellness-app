@@ -24,6 +24,13 @@ open class AuthUiState(
 sealed class Sex {
     data object Man: Sex()
     data object Woman: Sex()
+
+    override fun toString(): String {
+        return when(this) {
+            Man -> "man"
+            Woman -> "woman"
+        }
+    }
 }
 
 class RegisterUiState(

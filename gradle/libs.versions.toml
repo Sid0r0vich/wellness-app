@@ -23,6 +23,7 @@ googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.1.0"
 runtimeLivedata = "1.7.5"
 benchmarkCommon = "1.3.3"
+firebaseFirestore = "25.1.1"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "activityKtx" }
@@ -59,6 +60,7 @@ transportation-consumer = { group = "com.google.android.libraries.mapsplatform.t
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-benchmark-common = { group = "androidx.benchmark", name = "benchmark-common", version.ref = "benchmarkCommon" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
