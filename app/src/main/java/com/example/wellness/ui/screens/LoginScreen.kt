@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
 import com.example.wellness.auth.AuthState
 import com.example.wellness.auth.AuthUiState
+import com.example.wellness.data.AuthData
 import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.AuthEmailField
 import com.example.wellness.ui.components.AuthPasswordField
@@ -49,7 +50,7 @@ fun LoginScreen(
     AuthFieldsInvalidation(uiState)
 
     AuthTrigger(
-        authState = viewModel.authState.observeAsState(),
+        authState = viewModel.authLiveData.observeAsState(),
         onPerformAuth = onPerformLogin
     )
 
@@ -79,14 +80,19 @@ fun LoginScreen(
             }
             Button(
                 onClick = {
-                    viewModel.signIn(uiState.email, uiState.password)
+                    viewModel.signIn(
+                        AuthData(
+                            uiState.email,
+                            uiState.password
+                        )
+                    )
                     uiState.emailIsValidated = true
                     uiState.passwordIsValidated = true
                 },
                 enabled =
                     uiState.email.isNotEmpty() &&
                     uiState.password.isNotEmpty() &&
-                    viewModel.authState.value != AuthState.Loading,
+                    viewModel.authState != AuthState.Loading,
                 contentPadding = PaddingValues()
             ) {
                 Text(

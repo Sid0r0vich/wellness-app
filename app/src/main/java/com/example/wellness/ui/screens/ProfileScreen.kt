@@ -30,10 +30,8 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onUnauthenticated: () -> Unit
 ) {
-    val paddingColumn =
-
     UnauthenticatedTrigger(
-        authState = viewModel.authState.observeAsState(),
+        authState = viewModel.authLiveData.observeAsState(),
         onUnauthenticated = onUnauthenticated
     )
 

@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.wellness.data.Sex
 
 open class AuthUiState(
     email: MutableState<String> = mutableStateOf(""),
@@ -21,17 +22,6 @@ open class AuthUiState(
     var passwordIsValidated by passwordIsValidated
 }
 
-sealed class Sex {
-    data object Man: Sex()
-    data object Woman: Sex()
-
-    override fun toString(): String {
-        return when(this) {
-            Man -> "man"
-            Woman -> "woman"
-        }
-    }
-}
 
 class RegisterUiState(
     selectedSex: MutableState<Sex> = mutableStateOf(Sex.Man),

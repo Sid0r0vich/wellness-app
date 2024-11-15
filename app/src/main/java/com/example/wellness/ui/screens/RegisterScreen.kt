@@ -25,7 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
 import com.example.wellness.auth.AuthState
 import com.example.wellness.auth.RegisterUiState
-import com.example.wellness.auth.Sex
+import com.example.wellness.data.Sex
+import com.example.wellness.data.UserInfo
 import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.AuthEmailField
 import com.example.wellness.ui.components.AuthPasswordField
@@ -77,11 +78,13 @@ fun RegisterScreen(
             Button(
                 onClick = {
                     viewModel.signUp(
-                        "userName",
-                        uiState.email,
-                        uiState.password,
-                        uiState.selectedSex,
-                        uiState.age
+                        UserInfo(
+                            name = "userName",
+                            email = uiState.email,
+                            password = uiState.password,
+                            sex = uiState.selectedSex,
+                            age = uiState.age
+                        )
                     )
                     uiState.emailIsValidated = true
                     uiState.passwordIsValidated = true

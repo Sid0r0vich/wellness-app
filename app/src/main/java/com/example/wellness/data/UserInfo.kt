@@ -1,13 +1,24 @@
 package com.example.wellness.data
 
-import com.example.wellness.auth.Sex
-
 data class UserInfo(
     val name: String,
     val email: String,
     val password: String,
     val sex: Sex,
     val age: Int,
+) {
+    fun toUserUiInfo(): UserUiInfo =
+        UserUiInfo(
+            this.name,
+            this.sex,
+            this.age
+        )
+}
+
+data class UserUiInfo(
+    val name: String,
+    val sex: Sex,
+    val age: Int
 )
 
 object MockUser {
@@ -17,5 +28,21 @@ object MockUser {
         password = "qwerty",
         sex = Sex.Man,
         age = 45
+    )
+}
+
+object AnonymousUser {
+    val user = UserUiInfo(
+        name = "Anonymous",
+        sex = Sex.Man,
+        age = 18
+    )
+}
+
+object NotFoundUser {
+    val user = UserUiInfo(
+        name = "Not found",
+        sex = Sex.Man,
+        age = 18
     )
 }

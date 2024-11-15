@@ -1,8 +1,7 @@
 package com.example.wellness.data
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
-import com.example.wellness.auth.AuthState
+import com.example.wellness.auth.FirebaseAuth
 
 interface AppContainer {
     val userInfoRepository: UserInfoRepository
@@ -13,5 +12,5 @@ class WellnessAppContainer(private val context: Context) : AppContainer {
         UserInfoFirebaseRepository(UserDatabase())
     }
 
-    val authState: MutableLiveData<AuthState> = MutableLiveData()
+    val auth: FirebaseAuth = FirebaseAuth()
 }

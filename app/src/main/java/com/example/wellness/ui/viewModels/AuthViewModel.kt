@@ -1,122 +1,58 @@
 package com.example.wellness.ui.viewModels
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.wellness.auth.AuthState
+import com.example.wellness.auth.Auth
 import com.example.wellness.auth.AuthUiState
 import com.example.wellness.auth.RegisterUiState
-import com.example.wellness.auth.Sex
+import com.example.wellness.data.AuthData
 import com.example.wellness.data.UserInfo
 import com.example.wellness.data.UserInfoRepository
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.launch
 
-abstract class AuthViewModel(
-    authState: MutableLiveData<AuthState>,
+open class AuthViewModel(
+    private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
-    protected  val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    var authState: MutableLiveData<AuthState> = authState
-        protected set
-
-    init {
-        checkAuthStatus()
-    }
-
-    private fun checkAuthStatus() {
-        if (auth.currentUser == null)
-            authState.value = AuthState.Unauthenticated
-        else authState.value = AuthState.Authenticated
-    }
+    val authState = auth.authState
+    val authLiveData = auth.authLiveData
 }
 
 open class LoginViewModel(
-    authState: MutableLiveData<AuthState>,
+    private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
-) : AuthViewModel(authState, userInfoRepository) {
+) : AuthViewModel(auth, userInfoRepository) {
     open val uiState: AuthUiState = AuthUiState()
 
-    protected  fun validateEmailAndPassword(
-        email: String,
-        password: String
-    ): Boolean {
-        if (!DataValidator.validateEmailFormat(email)) {
-            authState.value = AuthState.Error(EMAIL_VALIDATION_EXCEPTION)
-            return false
-        }
-        if (!DataValidator.validatePasswordFormat(password)) {
-            authState.value = AuthState.Error(PASSWORD_VALIDATION_EXCEPTION)
-            return false
-        }
+    fun signIn(authData: AuthData) {
+        if (!DataValidator.validateAuthData(authData)) return
 
-        return true
-    }
-
-    fun signIn(
-        email: String,
-        password: String,
-    ) {
-        authState.value = AuthState.Loading
-        if (!validateEmailAndPassword(email, password)) return
-
-        auth.signInWithEmailAndPassword(email, password)
-            .addAuthenticateListener()
-    }
-
-    protected fun <TResult> Task<TResult>.addAuthenticateListener() {
-        this.addOnCompleteListener { task ->
-            if (task.isSuccessful)
-                authState.value = AuthState.Authenticated
-            else
-                authState.value = AuthState.Error(
-                    task.exception?.message ?: UNKNOWN_EXCEPTION
-                )
-        }
-    }
-
-    companion object {
-        protected  const val UNKNOWN_EXCEPTION = "Something went wrong"
-        protected  const val EMAIL_VALIDATION_EXCEPTION = "Wrong email!"
-        protected  const val PASSWORD_VALIDATION_EXCEPTION = "Short password!"
+        auth.signIn(authData)
     }
 }
 
 class RegisterViewModel(
-    authState: MutableLiveData<AuthState>,
+    private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
-) : LoginViewModel(authState, userInfoRepository) {
-    override val uiState: RegisterUiState = RegisterUiState()
+) : AuthViewModel(auth, userInfoRepository) {
+    val uiState: RegisterUiState = RegisterUiState()
 
-    fun signUp(
-        name: String,
-        email: String,
-        password: String,
-        sex: Sex,
-        age: Int
-    ) {
-        authState.value = AuthState.Loading
-        if (!validateEmailAndPassword(email, password)) return
+    fun signUp(userInfo: UserInfo) {
+        val authData = AuthData(userInfo.email, userInfo.password)
+        if (!DataValidator.validateAuthData(authData)) return
 
-        auth.createUserWithEmailAndPassword(email, password)
-            .addAuthenticateListener()
+        auth.signUp(authData)
 
-        viewModelScope.launch {
-            userInfoRepository.insertUser(
-                UserInfo(
-                    name = name,
-                    email = email,
-                    password = password,
-                    sex = sex,
-                    age = age
-                )
-            )
-        }
+        val userId: String = auth.getUserId() ?: return
+        userInfoRepository.insertUser(userInfo, userId)
     }
 }
 
 object DataValidator {
+    enum class Status {
+        SUCCESS,
+        EMAIL_VALIDATION_EXCEPTION,
+        PASSWORD_VALIDATION_EXCEPTION
+    }
+
     fun validateEmailFormat(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
@@ -124,4 +60,24 @@ object DataValidator {
     fun validatePasswordFormat(password: String): Boolean {
         return password.length >= 6
     }
+
+    fun validateAuthDataWithStatus(authData: AuthData): Status {
+        if (!validateEmailFormat(authData.email)) {
+            return Status.EMAIL_VALIDATION_EXCEPTION
+        }
+        if (!validatePasswordFormat(authData.password)) {
+            return Status.PASSWORD_VALIDATION_EXCEPTION
+        }
+
+        return Status.SUCCESS
+    }
+
+    fun validateAuthData(authData: AuthData): Boolean =
+        validateAuthDataWithStatus(authData) == Status.SUCCESS
+
+    val statusList: List<String> = listOf(
+        "Success!",
+        "Wrong email!",
+        "Short password!"
+    )
 }

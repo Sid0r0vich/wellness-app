@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 class UserDatabase {
-    private var Instance: FirebaseFirestore = Firebase.firestore
+    private val instance: FirebaseFirestore = Firebase.firestore
 
-    fun getDatabase(): FirebaseFirestore = Instance
+    fun getDatabase(): FirebaseFirestore = instance
 }

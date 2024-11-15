@@ -1,13 +1,13 @@
 package com.example.wellness.ui
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.wellness.WellnessApplication
-import com.example.wellness.auth.AuthState
+import com.example.wellness.auth.FirebaseAuth
+import com.example.wellness.data.UserInfoRepository
 import com.example.wellness.data.WellnessAppContainer
 import com.example.wellness.ui.viewModels.HomeViewModel
 import com.example.wellness.ui.viewModels.LoginViewModel
@@ -25,22 +25,22 @@ object AppViewModelProvider {
 
         initializer {
             LoginViewModel(
-                getAuthState(),
-                getApplication().container.userInfoRepository
+                getAuth(),
+                getUserInfoRepository()
             )
         }
 
         initializer {
             RegisterViewModel(
-                getAuthState(),
-                getApplication().container.userInfoRepository
+                getAuth(),
+                getUserInfoRepository()
             )
         }
 
         initializer {
             ProfileViewModel(
-                getAuthState(),
-                getApplication().container.userInfoRepository
+                getAuth(),
+                getUserInfoRepository()
             )
         }
     }
@@ -49,5 +49,8 @@ object AppViewModelProvider {
 fun CreationExtras.getApplication(): WellnessApplication =
     (this[APPLICATION_KEY] as WellnessApplication)
 
-fun CreationExtras.getAuthState(): MutableLiveData<AuthState> =
-    (getApplication().container as WellnessAppContainer).authState
+fun CreationExtras.getUserInfoRepository(): UserInfoRepository =
+    (getApplication().container as WellnessAppContainer).userInfoRepository
+
+fun CreationExtras.getAuth(): FirebaseAuth =
+    (getApplication().container as WellnessAppContainer).auth
