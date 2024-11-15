@@ -8,6 +8,6 @@ class ProfileViewModel(
     private val userInfoRepository: UserInfoRepository
 ) : UserViewModel(auth, userInfoRepository) {
     val authState = auth.authState
-    val authLiveData = auth.authLiveData
+    val authStateFlow = auth.authStateFlow
     fun signOut() = auth.signOut()
 }

@@ -13,7 +13,7 @@ open class LoginViewModel(
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
     val authState = auth.authState
-    val authLiveData = auth.authLiveData
+    val authStateFlow = auth.authStateFlow
     open val uiState: AuthUiState = AuthUiState()
 
     fun signIn(authData: AuthData) {
@@ -28,7 +28,7 @@ class RegisterViewModel(
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
     val authState = auth.authState
-    val authLiveData = auth.authLiveData
+    val authStateFlow = auth.authStateFlow
     val uiState: RegisterUiState = RegisterUiState()
 
     fun signUp(userInfo: UserInfo) {
@@ -55,7 +55,7 @@ object DataValidator {
     }
 
     fun validatePasswordFormat(password: String): Boolean {
-        return password.length >= 6
+        return password.length >= MIN_PASSWORD_LENGTH
     }
 
     fun validateAuthDataWithStatus(authData: AuthData): Status {
@@ -77,4 +77,6 @@ object DataValidator {
         "Wrong email!",
         "Short password!"
     )
+
+    private const val MIN_PASSWORD_LENGTH = 6
 }

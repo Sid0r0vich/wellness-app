@@ -1,15 +1,15 @@
 package com.example.wellness.auth
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.wellness.data.AuthData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 interface Auth {
     val authState: AuthState
-    val authLiveData: LiveData<AuthState>
-    val userId: LiveData<String?>
+    val authStateFlow: StateFlow<AuthState>
+    val userId: StateFlow<String?>
 
     fun signIn(authData: AuthData, onSignIn: () -> Unit = {})
     fun signUp(authData: AuthData, onSignUp: () -> Unit = {})
@@ -18,8 +18,9 @@ interface Auth {
 
 class FirebaseAuth : Auth {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _authState: MutableLiveData<AuthState> = MutableLiveData()
-    override val authLiveData: LiveData<AuthState>
+    private val _authState: MutableStateFlow<AuthState> =
+        MutableStateFlow(AuthState.Unauthenticated)
+    override val authStateFlow: StateFlow<AuthState>
         get() = _authState
     override var authState: AuthState
         get() = _authState.value ?: AuthState.Loading
@@ -27,9 +28,9 @@ class FirebaseAuth : Auth {
             _authState.value = value
         }
 
-    val _userId: MutableLiveData<String?> =
-        MutableLiveData(firebaseAuth.currentUser?.uid)
-    override val userId: LiveData<String?>
+    private val _userId: MutableStateFlow<String?> =
+        MutableStateFlow(firebaseAuth.currentUser?.uid)
+    override val userId: StateFlow<String?>
         get() = _userId
 
     init {
