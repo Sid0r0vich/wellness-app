@@ -6,6 +6,8 @@ import com.example.wellness.data.UserInfoRepository
 class ProfileViewModel(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
-) : AuthViewModel(auth, userInfoRepository) {
+) : UserViewModel(auth, userInfoRepository) {
+    val authState = auth.authState
+    val authLiveData = auth.authLiveData
     fun signOut() = auth.signOut()
 }

@@ -19,7 +19,8 @@ object AppViewModelProvider {
         initializer {
             HomeViewModel(
                 SavedStateHandle(),
-                getApplication().container.userInfoRepository
+                getAuth(),
+                getUserInfoRepository()
             )
         }
 

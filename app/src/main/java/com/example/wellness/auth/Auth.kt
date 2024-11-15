@@ -9,11 +9,11 @@ import com.google.firebase.auth.FirebaseAuth
 interface Auth {
     val authState: AuthState
     val authLiveData: LiveData<AuthState>
+    val userId: LiveData<String?>
 
-    fun signIn(authData: AuthData)
-    fun signUp(authData: AuthData)
+    fun signIn(authData: AuthData, onSignIn: () -> Unit = {})
+    fun signUp(authData: AuthData, onSignUp: () -> Unit = {})
     fun signOut()
-    fun getUserId(): String?
 }
 
 class FirebaseAuth : Auth {
@@ -27,30 +27,44 @@ class FirebaseAuth : Auth {
             _authState.value = value
         }
 
+    val _userId: MutableLiveData<String?> =
+        MutableLiveData(firebaseAuth.currentUser?.uid)
+    override val userId: LiveData<String?>
+        get() = _userId
+
     init {
         checkAuthStatus()
+        firebaseAuth.addAuthStateListener {
+            _userId.value = firebaseAuth.currentUser?.uid
+        }
     }
 
     private fun checkAuthStatus() {
-        if (getUserId() == null)
+        if (_userId.value == null)
             authState = AuthState.Unauthenticated
         else authState = AuthState.Authenticated
     }
 
-    override fun signIn(authData: AuthData) {
+    override fun signIn(
+        authData: AuthData,
+        onSignIn: () -> Unit
+    ) {
         authState = AuthState.Loading
         firebaseAuth.signInWithEmailAndPassword(
             authData.email,
             authData.password
-        ).addAuthenticateListener()
+        ).addAuthenticateListener(onSignIn)
     }
 
-    override fun signUp(authData: AuthData) {
+    override fun signUp(
+        authData: AuthData,
+        onSignUp: () -> Unit
+    ) {
         authState = AuthState.Loading
         firebaseAuth.createUserWithEmailAndPassword(
             authData.email,
             authData.password
-        ).addAuthenticateListener()
+        ).addAuthenticateListener(onSignUp)
     }
 
     override fun signOut() {
@@ -59,12 +73,14 @@ class FirebaseAuth : Auth {
         authState = AuthState.Unauthenticated
     }
 
-    override fun getUserId(): String? = firebaseAuth.currentUser?.uid
-
-    private fun <TResult> Task<TResult>.addAuthenticateListener() {
+    private fun <TResult> Task<TResult>.addAuthenticateListener(
+        onAuthenticate: () -> Unit
+    ) {
         this.addOnCompleteListener { task ->
-            if (task.isSuccessful)
+            if (task.isSuccessful) {
                 authState = AuthState.Authenticated
+                onAuthenticate()
+            }
             else
                 authState = AuthState.Error(
                     task.exception?.message ?: UNKNOWN_EXCEPTION

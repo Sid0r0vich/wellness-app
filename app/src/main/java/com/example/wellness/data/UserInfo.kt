@@ -1,11 +1,11 @@
 package com.example.wellness.data
 
 data class UserInfo(
-    val name: String,
-    val email: String,
-    val password: String,
-    val sex: Sex,
-    val age: Int,
+    val name: String = "",
+    val email: String = "",
+    val password: String = "",
+    val sex: Sex = Sex.Man,
+    val age: Int = 18,
 ) {
     fun toUserUiInfo(): UserUiInfo =
         UserUiInfo(

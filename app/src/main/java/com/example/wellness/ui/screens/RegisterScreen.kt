@@ -44,7 +44,7 @@ fun RegisterScreen(
     AuthFieldsInvalidation(uiState)
 
     AuthTrigger(
-        authState = viewModel.authState.observeAsState(),
+        authState = viewModel.authLiveData.observeAsState(),
         onPerformAuth = onPerformRegister
     )
 
@@ -92,7 +92,7 @@ fun RegisterScreen(
                 enabled =
                     uiState.email.isNotEmpty() &&
                     uiState.password.isNotEmpty() &&
-                    viewModel.authState.value != AuthState.Loading,
+                    viewModel.authState != AuthState.Loading,
                 contentPadding = PaddingValues()
             ) {
                 Text(

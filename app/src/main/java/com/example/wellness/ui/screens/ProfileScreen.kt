@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,14 +43,17 @@ fun ProfileScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileUserCard { viewModel.signOut() }
+            ProfileUserCard(viewModel.uiState.collectAsState().value.userName) {
+                viewModel.signOut()
+            }
         }
     }
 }
 
 @Composable
 fun ProfileUserCard(
-    buttonOnClick: () -> Unit
+    userName: String,
+    buttonOnClick: () -> Unit,
 ) {
     UserCard(
         modifier = Modifier
@@ -60,6 +64,7 @@ fun ProfileUserCard(
                 )
             )
             .fillMaxWidth(),
+        userName = userName,
         addButton = true,
         buttonOnClick = buttonOnClick,
         avatarModifier = Modifier.size(150.dp)

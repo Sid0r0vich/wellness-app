@@ -8,18 +8,12 @@ import com.example.wellness.data.AuthData
 import com.example.wellness.data.UserInfo
 import com.example.wellness.data.UserInfoRepository
 
-open class AuthViewModel(
+open class LoginViewModel(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
     val authState = auth.authState
     val authLiveData = auth.authLiveData
-}
-
-open class LoginViewModel(
-    private val auth: Auth,
-    private val userInfoRepository: UserInfoRepository
-) : AuthViewModel(auth, userInfoRepository) {
     open val uiState: AuthUiState = AuthUiState()
 
     fun signIn(authData: AuthData) {
@@ -32,17 +26,20 @@ open class LoginViewModel(
 class RegisterViewModel(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
-) : AuthViewModel(auth, userInfoRepository) {
+) : ViewModel() {
+    val authState = auth.authState
+    val authLiveData = auth.authLiveData
     val uiState: RegisterUiState = RegisterUiState()
 
     fun signUp(userInfo: UserInfo) {
         val authData = AuthData(userInfo.email, userInfo.password)
         if (!DataValidator.validateAuthData(authData)) return
 
-        auth.signUp(authData)
-
-        val userId: String = auth.getUserId() ?: return
-        userInfoRepository.insertUser(userInfo, userId)
+        auth.signUp(authData) {
+            val userId = auth.userId.value
+            if (userId != null)
+                userInfoRepository.insertUser(userInfo, userId)
+        }
     }
 }
 

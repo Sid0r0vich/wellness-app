@@ -32,9 +32,7 @@ class UserInfoFirebaseRepository(db: UserDatabase): UserInfoRepository {
     }
 
     override fun insertUser(userInfo: UserInfo, userId: String) {
-        val firebaseData = userInfo.toFirebase()
-
-        collection.document(userId).set(firebaseData)
+        collection.document(userId).set(userInfo)
             .addOnSuccessListener {
                 Log.d("UserInfoLog", "Insert user: ${userInfo.name}")
             }
@@ -47,15 +45,5 @@ class UserInfoFirebaseRepository(db: UserDatabase): UserInfoRepository {
 
     companion object {
         const val COLLECTION_NAME = "user"
-
-        private fun UserInfo.toFirebase(): Map<String, Any> {
-            return mapOf(
-                "name" to this.name,
-                "email" to this.email,
-                "password" to this.password,
-                "sex" to this.sex.toString(),
-                "age" to this.age
-            )
-        }
     }
 }
