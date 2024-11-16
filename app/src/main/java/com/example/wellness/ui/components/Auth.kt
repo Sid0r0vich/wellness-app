@@ -1,6 +1,5 @@
 package com.example.wellness.ui.components
 
-import android.widget.Toast
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.material.icons.Icons
@@ -15,14 +14,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.wellness.R
 import com.example.wellness.auth.AuthState
 import com.example.wellness.auth.AuthUiState
-import com.example.wellness.ui.viewModels.DataValidator
+import com.example.wellness.utils.DataValidator
 
 @Composable
 fun EmailField(
@@ -98,16 +96,9 @@ fun AuthTrigger(
     authState: State<AuthState?>,
     onPerformAuth: () -> Unit
 ) {
-    val context = LocalContext.current
-
     LaunchedEffect(authState.value) {
         when(authState.value) {
             is AuthState.Authenticated -> onPerformAuth()
-            is AuthState.Error -> Toast.makeText(
-                context,
-                (authState.value as AuthState.Error).message,
-                Toast.LENGTH_SHORT
-            ).show()
             else -> Unit
         }
     }

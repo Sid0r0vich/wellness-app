@@ -19,14 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
-import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.UnauthenticatedTrigger
 import com.example.wellness.ui.components.UserCard
+import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.ProfileViewModel
 
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onUnauthenticated: () -> Unit
 ) {

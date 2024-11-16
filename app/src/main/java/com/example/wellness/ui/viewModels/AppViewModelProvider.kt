@@ -1,4 +1,4 @@
-package com.example.wellness.ui
+package com.example.wellness.ui.viewModels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -9,10 +9,6 @@ import com.example.wellness.WellnessApplication
 import com.example.wellness.auth.FirebaseAuth
 import com.example.wellness.data.UserInfoRepository
 import com.example.wellness.data.WellnessAppContainer
-import com.example.wellness.ui.viewModels.HomeViewModel
-import com.example.wellness.ui.viewModels.LoginViewModel
-import com.example.wellness.ui.viewModels.ProfileViewModel
-import com.example.wellness.ui.viewModels.RegisterViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -27,7 +23,6 @@ object AppViewModelProvider {
         initializer {
             LoginViewModel(
                 getAuth(),
-                getUserInfoRepository()
             )
         }
 

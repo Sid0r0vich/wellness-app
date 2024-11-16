@@ -19,18 +19,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
 import com.example.wellness.auth.AuthState
+import com.example.wellness.auth.MessageNotifier
 import com.example.wellness.auth.RegisterUiState
 import com.example.wellness.data.Sex
 import com.example.wellness.data.UserInfo
-import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.AuthEmailField
 import com.example.wellness.ui.components.AuthPasswordField
 import com.example.wellness.ui.components.AuthTrigger
+import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.RegisterViewModel
 
 @Composable
@@ -40,6 +42,7 @@ fun RegisterScreen(
     onPerformRegister: () -> Unit,
     onLoginClick: () -> Unit
 ) {
+    val messageNotifier = MessageNotifier(LocalContext.current)
     val uiState = viewModel.uiState
     AuthFieldsInvalidation(uiState)
 
@@ -85,7 +88,7 @@ fun RegisterScreen(
                             sex = uiState.selectedSex,
                             age = uiState.age
                         )
-                    )
+                    ) { status -> messageNotifier.notifyUser(status) }
                     uiState.emailIsValidated = true
                     uiState.passwordIsValidated = true
                 },
@@ -115,7 +118,6 @@ fun RegisterScreen(
 fun SexChoice(
     value: Sex,
     onChangeValue: (Sex) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

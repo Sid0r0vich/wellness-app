@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
 import com.example.wellness.data.HomeScreenData
-import com.example.wellness.ui.AppViewModelProvider
 import com.example.wellness.ui.components.UserCard
+import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.HomeViewModel
 
 @Composable

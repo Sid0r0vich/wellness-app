@@ -1,35 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="age">Age</string>
+
     <string name="app_name">wellness</string>
-    <string name="bottom_navigation_home">Home</string>
-    <string name="bottom_navigation_profile">Profile</string>
-    <string name="bottom_navigation_chat">Chat</string>
-    <string name="bottom_navigation_notifications">Notifications</string>
+
+    <string name="be_wellness">Be wellness</string>
+
     <string name="bottom_navigation_add">Add</string>
+    <string name="bottom_navigation_chat">Chat</string>
+    <string name="bottom_navigation_home">Home</string>
+    <string name="bottom_navigation_notifications">Notifications</string>
+    <string name="bottom_navigation_profile">Profile</string>
+
+    <string name="dynamics">Dynamics</string>
+
+    <string name="email_collision">this email already exists</string>
+    <string name="email_label">Email</string>
+
+    <string name="empty_screen_subtitle">You will see the screen soon!</string>
+    <string name="empty_screen_title">Screen under construction</string>
+
+    <string name="forget_password">Forgot your password?</string>
+
+    <string name="have_account">Already have account, login</string>
+    <string name="have_not_account">Don`t have account, sign up</string>
+
+    <string name="health_report">Health report</string>
+
+    <string name="hide_password">Hide password</string>
+
+    <string name="invalid_credentials">wrong email or password</string>
+    <string name="invalid_email_format">invalid email format</string>
+    <string name="invalid_password_format">invalid password format</string>
+
+    <string name="login">Login</string>
+
+    <string name="man_sex">Man</string>
+
+    <string name="my_documents">My documents</string>
+
+    <string name="navigation_auth">Auth</string>
     <string name="navigation_login">Login</string>
     <string name="navigation_register">Register</string>
     <string name="navigation_user">User</string>
-    <string name="navigation_auth">Auth</string>
-    <string name="my_documents">My documents</string>
-    <string name="dynamics">Dynamics</string>
-    <string name="health_report">Health report</string>
-    <string name="be_wellness">Be wellness</string>
-    <string name="user_name">user</string>
-    <string name="empty_screen_title">Screen under construction</string>
-    <string name="empty_screen_subtitle">You will see the screen soon!</string>
-    <string name="login">Login</string>
-    <string name="email_label">Email</string>
+
     <string name="password_label">Password</string>
+
     <string name="perform_login">Login</string>
-    <string name="have_account">Already have account, login</string>
-    <string name="have_not_account">Don`t have account, sign up</string>
-    <string name="forget_password">Forgot your password?</string>
-    <string name="hide_password">Hide password</string>
-    <string name="show_password">Show password</string>
-    <string name="unknown_exception">Something went wrong</string>
-    <string name="signup">Sign up</string>
     <string name="perform_register">Sign up</string>
-    <string name="man_sex">Man</string>
-    <string name="woman_sex">Woman</string>
-    <string name="age">Age</string>
+
+    <string name="show_password">Show password</string>
+
     <string name="sign_out">Sign out</string>
+
+    <string name="signup">Sign up</string>
+
+    <string name="success">success!</string>
+
+    <string name="unknown_exception">something went wrong</string>
+
+    <string name="user_name">user</string>
+    <string name="user_not_found">user not found</string>
+
+    <string name="weak_password">weak password</string>
+
+    <string name="web_error">web error</string>
+
+    <string name="woman_sex">Woman</string>
 </resources>

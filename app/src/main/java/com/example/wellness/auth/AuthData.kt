@@ -1,4 +1,4 @@
-package com.example.wellness.data
+package com.example.wellness.auth
 
 data class AuthData(
     val email: String,

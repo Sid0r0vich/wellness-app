@@ -1,5 +1,10 @@
 package com.example.wellness.data
 
+enum class Sex() {
+    Man,
+    Woman
+}
+
 data class UserInfo(
     val name: String = "",
     val email: String = "",
