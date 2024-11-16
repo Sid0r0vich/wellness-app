@@ -6,6 +6,7 @@ import com.example.wellness.auth.AuthData
 import com.example.wellness.auth.AuthStatus
 import com.example.wellness.auth.AuthUiState
 import com.example.wellness.utils.DataValidator
+import com.example.wellness.utils.toAuthStatus
 
 open class LoginViewModel(
     private val auth: Auth,
@@ -15,14 +16,10 @@ open class LoginViewModel(
     open val uiState: AuthUiState = AuthUiState()
 
     fun signIn(authData: AuthData, onComplete: (AuthStatus) -> Unit = {}) {
-        val loginStatus = when(DataValidator.validateAuthDataWithStatus(authData)) {
-            DataValidator.Status.SUCCESS -> AuthStatus.SUCCESS
-            DataValidator.Status.INVALID_EMAIL_FORMAT -> AuthStatus.INVALID_EMAIL_FORMAT
-            DataValidator.Status.INVALID_PASSWORD_FORMAT -> AuthStatus.INVALID_PASSWORD_FORMAT
-        }
+        DataValidator.validateAuthDataWithStatus(authData)
+            .toAuthStatus()
+            .also { if (it != AuthStatus.SUCCESS) { onComplete(it); return@signIn } }
 
-        if (loginStatus == AuthStatus.SUCCESS)
-            auth.signIn(authData, onComplete)
-        else onComplete(loginStatus)
+        auth.signIn(authData, onComplete)
     }
 }

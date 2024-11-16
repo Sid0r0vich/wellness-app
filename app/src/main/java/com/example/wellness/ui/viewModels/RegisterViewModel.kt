@@ -8,6 +8,7 @@ import com.example.wellness.auth.RegisterUiState
 import com.example.wellness.data.UserInfo
 import com.example.wellness.data.UserInfoRepository
 import com.example.wellness.utils.DataValidator
+import com.example.wellness.utils.toAuthStatus
 
 class RegisterViewModel(
     private val auth: Auth,
@@ -19,7 +20,9 @@ class RegisterViewModel(
 
     fun signUp(userInfo: UserInfo, onComplete: (AuthStatus) -> Unit = {}) {
         val authData = AuthData(userInfo.email, userInfo.password)
-        if (!DataValidator.validateAuthData(authData)) return
+        DataValidator.validateAuthDataWithStatus(authData)
+            .toAuthStatus()
+            .also { if (it != AuthStatus.SUCCESS) { onComplete(it); return@signUp } }
 
         auth.signUp(authData) { status ->
             if (status == AuthStatus.SUCCESS) {

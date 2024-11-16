@@ -1,6 +1,7 @@
 package com.example.wellness.utils
 
 import com.example.wellness.auth.AuthData
+import com.example.wellness.auth.AuthStatus
 
 object DataValidator {
     enum class Status {
@@ -32,4 +33,12 @@ object DataValidator {
         validateAuthDataWithStatus(authData) == Status.SUCCESS
 
     private const val MIN_PASSWORD_LENGTH = 6
+}
+
+fun DataValidator.Status.toAuthStatus(): AuthStatus {
+    return when(this) {
+        DataValidator.Status.SUCCESS -> AuthStatus.SUCCESS
+        DataValidator.Status.INVALID_EMAIL_FORMAT -> AuthStatus.INVALID_EMAIL_FORMAT
+        DataValidator.Status.INVALID_PASSWORD_FORMAT -> AuthStatus.INVALID_PASSWORD_FORMAT
+    }
 }
