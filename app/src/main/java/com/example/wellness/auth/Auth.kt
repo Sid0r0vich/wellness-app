@@ -10,98 +10,45 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface Auth {
-    val authState: AuthState
-    val authStateFlow: StateFlow<AuthState>
-    val userId: StateFlow<String?>
-
-    fun signIn(authData: AuthData, onSignIn: (AuthStatus) -> Unit = {})
-    fun signUp(authData: AuthData, onSignUp: (AuthStatus) -> Unit = {})
-    fun signOut()
-}
-
-class FirebaseAuth : Auth {
+private class Firebase() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val _authState: MutableStateFlow<AuthState> =
-        MutableStateFlow(AuthState.Unauthenticated)
-    override val authStateFlow: StateFlow<AuthState>
-        get() = _authState
-    override var authState: AuthState
-        get() = _authState.value
-        private set(value) {
-            _authState.value = value
-        }
-
-    private val _userId: MutableStateFlow<String?> =
-        MutableStateFlow(firebaseAuth.currentUser?.uid)
-    override val userId: StateFlow<String?>
-        get() = _userId
-
     private val authErrorHandler = AuthErrorHandler()
+    val userId: MutableStateFlow<String?> =
+        MutableStateFlow(firebaseAuth.currentUser?.uid)
 
     init {
-        checkAuthStatus()
         firebaseAuth.addAuthStateListener {
-            _userId.value = firebaseAuth.currentUser?.uid
+            userId.value = firebaseAuth.currentUser?.uid
         }
     }
 
-    private fun checkAuthStatus() {
-        authState =
-            if (_userId.value == null) AuthState.Unauthenticated
-            else AuthState.Authenticated
-    }
-
-    override fun signIn(
+    fun signIn(
         authData: AuthData,
-        onSignIn: (AuthStatus) -> Unit,
-    ) {
-        authState = AuthState.Loading
-        firebaseAuth.signInWithEmailAndPassword(
+        onSignIn: (AuthStatus) -> Unit = {}
+    ) = firebaseAuth.signInWithEmailAndPassword(
             authData.email,
             authData.password
         ).addAuthenticateListener(onSignIn)
-    }
 
-    override fun signUp(
+    fun signUp(
         authData: AuthData,
-        onSignUp: (AuthStatus) -> Unit,
-    ) {
-        authState = AuthState.Loading
-        firebaseAuth.createUserWithEmailAndPassword(
+        onSignUp: (AuthStatus) -> Unit = {}
+    ) = firebaseAuth.createUserWithEmailAndPassword(
             authData.email,
             authData.password
         ).addAuthenticateListener(onSignUp)
-    }
 
-    override fun signOut() {
-        authState = AuthState.Loading
-        firebaseAuth.signOut()
-        authState = AuthState.Unauthenticated
-    }
+    fun signOut() = firebaseAuth.signOut()
 
     private fun Task<AuthResult>.addAuthenticateListener(
         onAuthenticate: (AuthStatus) -> Unit = {},
     ) {
         this.addOnCompleteListener { task ->
-            var status = AuthStatus.SUCCESS
-
-            if (task.isSuccessful) {
-                authState = AuthState.Authenticated
-            }
-            else {
-                authState = AuthState.Error(
-                    task.exception?.message ?: UNKNOWN_EXCEPTION
-                )
-                status = authErrorHandler.handleAuthError(task.exception)
-            }
-
-            onAuthenticate(status)
+            onAuthenticate(
+                if (task.isSuccessful) AuthStatus.SUCCESS
+                else authErrorHandler.handleAuthError(task.exception)
+            )
         }
-    }
-
-    companion object {
-        private  const val UNKNOWN_EXCEPTION = "Something went wrong"
     }
 }
 
@@ -113,6 +60,74 @@ class AuthErrorHandler {
             is FirebaseAuthWeakPasswordException -> AuthStatus.WEAK_PASSWORD
             is FirebaseAuthInvalidCredentialsException -> AuthStatus.INVALID_CREDENTIALS
             else -> AuthStatus.UNKNOWN_ERROR
+        }
+    }
+}
+
+interface Auth {
+    val authState: AuthState
+    val authStateFlow: StateFlow<AuthState>
+    val userId: StateFlow<String?>
+
+    fun signIn(authData: AuthData, onSignIn: (AuthStatus) -> Unit = {})
+    fun signUp(authData: AuthData, onSignUp: (AuthStatus) -> Unit = {})
+    fun signOut()
+}
+
+class FirebaseAuth : Auth {
+    private val firebase = Firebase()
+
+    private val _authState: MutableStateFlow<AuthState> =
+        MutableStateFlow(AuthState.Unauthenticated)
+    override val authStateFlow: StateFlow<AuthState>
+        get() = _authState
+    override var authState: AuthState
+        get() = _authState.value
+        private set(value) {
+            _authState.value = value
+        }
+
+    override val userId: StateFlow<String?>
+        get() = firebase.userId
+
+    init {
+        checkAuthStatus()
+    }
+
+    private fun checkAuthStatus() {
+        authState = userId.value
+            ?.let { AuthState.Unauthenticated } ?: AuthState.Authenticated
+    }
+
+    override fun signIn(
+        authData: AuthData,
+        onSignIn: (AuthStatus) -> Unit,
+    ) {
+        authState = AuthState.Loading
+        firebase.signIn(authData, onAuth(onSignIn))
+    }
+
+    override fun signUp(
+        authData: AuthData,
+        onSignUp: (AuthStatus) -> Unit,
+    ) {
+        authState = AuthState.Loading
+        firebase.signUp(authData, onAuth(onSignUp))
+    }
+
+    override fun signOut() {
+        authState = AuthState.Loading
+        firebase.signOut()
+        authState = AuthState.Unauthenticated
+    }
+
+    private val onAuth = { onComplete: (AuthStatus) -> Unit ->
+        { status: AuthStatus ->
+            authState = when(status) {
+                AuthStatus.SUCCESS -> AuthState.Authenticated
+                else -> AuthState.Error(status)
+            }
+            onComplete(status)
         }
     }
 }

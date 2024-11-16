@@ -5,8 +5,6 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
-
-    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -88,6 +86,5 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.androidx.lifecycle.extensions)
-    implementation(libs.kotlinx.serialization.json)
     annotationProcessor(libs.androidx.lifecycle.compiler)
 }

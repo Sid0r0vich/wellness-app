@@ -19,6 +19,7 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://maven-central.storage.apis.com")
         }
+        gradlePluginPortal()
     }
 }
 

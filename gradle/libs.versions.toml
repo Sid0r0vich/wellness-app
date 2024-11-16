@@ -6,6 +6,7 @@ design = "27.1.1'"
 firebaseBom = "33.4.0"
 firebaseUiAuth = "7.2.0"
 fragmentKtx = "1.8.4"
+gradleDependencyGraphGenerator = "1.4.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -40,6 +41,7 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseUiAuth" }
+gradle-dependency-graph-generator = { module = "com.github.jk1:gradle-dependency-graph-generator", version.ref = "gradleDependencyGraphGenerator" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
