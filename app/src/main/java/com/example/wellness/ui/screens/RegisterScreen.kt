@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,14 +23,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
-import com.example.wellness.auth.AuthState
 import com.example.wellness.auth.MessageNotifier
 import com.example.wellness.auth.RegisterUiState
 import com.example.wellness.data.Sex
 import com.example.wellness.data.UserInfo
+import com.example.wellness.ui.components.AuthButton
 import com.example.wellness.ui.components.AuthEmailField
+import com.example.wellness.ui.components.AuthFieldsInvalidation
 import com.example.wellness.ui.components.AuthPasswordField
 import com.example.wellness.ui.components.AuthTrigger
+import com.example.wellness.ui.components.Header
 import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.RegisterViewModel
 
@@ -51,18 +52,12 @@ fun RegisterScreen(
         onPerformAuth = onPerformRegister
     )
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
+    DefaultScreen {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = stringResource(R.string.signup),
-                style = MaterialTheme.typography.displayMedium,
-            )
+            Header(R.string.signup)
             Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
             AuthEmailField(uiState = uiState)
             Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
@@ -78,37 +73,25 @@ fun RegisterScreen(
                 valueRange = RegisterUiState.AGE_RANGE,
                 onChangeValue = { value -> uiState.age = value }
             )
-            Button(
-                onClick = {
-                    viewModel.signUp(
-                        UserInfo(
-                            name = "userName",
-                            email = uiState.email,
-                            password = uiState.password,
-                            sex = uiState.selectedSex,
-                            age = uiState.age
-                        )
-                    ) { status -> messageNotifier.notifyUser(status) }
-                    uiState.emailIsValidated = true
-                    uiState.passwordIsValidated = true
-                },
-                enabled =
-                    uiState.email.isNotEmpty() &&
-                    uiState.password.isNotEmpty() &&
-                    viewModel.authState != AuthState.Loading,
-                contentPadding = PaddingValues()
+            AuthButton(
+                authState = viewModel.authState,
+                uiState = uiState,
+                textId = R.string.perform_register
             ) {
-                Text(
-                    text = stringResource(R.string.perform_register)
-                )
+                viewModel.signUp(
+                    UserInfo(
+                        name = "userName",
+                        email = uiState.email,
+                        password = uiState.password,
+                        sex = uiState.selectedSex,
+                        age = uiState.age
+                    )
+                ) { status -> messageNotifier.notifyUser(status) }
             }
             TextButton(
                 onClick = onLoginClick,
-                contentPadding = PaddingValues()
             ) {
-                Text(
-                    text = stringResource(R.string.have_account)
-                )
+                Text(text = stringResource(R.string.have_account))
             }
         }
     }

@@ -5,8 +5,11 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -92,6 +95,16 @@ fun AuthPasswordField(uiState: AuthUiState) {
 }
 
 @Composable
+fun AuthFieldsInvalidation(
+    uiState: AuthUiState
+) {
+    if (uiState.emailSource.collectIsPressedAsStateValue())
+        uiState.emailIsValidated = false
+    if (uiState.passwordSource.collectIsPressedAsStateValue())
+        uiState.passwordIsValidated = false
+}
+
+@Composable
 fun AuthTrigger(
     authState: State<AuthState?>,
     onPerformAuth: () -> Unit
@@ -120,4 +133,34 @@ fun UnauthenticatedTrigger(
 @Composable
 fun MutableInteractionSource.collectIsPressedAsStateValue(): Boolean {
     return this.collectIsPressedAsState().value
+}
+
+@Composable
+fun Header(textId: Int) {
+    Text(
+        text = stringResource(textId),
+        style = MaterialTheme.typography.displayMedium,
+    )
+}
+
+@Composable
+fun AuthButton(
+    authState: AuthState,
+    uiState: AuthUiState,
+    textId: Int,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = {
+            onClick()
+            uiState.emailIsValidated = true
+            uiState.passwordIsValidated = true
+        },
+        enabled =
+        uiState.email.isNotEmpty() &&
+                uiState.password.isNotEmpty() &&
+                authState != AuthState.Loading,
+    ) {
+        Text(text = stringResource(textId))
+    }
 }

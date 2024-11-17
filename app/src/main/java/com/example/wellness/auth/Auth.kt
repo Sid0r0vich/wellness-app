@@ -96,7 +96,7 @@ class FirebaseAuth : Auth {
 
     private fun checkAuthStatus() {
         authState = userId.value
-            ?.let { AuthState.Unauthenticated } ?: AuthState.Authenticated
+            ?.let { AuthState.Authenticated } ?: AuthState.Unauthenticated
     }
 
     override fun signIn(

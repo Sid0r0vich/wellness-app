@@ -2,7 +2,6 @@ package com.example.wellness.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -42,9 +41,8 @@ fun HomeScreen(
     val gridPadding: Dp = 10.dp
     val userCardPadding: Dp = 10.dp
 
-    Box(
+    DefaultScreen(
         modifier = modifier
-            .fillMaxWidth()
             .padding(PaddingValues(gridPadding * 2))
     ) {
         LazyColumn {
