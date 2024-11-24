@@ -11,8 +11,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -102,32 +100,6 @@ fun AuthFieldsInvalidation(
         uiState.emailIsValidated = false
     if (uiState.passwordSource.collectIsPressedAsStateValue())
         uiState.passwordIsValidated = false
-}
-
-@Composable
-fun AuthTrigger(
-    authState: State<AuthState?>,
-    onPerformAuth: () -> Unit
-) {
-    LaunchedEffect(authState.value) {
-        when(authState.value) {
-            is AuthState.Authenticated -> onPerformAuth()
-            else -> Unit
-        }
-    }
-}
-
-@Composable
-fun UnauthenticatedTrigger(
-    authState: State<AuthState?>,
-    onUnauthenticated: () -> Unit
-) {
-    LaunchedEffect(authState.value) {
-        when(authState.value) {
-            is AuthState.Unauthenticated -> onUnauthenticated()
-            else -> Unit
-        }
-    }
 }
 
 @Composable

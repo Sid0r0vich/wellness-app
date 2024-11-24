@@ -16,22 +16,29 @@ fun NavHostController.addLogger() {
 
 fun NavHostController.navigateWithPopUp(
     route: String,
-    upTo: String
+    upTo: String,
+    include: Boolean = false
 ) {
     this.navigate(route) {
         this.popUpTo(upTo) {
             saveState = true
+            inclusive = include
         }
         restoreState = true
     }
 }
 
-fun NavHostController.navigateToUser() = navigateWithPopUp(User.route, Auth.route)
-fun NavHostController.navigateToLogin() = navigateWithPopUp(Login.route, Auth.route)
-fun NavHostController.navigateToRegister() = navigateWithPopUp(Register.route, Auth.route)
-fun NavHostController.navigateToAuth() = navigateWithPopUp(Auth.route, User.route)
+fun NavHostController.navigateToUser() = navigateWithPopUp(User.route, Auth.route, true)
+fun NavHostController.navigateToLogin() = navigateWithPopUp(Login.route, Auth.route, false)
+fun NavHostController.navigateToRegister() = navigateWithPopUp(Register.route, Auth.route, false)
+fun NavHostController.navigateToAuth() = navigateWithPopUp(Auth.route, User.route, true)
 fun NavHostController.navigateFromHome(route: String) =
-    this.navigate(route) {
-        popUpTo(Home.route)
+    this.navigate(route)
+    {
+        popUpTo(Home.route) {
+            saveState = true
+            inclusive = false
+        }
+        restoreState = true
         launchSingleTop = true
     }

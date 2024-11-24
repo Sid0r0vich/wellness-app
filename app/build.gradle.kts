@@ -82,9 +82,12 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.auth)
 
     implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.androidx.lifecycle.extensions)
     annotationProcessor(libs.androidx.lifecycle.compiler)
+
+    implementation(libs.androidx.multidex)
 }

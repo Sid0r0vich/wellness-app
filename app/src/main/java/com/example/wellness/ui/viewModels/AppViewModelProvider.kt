@@ -21,12 +21,6 @@ object AppViewModelProvider {
         }
 
         initializer {
-            LoginViewModel(
-                getAuth(),
-            )
-        }
-
-        initializer {
             RegisterViewModel(
                 getAuth(),
                 getUserInfoRepository()

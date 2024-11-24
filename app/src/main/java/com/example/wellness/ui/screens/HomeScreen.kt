@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,23 +39,19 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val gridPadding: Dp = 10.dp
-    val userCardPadding: Dp = 10.dp
 
-    DefaultScreen(
-        modifier = modifier
-            .padding(PaddingValues(gridPadding * 2))
-    ) {
-        LazyColumn {
+    DefaultScreen {
+        LazyColumn(
+            verticalArrangement = Arrangement.Top,
+            modifier = Modifier.fillMaxHeight()
+        ) {
             item {
-                HomeUserCard(
-                    userName = uiState.userName,
-                )
+                HomeUserCard(userName = uiState.userName)
             }
             item {
-                Spacer(modifier = Modifier.padding(PaddingValues(userCardPadding)))
+                Spacer(modifier = Modifier.padding(PaddingValues(LocalGridPadding.current)))
                 IndicatorsPanel(
-                    paddingGrid = gridPadding * 2,
+                    paddingGrid = LocalGridPadding.current * 2,
                     values = listOf(42, 13),
                     painters = listOf(
                         painterResource(R.drawable.trace),
@@ -63,10 +60,9 @@ fun HomeScreen(
                 )
             }
             items(HomeScreenData.panelLabels zip HomeScreenData.panelImageIds) { panel ->
-                Spacer(modifier = Modifier.padding(PaddingValues(gridPadding)))
+                Spacer(modifier = Modifier.padding(PaddingValues(LocalGridPadding.current)))
                 AppPanel(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     text = stringResource(panel.first),
                     painter = painterResource(panel.second)
                 )
@@ -81,8 +77,7 @@ fun HomeUserCard(
     userName: String
 ) {
     UserCard(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         userName = userName,
         avatarModifier = Modifier.size(110.dp)
     )

@@ -2,12 +2,12 @@ package com.example.wellness.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,29 +19,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
-import com.example.wellness.ui.components.UnauthenticatedTrigger
 import com.example.wellness.ui.components.UserCard
 import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.ProfileViewModel
 
 @Composable
 fun ProfileScreen(
+    modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onUnauthenticated: () -> Unit
 ) {
-    UnauthenticatedTrigger(
-        authState = viewModel.authStateFlow.collectAsState(),
-        onUnauthenticated = onUnauthenticated
-    )
-
     DefaultScreen {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        LazyColumn(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxHeight()
         ) {
-            ProfileUserCard(viewModel.uiState.collectAsState().value.userName) {
-                viewModel.signOut()
+            item {
+                ProfileUserCard(viewModel.uiState.collectAsState().value.userName) {
+                    viewModel.signOut()
+                    onUnauthenticated()
+                }
             }
         }
     }
@@ -53,18 +50,11 @@ fun ProfileUserCard(
     buttonOnClick: () -> Unit,
 ) {
     UserCard(
-        modifier = Modifier
-            .padding(
-                PaddingValues(
-                    vertical = 10.dp,
-                    horizontal = 20.dp
-                )
-            )
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         userName = userName,
         addButton = true,
         buttonOnClick = buttonOnClick,
-        avatarModifier = Modifier.size(150.dp)
+        avatarModifier = Modifier.size(140.dp)
     )
 }
 

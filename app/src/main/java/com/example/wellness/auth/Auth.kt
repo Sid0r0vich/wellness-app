@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-private class Firebase() {
+private class Firebase {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val authErrorHandler = AuthErrorHandler()
     val userId: MutableStateFlow<String?> =

@@ -1,19 +1,29 @@
 package com.example.wellness.ui.viewModels
 
 import androidx.lifecycle.ViewModel
-import com.example.wellness.auth.Auth
 import com.example.wellness.auth.AuthData
+import com.example.wellness.auth.AuthState
 import com.example.wellness.auth.AuthStatus
 import com.example.wellness.auth.AuthUiState
+import com.example.wellness.auth.FirebaseAuth
 import com.example.wellness.utils.DataValidator
 import com.example.wellness.utils.toAuthStatus
 
+data class LoginViewModelParams(
+    val onPerformLogin: () -> Unit
+)
+
 open class LoginViewModel(
-    private val auth: Auth,
+    private val auth: FirebaseAuth,
+    private val onPerformLogin: () -> Unit
 ) : ViewModel() {
     val authState = auth.authState
     val authStateFlow = auth.authStateFlow
-    open val uiState: AuthUiState = AuthUiState()
+    val uiState: AuthUiState = AuthUiState()
+
+    init {
+        if (authState == AuthState.Authenticated) onPerformLogin()
+    }
 
     fun signIn(authData: AuthData, onComplete: (AuthStatus) -> Unit = {}) {
         DataValidator.validateAuthDataWithStatus(authData)

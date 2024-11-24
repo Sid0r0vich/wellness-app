@@ -23,6 +23,18 @@ fun MyHavHost(
         modifier = modifier
     ) {
         navigation(
+            route = User.route,
+            startDestination = Home.route
+        ) {
+            composable(Home.route) { HomeScreen() }
+            composable(Profile.route) {
+                ProfileScreen { navController.navigateToAuth() }
+            }
+            navBarDestinations.drop(2).forEach { dest ->
+                composable(dest.route) { EmptyScreen() }
+            }
+        }
+        navigation(
             route = Auth.route,
             startDestination = Login.route
         ) {
@@ -37,18 +49,6 @@ fun MyHavHost(
                     onPerformRegister = { navController.navigateToUser() },
                     onLoginClick = { navController.navigateToLogin() }
                 )
-            }
-        }
-        navigation(
-            route = User.route,
-            startDestination = Home.route
-        ) {
-            composable(Home.route) { HomeScreen() }
-            composable(Profile.route) {
-                ProfileScreen { navController.navigateToAuth() }
-            }
-            navBarDestinations.drop(2).forEach { dest ->
-                composable(dest.route) { EmptyScreen() }
             }
         }
     }
