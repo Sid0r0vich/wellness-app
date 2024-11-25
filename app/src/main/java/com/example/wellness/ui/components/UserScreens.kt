@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -75,4 +77,16 @@ fun UserCard(
             )
         }
     }
+}
+
+@Composable
+fun HomeUserCard(
+    modifier: Modifier = Modifier,
+    userName: String
+) {
+    UserCard(
+        modifier = modifier.fillMaxWidth(),
+        userName = userName,
+        avatarModifier = Modifier.size(110.dp)
+    )
 }

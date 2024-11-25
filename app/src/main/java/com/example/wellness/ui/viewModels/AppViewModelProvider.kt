@@ -33,6 +33,13 @@ object AppViewModelProvider {
                 getUserInfoRepository()
             )
         }
+
+        initializer {
+            DynamicViewModel(
+                getAuth(),
+                getUserInfoRepository()
+            )
+        }
     }
 }
 

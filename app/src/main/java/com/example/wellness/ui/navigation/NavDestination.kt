@@ -65,6 +65,11 @@ object Notifications : NavBarDestination(
     route = "notify"
 )
 
+object Dynamic : NavDestination(
+    label = R.string.navigation_dynamic,
+    route = "dynamic"
+)
+
 val navBarDestinations = listOf(
     Home,
     Profile,

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.wellness.ui.screens.DynamicScreen
 import com.example.wellness.ui.screens.EmptyScreen
 import com.example.wellness.ui.screens.HomeScreen
 import com.example.wellness.ui.screens.LoginScreen
@@ -13,7 +14,7 @@ import com.example.wellness.ui.screens.ProfileScreen
 import com.example.wellness.ui.screens.RegisterScreen
 
 @Composable
-fun MyHavHost(
+fun MyNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -26,13 +27,14 @@ fun MyHavHost(
             route = User.route,
             startDestination = Home.route
         ) {
-            composable(Home.route) { HomeScreen() }
+            composable(Home.route) { HomeScreen { navController.navigateToDynamic() } }
             composable(Profile.route) {
                 ProfileScreen { navController.navigateToAuth() }
             }
             navBarDestinations.drop(2).forEach { dest ->
                 composable(dest.route) { EmptyScreen() }
             }
+            composable(Dynamic.route) { DynamicScreen() }
         }
         navigation(
             route = Auth.route,

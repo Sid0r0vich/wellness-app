@@ -67,4 +67,7 @@
     <string name="web_error">web error</string>
 
     <string name="woman_sex">Woman</string>
+    <string name="navigation_dynamic">Dynamic</string>
+    <string name="ferritin">Ferritin</string>
+    <string name="vitamin_D">Vitamin D</string>
 </resources>

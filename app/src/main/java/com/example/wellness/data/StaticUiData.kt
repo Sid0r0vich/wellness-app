@@ -14,3 +14,12 @@ object HomeScreenData {
         R.drawable.report
     )
 }
+
+object DynamicScreenData {
+    val graphLabels = arrayOf(
+        R.string.ferritin,
+        R.string.vitamin_D
+    )
+
+    val graphValues: Array<Float> = arrayOf(22.7f, 38f)
+}

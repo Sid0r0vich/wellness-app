@@ -16,7 +16,7 @@ import com.example.wellness.ui.components.TopAppBar
 import com.example.wellness.ui.navigation.BottomNavigationBar
 import com.example.wellness.ui.navigation.Home
 import com.example.wellness.ui.navigation.Login
-import com.example.wellness.ui.navigation.MyHavHost
+import com.example.wellness.ui.navigation.MyNavHost
 import com.example.wellness.ui.navigation.NavDestination
 import com.example.wellness.ui.navigation.addLogger
 import com.example.wellness.ui.navigation.navBarDestinations
@@ -65,7 +65,7 @@ fun WellnessApp() {
                 }
             }
         ) { innerPadding ->
-            MyHavHost(
+            MyNavHost(
                 navController = navController,
                 modifier = Modifier.padding(innerPadding)
             )
