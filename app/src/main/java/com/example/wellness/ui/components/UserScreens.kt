@@ -46,7 +46,7 @@ fun UserCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier.padding(PaddingValues(20.dp))
+                modifier = Modifier.padding(PaddingValues(LocalBoardPadding.current))
             ) {
                 Text(
                     text = "Hello, $userName!",

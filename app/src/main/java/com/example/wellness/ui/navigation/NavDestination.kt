@@ -84,5 +84,6 @@ val navDestinations = listOf(
     Profile,
     Add,
     Chat,
-    Notifications
+    Notifications,
+    Dynamic
 )

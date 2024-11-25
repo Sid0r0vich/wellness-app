@@ -24,7 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wellness.R
 import com.example.wellness.data.DynamicScreenData
+import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.HomeUserCard
+import com.example.wellness.ui.components.LocalBoardPadding
+import com.example.wellness.ui.components.LocalGridPadding
 import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.DynamicViewModel
 
@@ -114,7 +117,7 @@ fun IndicatorGraph(
         color = MaterialTheme.colorScheme.surfaceVariant,
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(LocalBoardPadding.current)
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

@@ -22,12 +22,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.wellness.R
 import com.example.wellness.data.HomeScreenData
+import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.HomeUserCard
+import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.HomeViewModel
 
@@ -51,12 +51,8 @@ fun HomeScreen(
             item {
                 DefaultSpacer()
                 IndicatorsPanel(
-                    paddingGrid = LocalGridPadding.current * 2,
-                    values = listOf(42, 13),
-                    painters = listOf(
-                        painterResource(R.drawable.trace),
-                        painterResource(R.drawable.heart)
-                    ),
+                    values = HomeScreenData.panelValues,
+                    painters = HomeScreenData.panelIcons,
                 )
             }
             itemsIndexed(HomeScreenData.panelLabels zip HomeScreenData.panelImageIds) { idx, panel ->
@@ -87,10 +83,7 @@ fun AppPanel(
     ) {
         Row(
             modifier = Modifier
-                .padding(PaddingValues(
-                    horizontal = 25.dp,
-                    vertical = 20.dp,
-                )),
+                .padding(PaddingValues(LocalBoardPadding.current)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -113,9 +106,8 @@ fun AppPanel(
 @Composable
 fun IndicatorsPanel(
     modifier: Modifier = Modifier,
-    paddingGrid: Dp,
     values: List<Int>,
-    painters: List<Painter>,
+    painters: List<Int>,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -124,7 +116,7 @@ fun IndicatorsPanel(
             AppPanel(
                 modifier = Modifier.weight(1.0F),
                 text = indicator.first.toString(),
-                painter = indicator.second,
+                painter = painterResource(indicator.second),
             )
             if (idx != values.size - 1) DefaultSpacer()
         }
