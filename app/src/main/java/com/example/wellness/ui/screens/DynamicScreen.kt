@@ -3,7 +3,6 @@ package com.example.wellness.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -61,11 +60,11 @@ fun DynamicScreen(
                 )
             }
             item {
-                (DynamicScreenData.graphLabels zip DynamicScreenData.graphValues).forEach { item ->
+                (DynamicScreenData.graphLabels zip DynamicScreenData.graphValues).forEachIndexed { idx, item ->
                     DefaultSpacer()
                     IndicatorCard(
                         name = stringResource(item.first),
-                        values = DynamicScreenData.ferritinValues,
+                        values = DynamicScreenData.indicatorValues[idx],
                         value = item.second
                     )
                 }
@@ -143,8 +142,8 @@ fun IndicatorCard(
 @Composable
 fun IndicatorGraphCard(values: List<Float>) {
     Surface(
-        modifier = Modifier.padding(PaddingValues(LocalBoardPadding.current)),
-        color = Color.Gray
+        color = Color.Gray,
+        shape = MaterialTheme.shapes.medium
     ) {
         IndicatorGraph(values)
     }

@@ -26,6 +26,7 @@ object DynamicScreenData {
         R.string.vitamin_D
     )
     val graphValues: List<Float> = listOf(22.7f, 38f)
-    val ferritinValues: List<Float> = listOf(19f, 20.5f, 24f, 22.7f)
-    val vitaminDValues: List<Float> = listOf(34f, 35.7f, 37f, 38f, 35f)
+    val indicatorValues: List<List<Float>> = listOf(
+        listOf(19f, 20.5f, 24f, 19.7f), listOf(34f, 35.7f, 37f, 38f, 35f)
+    )
 }
