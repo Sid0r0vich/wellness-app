@@ -3,6 +3,7 @@ package com.example.wellness.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +28,7 @@ import com.example.wellness.R
 import com.example.wellness.data.DynamicScreenData
 import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.HomeUserCard
+import com.example.wellness.ui.components.IndicatorGraph
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.components.LocalGridPadding
 import com.example.wellness.ui.viewModels.AppViewModelProvider
@@ -60,7 +63,11 @@ fun DynamicScreen(
             item {
                 (DynamicScreenData.graphLabels zip DynamicScreenData.graphValues).forEach { item ->
                     DefaultSpacer()
-                    IndicatorGraph(name = stringResource(item.first), value = item.second)
+                    IndicatorCard(
+                        name = stringResource(item.first),
+                        values = DynamicScreenData.ferritinValues,
+                        value = item.second
+                    )
                 }
             }
         }
@@ -107,9 +114,10 @@ fun IndicatorsButtonPanel(
 }
 
 @Composable
-fun IndicatorGraph(
+fun IndicatorCard(
     name: String,
     value: Float,
+    values: List<Float>,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -126,6 +134,18 @@ fun IndicatorGraph(
                 Text(text = name, style = MaterialTheme.typography.headlineMedium)
                 Text(text = value.toString(), style = MaterialTheme.typography.headlineLarge)
             }
+            DefaultSpacer()
+            IndicatorGraphCard(values)
         }
+    }
+}
+
+@Composable
+fun IndicatorGraphCard(values: List<Float>) {
+    Surface(
+        modifier = Modifier.padding(PaddingValues(LocalBoardPadding.current)),
+        color = Color.Gray
+    ) {
+        IndicatorGraph(values)
     }
 }

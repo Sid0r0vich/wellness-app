@@ -9,12 +9,11 @@ plugins {
 
 android {
     namespace = "com.example.wellness"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.wellness"
         minSdk = 29
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -90,4 +89,9 @@ dependencies {
     annotationProcessor(libs.androidx.lifecycle.compiler)
 
     implementation(libs.androidx.multidex)
+
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m3)
+    implementation(libs.vico.core)
+    implementation(libs.vico.views)
 }
