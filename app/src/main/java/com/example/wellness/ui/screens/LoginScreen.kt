@@ -13,9 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
 import com.example.wellness.auth.AuthData
 import com.example.wellness.auth.AuthStatus
@@ -26,21 +24,16 @@ import com.example.wellness.ui.components.AuthFieldsInvalidation
 import com.example.wellness.ui.components.AuthPasswordField
 import com.example.wellness.ui.components.Header
 import com.example.wellness.ui.viewModels.LoginViewModel
-import com.example.wellness.ui.viewModels.getAuth
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     onPerformLogin: () -> Unit,
     onRegisterClick: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val viewModel: LoginViewModel = viewModel(
-        factory = viewModelFactory {
-            initializer {
-                LoginViewModel(getAuth(), onPerformLogin)
-            }
-        }
-    )
+    if (viewModel.isAutheticated()) onPerformLogin()
+
     val messageNotifier = MessageNotifier(LocalContext.current)
     val uiState = viewModel.uiState
     AuthFieldsInvalidation(uiState)

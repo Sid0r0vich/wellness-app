@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
 import com.example.wellness.auth.AuthStatus
 import com.example.wellness.auth.MessageNotifier
@@ -32,13 +32,12 @@ import com.example.wellness.ui.components.AuthEmailField
 import com.example.wellness.ui.components.AuthFieldsInvalidation
 import com.example.wellness.ui.components.AuthPasswordField
 import com.example.wellness.ui.components.Header
-import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: RegisterViewModel = hiltViewModel(),
     onPerformRegister: () -> Unit,
     onLoginClick: () -> Unit
 ) {

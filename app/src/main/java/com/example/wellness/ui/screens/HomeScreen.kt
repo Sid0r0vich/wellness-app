@@ -23,18 +23,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.data.HomeScreenData
 import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.components.LocalBoardPadding
-import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.HomeViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: HomeViewModel = hiltViewModel(),
     onDynamic: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()

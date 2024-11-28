@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
 import com.example.wellness.data.DynamicScreenData
 import com.example.wellness.ui.components.DefaultSpacer
@@ -30,13 +30,12 @@ import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.components.IndicatorGraph
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.components.LocalGridPadding
-import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.DynamicViewModel
 
 @Composable
 fun DynamicScreen(
     modifier: Modifier = Modifier,
-    viewModel: DynamicViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: DynamicViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

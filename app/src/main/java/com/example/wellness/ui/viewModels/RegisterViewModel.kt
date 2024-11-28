@@ -9,8 +9,11 @@ import com.example.wellness.data.UserInfo
 import com.example.wellness.data.UserInfoRepository
 import com.example.wellness.utils.DataValidator
 import com.example.wellness.utils.toAuthStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RegisterViewModel(
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {

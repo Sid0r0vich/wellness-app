@@ -23,7 +23,9 @@ import com.example.wellness.ui.navigation.navBarDestinations
 import com.example.wellness.ui.navigation.navDestinations
 import com.example.wellness.ui.navigation.navigateFromHome
 import com.example.wellness.ui.theme.WellnessAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

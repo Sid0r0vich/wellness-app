@@ -5,6 +5,7 @@ import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 interface UserInfoRepository {
     fun getUserStream(userId: String): Flow<UserInfo?>
@@ -22,7 +23,7 @@ class UserInfoMockRepository: UserInfoRepository {
     override fun updateUser(userInfo: UserInfo) {}
 }
 
-class UserInfoFirebaseRepository(db: UserDatabase): UserInfoRepository {
+class UserInfoFirebaseRepository @Inject constructor(db: UserDatabase): UserInfoRepository {
     private val collection = db.getDatabase().collection(COLLECTION_NAME)
 
     override fun getUserStream(userId: String): Flow<UserInfo?> {

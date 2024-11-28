@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
 private class Firebase {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -74,7 +75,7 @@ interface Auth {
     fun signOut()
 }
 
-class FirebaseAuth : Auth {
+class FirebaseAuth @Inject constructor() : Auth {
     private val firebase = Firebase()
 
     private val _authState: MutableStateFlow<AuthState> =

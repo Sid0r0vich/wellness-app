@@ -1,8 +1,12 @@
 package com.example.wellness.data
 
-enum class Sex() {
+enum class Sex {
     Man,
     Woman
+}
+
+enum class BloodType {
+    O, A, B, AB
 }
 
 data class UserInfo(

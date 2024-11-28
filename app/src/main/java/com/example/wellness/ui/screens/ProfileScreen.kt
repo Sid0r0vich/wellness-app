@@ -17,16 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
 import com.example.wellness.ui.components.UserCard
-import com.example.wellness.ui.viewModels.AppViewModelProvider
 import com.example.wellness.ui.viewModels.ProfileViewModel
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: ProfileViewModel = hiltViewModel(),
     onUnauthenticated: () -> Unit
 ) {
     DefaultScreen {
