@@ -70,4 +70,6 @@
     <string name="navigation_dynamic">Dynamic</string>
     <string name="ferritin">Ferritin</string>
     <string name="vitamin_D">Vitamin D</string>
+    <string name="navigation_health_report">Health report</string>
+    <string name="health_report_header">%1$d out of %2$d indicators \n are normal</string>
 </resources>

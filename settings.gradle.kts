@@ -16,9 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://maven-central.storage.apis.com")
-        }
+        maven { url = uri("https://maven-central.storage.apis.com") }
         gradlePluginPortal()
     }
 }

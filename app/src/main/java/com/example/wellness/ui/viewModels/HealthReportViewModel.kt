@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DynamicViewModel @Inject constructor(
+class HealthReportViewModel @Inject constructor(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : UserViewModel(auth, userInfoRepository)

@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.wellness.ui.screens.DynamicScreen
 import com.example.wellness.ui.screens.EmptyScreen
+import com.example.wellness.ui.screens.HealthReportScreen
 import com.example.wellness.ui.screens.HomeScreen
 import com.example.wellness.ui.screens.LoginScreen
 import com.example.wellness.ui.screens.ProfileScreen
@@ -27,7 +28,15 @@ fun MyNavHost(
             route = User.route,
             startDestination = Home.route
         ) {
-            composable(Home.route) { HomeScreen { navController.navigateToDynamic() } }
+            composable(Home.route) {
+                HomeScreen(
+                    onClicks = listOf(
+                        {  },
+                        { navController.navigateToDynamic() },
+                        { navController.navigateToHealthReport() }
+                    )
+                )
+            }
             composable(Profile.route) {
                 ProfileScreen { navController.navigateToAuth() }
             }
@@ -35,6 +44,7 @@ fun MyNavHost(
                 composable(dest.route) { EmptyScreen() }
             }
             composable(Dynamic.route) { DynamicScreen() }
+            composable(HealthReport.route) { HealthReportScreen() }
         }
         navigation(
             route = Auth.route,

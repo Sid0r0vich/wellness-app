@@ -34,10 +34,9 @@ import com.example.wellness.ui.viewModels.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    onDynamic: () -> Unit,
+    onClicks: List<() -> Unit>,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val onClicks = arrayOf({}, onDynamic, {})
 
     DefaultScreen {
         LazyColumn(

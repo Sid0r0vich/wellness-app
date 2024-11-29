@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-abstract class UserViewModel(
+open class UserViewModel(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
