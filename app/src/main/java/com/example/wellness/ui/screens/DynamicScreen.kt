@@ -49,12 +49,14 @@ fun DynamicScreen(
             )
         }
         item {
-            (DynamicScreenData.graphLabels zip DynamicScreenData.graphValues).forEachIndexed { idx, item ->
+            DynamicScreenData.indicators.forEach { indicator ->
+                val value = indicator.values.last()
                 DefaultSpacer()
                 IndicatorCard(
-                    name = stringResource(item.first),
-                    values = DynamicScreenData.indicatorValues[idx],
-                    value = item.second
+                    name = stringResource(indicator.nameId),
+                    values = indicator.values,
+                    value = value,
+                    referenceValues = indicator.referenceValues
                 )
             }
         }
@@ -105,6 +107,7 @@ fun IndicatorCard(
     name: String,
     value: Float,
     values: List<Float>,
+    referenceValues: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -119,20 +122,32 @@ fun IndicatorCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = name, style = MaterialTheme.typography.headlineMedium)
-                Text(text = value.toString(), style = MaterialTheme.typography.headlineLarge)
+                Text(
+                    text = value.toString(),
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = when(value) {
+                        in referenceValues -> Color.Green
+                        else -> Color.Red
+                    }
+                )
             }
             DefaultSpacer()
-            IndicatorGraphCard(values)
+            IndicatorGraphCard(
+                values,
+                referenceValues,
+            )
         }
     }
 }
 
 @Composable
-fun IndicatorGraphCard(values: List<Float>) {
+fun IndicatorGraphCard(
+    values: List<Float>,
+    referenceValues: ClosedFloatingPointRange<Float>
+) {
     Surface(
-        color = Color.Gray,
         shape = MaterialTheme.shapes.medium
     ) {
-        IndicatorGraph(values)
+        IndicatorGraph(values, referenceValues)
     }
 }

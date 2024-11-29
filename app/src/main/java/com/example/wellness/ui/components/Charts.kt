@@ -35,15 +35,15 @@ import com.patrykandpatrick.vico.compose.common.fill
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
-import kotlin.random.Random
 
 @Composable
 fun IndicatorGraph(
     values: List<Float>,
+    referenceValues: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier
 ) {
+    val colors = listOf(Color.Green, Color.Red)
     val minValue = values.min()
-    val colors = listOf(Color.Red, Color.Green, Color.Yellow, Color.Cyan)
     val modelProducer = remember { CartesianChartModelProducer() }
     LaunchedEffect(Unit) {
         modelProducer.runTransaction { lineSeries { series( values.map { value -> value - minValue } ) } }
@@ -54,7 +54,9 @@ fun IndicatorGraph(
             rememberLineCartesianLayer(
                 LineCartesianLayer.LineProvider.series(
                     LineCartesianLayer.rememberLine(
-                        fill = remember { LineCartesianLayer.LineFill.single(fill(colors[Random.nextInt(colors.size)])) },
+                        fill = LineCartesianLayer.LineFill.single(fill(
+                            if (values.last() in referenceValues) Color.Green else Color.Red
+                        )),
                         pointConnector = remember { LineCartesianLayer.PointConnector.cubic(curvature = 0f) },
                     )
                 )

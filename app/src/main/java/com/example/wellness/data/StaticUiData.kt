@@ -20,13 +20,28 @@ object HomeScreenData {
     )
 }
 
+data class Indicator(
+    val nameId: Int,
+    val values: List<Float>,
+    val referenceValues: ClosedFloatingPointRange<Float>
+)
+
 object DynamicScreenData {
-    val graphLabels = listOf(
-        R.string.ferritin,
-        R.string.vitamin_D
+    val indicators: List<Indicator> = listOf(
+        Indicator(
+            nameId = R.string.ferritin,
+            values = listOf(19f, 20.5f, 24f, 19.7f, 22.7f),
+            referenceValues = 15f..204f
+        ),
+        Indicator(
+            nameId = R.string.vitamin_D,
+            values = listOf(34f, 35.7f, 37f, 38f, 35f, 38f),
+            referenceValues = 30f..100f
+        ),
+        Indicator(
+            nameId = R.string.vitamin_B12,
+            values = listOf(84f, 85.7f, 87f, 88f, 85f, 105f, 130f, 111f, 115f),
+            referenceValues = 30f..100f
     )
-    val graphValues: List<Float> = listOf(22.7f, 38f)
-    val indicatorValues: List<List<Float>> = listOf(
-        listOf(19f, 20.5f, 24f, 19.7f), listOf(34f, 35.7f, 37f, 38f, 35f)
     )
 }
