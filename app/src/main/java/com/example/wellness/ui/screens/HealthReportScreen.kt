@@ -8,10 +8,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
+import com.example.wellness.data.Indicator
+import com.example.wellness.ui.components.Card
 import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.HealthReportDonutChart
 import com.example.wellness.ui.viewModels.HealthReportViewModel
@@ -22,13 +25,30 @@ fun HealthReportScreen(
     viewModel: HealthReportViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val count = 7
-    val total = 8
+
+    val indicators: List<Indicator> = viewModel.getIndicatorStateFlows()
+        .map { indicatorStateFlow -> indicatorStateFlow.collectAsState().value }
+    val badIndicators = indicators.filter { indicator ->
+        indicator.values.lastOrNull()?.let { last ->
+            last !in indicator.referenceValues
+        } ?: false
+    }
+    val totalCount = indicators.size
+    val goodIndicatorsCount = totalCount - badIndicators.size
 
     UserScreen(uiState) {
         item {
-            DonutChartReport(count = count, total = total)
+            DonutChartReport(count = goodIndicatorsCount, total = totalCount)
         }
+        item {
+            DefaultSpacer()
+            Text(
+                text = stringResource(R.string.indicator_attention),
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center
+            )
+        }
+        badIndicators.forEach { indicator -> item { indicator.Card() } }
     }
 }
 

@@ -42,7 +42,8 @@ fun IndicatorGraph(
     referenceValues: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier
 ) {
-    val colors = listOf(Color.Green, Color.Red)
+    if (values.isEmpty()) return
+
     val minValue = values.min()
     val modelProducer = remember { CartesianChartModelProducer() }
     LaunchedEffect(Unit) {

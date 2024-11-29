@@ -73,4 +73,7 @@
     <string name="navigation_health_report">Health report</string>
     <string name="health_report_header">%1$d out of %2$d indicators \n are normal</string>
     <string name="vitamin_B12">Vitamin B12</string>
+    <string name="indicator_attention">What pay attention to</string>
+    <string name="init_indicator">Initial indicator</string>
+    <string name="vitamin_B6">Vitamin B6</string>
 </resources>

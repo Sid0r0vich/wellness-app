@@ -14,13 +14,13 @@ interface UserInfoRepository {
     fun updateUser(userInfo: UserInfo)
 }
 
-class UserInfoMockRepository: UserInfoRepository {
+class UserInfoMockRepository @Inject constructor(): UserInfoRepository {
     override fun getUserStream(userId: String): Flow<UserInfo?> {
         return flow { emit(MockUser.user) }
     }
-    override fun insertUser(userInfo: UserInfo, userId: String) {}
-    override fun deleteUser(userInfo: UserInfo) {}
-    override fun updateUser(userInfo: UserInfo) {}
+    override fun insertUser(userInfo: UserInfo, userId: String) { TODO() }
+    override fun deleteUser(userInfo: UserInfo) { TODO() }
+    override fun updateUser(userInfo: UserInfo) { TODO() }
 }
 
 class UserInfoFirebaseRepository @Inject constructor(db: UserDatabase): UserInfoRepository {

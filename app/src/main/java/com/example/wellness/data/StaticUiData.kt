@@ -20,28 +20,29 @@ object HomeScreenData {
     )
 }
 
-data class Indicator(
-    val nameId: Int,
-    val values: List<Float>,
-    val referenceValues: ClosedFloatingPointRange<Float>
-)
-
-object DynamicScreenData {
-    val indicators: List<Indicator> = listOf(
-        Indicator(
+object IndicatorStorage {
+    private val indicators: Map<String, Indicator> = mapOf(
+        "ferritin" to Indicator(
             nameId = R.string.ferritin,
             values = listOf(19f, 20.5f, 24f, 19.7f, 22.7f),
             referenceValues = 15f..204f
         ),
-        Indicator(
+        "vitamin_D" to Indicator(
             nameId = R.string.vitamin_D,
             values = listOf(34f, 35.7f, 37f, 38f, 35f, 38f),
             referenceValues = 30f..100f
         ),
-        Indicator(
+        "vitamin_B12" to Indicator(
             nameId = R.string.vitamin_B12,
             values = listOf(84f, 85.7f, 87f, 88f, 85f, 105f, 130f, 111f, 115f),
             referenceValues = 30f..100f
+        ),
+        "vitamin_B6" to Indicator(
+            nameId = R.string.vitamin_B6,
+            values = listOf(10f, 12.5f, 33f, 41f, 27.5f, 20f, 21.4f, 23.7f, 27.1f),
+            referenceValues = 8.7f..27.2f
+        )
     )
-    )
+
+    fun getAll(): Map<String, Indicator> = indicators
 }

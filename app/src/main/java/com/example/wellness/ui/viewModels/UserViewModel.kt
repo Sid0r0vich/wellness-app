@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 open class UserViewModel(
-    private val auth: Auth,
+    auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
 
@@ -51,6 +51,6 @@ open class UserViewModel(
     )
 
     companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
+        const val TIMEOUT_MILLIS = 5_000L
     }
 }
