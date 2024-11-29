@@ -1,6 +1,5 @@
 package com.example.wellness.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -45,50 +44,45 @@ fun RegisterScreen(
     val uiState = viewModel.uiState
     AuthFieldsInvalidation(uiState)
 
-    DefaultScreen {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+    AuthScreen {
+        Header(R.string.signup)
+        Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
+        AuthEmailField(uiState = uiState)
+        Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
+        AuthPasswordField(uiState = uiState)
+        Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
+        SexChoice(
+            value = uiState.selectedSex,
+            onChangeValue = { value -> uiState.selectedSex = value }
+        )
+        Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
+        AgeChoice(
+            value = uiState.age,
+            valueRange = RegisterUiState.AGE_RANGE,
+            onChangeValue = { value -> uiState.age = value }
+        )
+        AuthButton(
+            authState = viewModel.authState,
+            uiState = uiState,
+            textId = R.string.perform_register
         ) {
-            Header(R.string.signup)
-            Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
-            AuthEmailField(uiState = uiState)
-            Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            AuthPasswordField(uiState = uiState)
-            Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            SexChoice(
-                value = uiState.selectedSex,
-                onChangeValue = { value -> uiState.selectedSex = value }
-            )
-            Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            AgeChoice(
-                value = uiState.age,
-                valueRange = RegisterUiState.AGE_RANGE,
-                onChangeValue = { value -> uiState.age = value }
-            )
-            AuthButton(
-                authState = viewModel.authState,
-                uiState = uiState,
-                textId = R.string.perform_register
-            ) {
-                viewModel.signUp(
-                    UserInfo(
-                        name = "userName",
-                        email = uiState.email,
-                        password = uiState.password,
-                        sex = uiState.selectedSex,
-                        age = uiState.age
-                    )
-                ) { status ->
-                    messageNotifier.notifyUser(status)
-                    if (status == AuthStatus.SUCCESS) onPerformRegister()
-                }
+            viewModel.signUp(
+                UserInfo(
+                    name = "userName",
+                    email = uiState.email,
+                    password = uiState.password,
+                    sex = uiState.selectedSex,
+                    age = uiState.age
+                )
+            ) { status ->
+                messageNotifier.notifyUser(status)
+                if (status == AuthStatus.SUCCESS) onPerformRegister()
             }
-            TextButton(
-                onClick = onLoginClick,
-            ) {
-                Text(text = stringResource(R.string.have_account))
-            }
+        }
+        TextButton(
+            onClick = onLoginClick,
+        ) {
+            Text(text = stringResource(R.string.have_account))
         }
     }
 }

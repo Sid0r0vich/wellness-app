@@ -1,7 +1,5 @@
 package com.example.wellness.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -38,46 +36,41 @@ fun LoginScreen(
     val uiState = viewModel.uiState
     AuthFieldsInvalidation(uiState)
 
-    DefaultScreen {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+    AuthScreen {
+        Header(R.string.login)
+        Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
+        AuthEmailField(uiState = uiState)
+        Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
+        AuthPasswordField(uiState = uiState)
+        TextButton(
+            onClick = {  },
+            modifier = Modifier.align(Alignment.Start)
         ) {
-            Header(R.string.login)
-            Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
-            AuthEmailField(uiState = uiState)
-            Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-            AuthPasswordField(uiState = uiState)
-            TextButton(
-                onClick = {  },
-                modifier = Modifier.align(Alignment.Start)
-            ) {
-                Text(
-                    text = stringResource(R.string.forget_password)
+            Text(
+                text = stringResource(R.string.forget_password)
+            )
+        }
+        AuthButton(
+            authState = viewModel.authState,
+            uiState = uiState,
+            textId = R.string.perform_login
+        ) {
+            viewModel.signIn(
+                AuthData(
+                    uiState.email,
+                    uiState.password
                 )
+            ) { status ->
+                messageNotifier.notifyUser(status)
+                if (status == AuthStatus.SUCCESS) onPerformLogin()
             }
-            AuthButton(
-                authState = viewModel.authState,
-                uiState = uiState,
-                textId = R.string.perform_login
-            ) {
-                viewModel.signIn(
-                    AuthData(
-                        uiState.email,
-                        uiState.password
-                    )
-                ) { status ->
-                    messageNotifier.notifyUser(status)
-                    if (status == AuthStatus.SUCCESS) onPerformLogin()
-                }
-            }
-            TextButton(
-                onClick = onRegisterClick,
-            ) {
-                Text(
-                    text = stringResource(R.string.have_not_account)
-                )
-            }
+        }
+        TextButton(
+            onClick = onRegisterClick,
+        ) {
+            Text(
+                text = stringResource(R.string.have_not_account)
+            )
         }
     }
 }

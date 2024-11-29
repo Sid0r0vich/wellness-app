@@ -4,11 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.data.HomeScreenData
 import com.example.wellness.ui.components.DefaultSpacer
-import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.viewModels.HomeViewModel
 
@@ -38,30 +35,22 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    DefaultScreen {
-        LazyColumn(
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier.fillMaxHeight()
-        ) {
-            item {
-                HomeUserCard(userName = uiState.userName)
-            }
-            item {
-                DefaultSpacer()
-                IndicatorsPanel(
-                    values = HomeScreenData.panelValues,
-                    painters = HomeScreenData.panelIcons,
-                )
-            }
-            itemsIndexed(HomeScreenData.panelLabels zip HomeScreenData.panelImageIds) { idx, panel ->
-                DefaultSpacer()
-                AppPanel(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(panel.first),
-                    painter = painterResource(panel.second),
-                    onClick = onClicks[idx]
-                )
-            }
+    UserScreen(uiState) {
+        item {
+            DefaultSpacer()
+            IndicatorsPanel(
+                values = HomeScreenData.panelValues,
+                painters = HomeScreenData.panelIcons,
+            )
+        }
+        itemsIndexed(HomeScreenData.panelLabels zip HomeScreenData.panelImageIds) { idx, panel ->
+            DefaultSpacer()
+            AppPanel(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(panel.first),
+                painter = painterResource(panel.second),
+                onClick = onClicks[idx]
+            )
         }
     }
 }

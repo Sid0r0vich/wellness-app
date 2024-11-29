@@ -4,11 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,7 +24,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
 import com.example.wellness.data.DynamicScreenData
 import com.example.wellness.ui.components.DefaultSpacer
-import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.components.IndicatorGraph
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.components.LocalGridPadding
@@ -39,34 +36,26 @@ fun DynamicScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    DefaultScreen {
-        LazyColumn(
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier.fillMaxHeight()
-        ) {
-            item {
-                HomeUserCard(userName = uiState.userName)
-            }
-            item {
-                DefaultSpacer()
-                IndicatorsButtonPanel(
-                    paddingGrid = LocalGridPadding.current * 2,
-                    painters = listOf(
-                        painterResource(R.drawable.trace),
-                        painterResource(R.drawable.heart),
-                        painterResource(R.drawable.blood)
-                    )
+    UserScreen(uiState) {
+        item {
+            DefaultSpacer()
+            IndicatorsButtonPanel(
+                paddingGrid = LocalGridPadding.current * 2,
+                painters = listOf(
+                    painterResource(R.drawable.trace),
+                    painterResource(R.drawable.heart),
+                    painterResource(R.drawable.blood)
                 )
-            }
-            item {
-                (DynamicScreenData.graphLabels zip DynamicScreenData.graphValues).forEachIndexed { idx, item ->
-                    DefaultSpacer()
-                    IndicatorCard(
-                        name = stringResource(item.first),
-                        values = DynamicScreenData.indicatorValues[idx],
-                        value = item.second
-                    )
-                }
+            )
+        }
+        item {
+            (DynamicScreenData.graphLabels zip DynamicScreenData.graphValues).forEachIndexed { idx, item ->
+                DefaultSpacer()
+                IndicatorCard(
+                    name = stringResource(item.first),
+                    values = DynamicScreenData.indicatorValues[idx],
+                    value = item.second
+                )
             }
         }
     }
