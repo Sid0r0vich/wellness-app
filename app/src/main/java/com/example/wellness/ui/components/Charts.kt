@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.example.wellness.ui.theme.BadColor
+import com.example.wellness.ui.theme.LightGoodColor
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
@@ -56,7 +58,7 @@ fun IndicatorGraph(
                 LineCartesianLayer.LineProvider.series(
                     LineCartesianLayer.rememberLine(
                         fill = LineCartesianLayer.LineFill.single(fill(
-                            if (values.last() in referenceValues) Color.Green else Color.Red
+                            if (values.last() in referenceValues) LightGoodColor else BadColor
                         )),
                         pointConnector = remember { LineCartesianLayer.PointConnector.cubic(curvature = 0f) },
                     )

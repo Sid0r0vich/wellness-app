@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -17,6 +16,12 @@ import com.example.wellness.data.Indicator
 import com.example.wellness.ui.components.Card
 import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.HealthReportDonutChart
+import com.example.wellness.ui.theme.BadColor
+import com.example.wellness.ui.theme.GoodColor
+import com.example.wellness.ui.theme.LightBadColor
+import com.example.wellness.ui.theme.LightGoodColor
+import com.example.wellness.ui.theme.LightTolerableColor
+import com.example.wellness.ui.theme.TolerableColor
 import com.example.wellness.ui.viewModels.HealthReportViewModel
 
 @Composable
@@ -58,14 +63,14 @@ fun DonutChartReport(
     total: Int
 ) {
     val chartColor = when (count) {
-        in 0..total / 3 -> Color.Red
-        in total / 3 + 1..total * 2 / 3 -> Color(0xFFFF9400)
-        else -> Color(0xFFABE5B7)
+        in 0..total / 3 -> LightBadColor
+        in total / 3 + 1..total * 2 / 3 -> LightTolerableColor
+        else -> LightGoodColor
     }
     val textColor = when (count) {
-        in 0..total / 3 -> Color(	0xFFFC3F4D)
-        in total / 3 + 1..total * 2 / 3 -> Color(0xFFFF9400)
-        else -> Color(0xFF7FAB88)
+        in 0..total / 3 -> BadColor
+        in total / 3 + 1..total * 2 / 3 -> TolerableColor
+        else -> GoodColor
     }
 
     DefaultSpacer()

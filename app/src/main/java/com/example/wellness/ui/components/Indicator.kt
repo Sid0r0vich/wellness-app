@@ -15,9 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.wellness.data.Indicator
+import com.example.wellness.ui.theme.GoodColor
+import com.example.wellness.ui.theme.LightBadColor
 
 @Composable
 fun IndicatorButton(
@@ -81,9 +84,10 @@ fun IndicatorCard(
                 Text(
                     text = value?.toString() ?: "--",
                     style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold,
                     color = value?.let { when(value) {
-                        in referenceValues -> Color.Green
-                        else -> Color.Red
+                        in referenceValues -> GoodColor
+                        else -> LightBadColor
                     } } ?: Color.Transparent
                 )
             }
