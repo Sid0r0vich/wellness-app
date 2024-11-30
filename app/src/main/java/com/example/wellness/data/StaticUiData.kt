@@ -1,8 +1,15 @@
 package com.example.wellness.data
 
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.tween
+import androidx.compose.ui.unit.IntOffset
 import com.example.wellness.R
+import com.example.wellness.ui.navigation.EnterAdditional
+import com.example.wellness.ui.navigation.EnterCredentials
+import com.example.wellness.ui.navigation.EnterPersonal
+import com.example.wellness.ui.navigation.Login
 
-object HomeScreenData {
+object HomeScreenUIStorage {
     val panelLabels = listOf(
         R.string.my_documents,
         R.string.dynamics,
@@ -45,4 +52,15 @@ object IndicatorStorage {
     )
 
     fun getAll(): Map<String, Indicator> = indicators
+}
+
+object StepByStepRegistrationUIStorage {
+    private const val SLIDE_DURATION = 500
+    val stepByStepScreenRoutes: List<String> = listOf(
+        Login.route,
+        EnterCredentials.route,
+        EnterPersonal.route,
+        EnterAdditional.route
+    )
+    val animationSpec: FiniteAnimationSpec<IntOffset> = tween(durationMillis = SLIDE_DURATION)
 }

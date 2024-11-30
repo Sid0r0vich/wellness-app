@@ -22,14 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.wellness.data.HomeScreenData
+import com.example.wellness.data.HomeScreenUIStorage
 import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.viewModels.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     onClicks: List<() -> Unit>,
 ) {
@@ -39,11 +38,11 @@ fun HomeScreen(
         item {
             DefaultSpacer()
             IndicatorsPanel(
-                values = HomeScreenData.panelValues,
-                painters = HomeScreenData.panelIcons,
+                values = HomeScreenUIStorage.panelValues,
+                painters = HomeScreenUIStorage.panelIcons,
             )
         }
-        itemsIndexed(HomeScreenData.panelLabels zip HomeScreenData.panelImageIds) { idx, panel ->
+        itemsIndexed(HomeScreenUIStorage.panelLabels zip HomeScreenUIStorage.panelImageIds) { idx, panel ->
             DefaultSpacer()
             AppPanel(
                 modifier = Modifier.fillMaxWidth(),

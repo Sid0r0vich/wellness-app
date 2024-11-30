@@ -1,6 +1,5 @@
 package com.example.wellness.ui.navigation
 
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
@@ -9,6 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.wellness.data.StepByStepRegistrationUIStorage.animationSpec
+import com.example.wellness.data.StepByStepRegistrationUIStorage.stepByStepScreenRoutes
 import com.example.wellness.ui.screens.DynamicScreen
 import com.example.wellness.ui.screens.EmptyScreen
 import com.example.wellness.ui.screens.HealthReportScreen
@@ -25,7 +26,19 @@ fun MyNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val slideDuration = 500
+    val stepByStepScreenList: List<@Composable () -> Unit> = listOf(
+        { LoginScreen(
+            onPerformLogin = { navController.navigateToUser() },
+            onRegisterClick = { navController.navigateToNext() },
+        ) },
+        { EnterCredentialsScreen(
+            onLoginClick = { navController.navigateToNext() },
+            onNextClick = { navController.navigateToNext() }
+        ) },
+        { EnterPersonalScreen { navController.navigateToNext() } },
+        { EnterAdditionalScreen { navController.navigateToNext() } }
+    )
+
     NavHost(
         navController,
         startDestination = Auth.route,
@@ -57,53 +70,28 @@ fun MyNavHost(
             route = Auth.route,
             startDestination = Login.route
         ) {
-            composable(
-                Login.route,
-                enterTransition = { slideInHorizontally(initialOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) },
-                exitTransition = { slideOutHorizontally(targetOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popExitTransition = { slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) }
-            ) {
-                LoginScreen (
-                    onPerformLogin = { navController.navigateToUser() },
-                    onRegisterClick = { navController.navigateToNext() },
-                )
-            }
             composable(Register.route) {
                 RegisterScreen (
                     onPerformRegister = { navController.navigateToUser() },
                     onLoginClick = { navController.popBackStack() }
                 )
             }
-            composable(
-                EnterCredentials.route,
-                enterTransition = { slideInHorizontally(initialOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) },
-                exitTransition = { slideOutHorizontally(targetOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popExitTransition = { slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) }
-            ) {
-                EnterCredentialsScreen(
-                    onLoginClick = { navController.navigateToNext() },
-                    onNextClick = { navController.navigateToNext() }
+            composable(Login.route) {
+                LoginScreen (
+                    onPerformLogin = { navController.navigateToUser() },
+                    onRegisterClick = { navController.navigateToNext() },
                 )
             }
-            composable(
-                EnterPersonal.route,
-                enterTransition = { slideInHorizontally(initialOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) },
-                exitTransition = { slideOutHorizontally(targetOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popExitTransition = { slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) }
-            ) {
-                EnterPersonalScreen { navController.navigateToNext() }
-            }
-            composable(
-                EnterAdditional.route,
-                enterTransition = { slideInHorizontally(initialOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) },
-                exitTransition = { slideOutHorizontally(targetOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(durationMillis = slideDuration)) },
-                popExitTransition = { slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(durationMillis = slideDuration)) }
-            ) {
-                EnterAdditionalScreen { navController.navigateToNext() }
+            (stepByStepScreenRoutes zip stepByStepScreenList).forEach { composable ->
+                composable(
+                    composable.first,
+                    enterTransition = { slideInHorizontally(initialOffsetX = { it }, animationSpec = animationSpec) },
+                    exitTransition = { slideOutHorizontally(targetOffsetX = { -it }, animationSpec = animationSpec) },
+                    popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }, animationSpec = animationSpec) },
+                    popExitTransition = { slideOutHorizontally(targetOffsetX = { it }, animationSpec = animationSpec) }
+                ) {
+                    composable.second()
+                }
             }
         }
     }
