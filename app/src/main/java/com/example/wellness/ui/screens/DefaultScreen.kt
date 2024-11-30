@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.wellness.ui.components.ArrowButton
 import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.components.LocalGridPadding
@@ -49,8 +51,36 @@ fun AuthScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(LocalGridPadding.current)
         ) {
             content()
+        }
+    }
+}
+
+@Composable
+fun RegisterStepScreen(
+    buttonTextId: Int,
+    onNextClick: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    DefaultScreen {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+                content()
+            }
+
+            ArrowButton(
+                textId = buttonTextId,
+                onClick = onNextClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
+            )
         }
     }
 }

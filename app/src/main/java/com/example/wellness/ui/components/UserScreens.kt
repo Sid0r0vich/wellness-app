@@ -4,14 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,19 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.wellness.R
 
 @Composable
 fun UserCard(
     modifier: Modifier = Modifier,
-    userName: String = stringResource(R.string.user_name),
-    addButton: Boolean = false,
-    buttonOnClick: () -> Unit = {},
-    avatarModifier: Modifier = Modifier
+    content: @Composable ColumnScope.() -> Unit
 ) {
-    val paddingText: Dp = 5.dp
     Surface(
         shape = MaterialTheme.shapes.medium,
         modifier = modifier,
@@ -43,38 +37,26 @@ fun UserCard(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column(
                 modifier = Modifier.padding(PaddingValues(LocalBoardPadding.current))
             ) {
-                Text(
-                    text = "Hello, $userName!",
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Spacer(modifier = Modifier.padding(PaddingValues(paddingText)))
-                Text(
-                    text = stringResource(R.string.be_wellness),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                if (addButton) {
-                    Spacer(modifier = Modifier.padding(PaddingValues(paddingText)))
-                    Button(
-                        onClick = buttonOnClick,
-                    ) {
-                        Text(text = stringResource(R.string.sign_out))
-                    }
-                }
+                content()
             }
-            Image(
-                painter = painterResource(R.drawable.user),
-                contentDescription = null,
-                modifier = avatarModifier
-                    .padding(PaddingValues(10.dp))
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Gray, CircleShape)
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.user),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(PaddingValues(10.dp))
+                        .clip(CircleShape)
+                        .border(2.dp, Color.Gray, CircleShape)
+                )
+            }
         }
     }
 }
@@ -82,11 +64,22 @@ fun UserCard(
 @Composable
 fun HomeUserCard(
     modifier: Modifier = Modifier,
-    userName: String
+    userName: String = stringResource(R.string.user_name),
+    content: @Composable ColumnScope.() -> Unit = {}
 ) {
     UserCard(
         modifier = modifier.fillMaxWidth(),
-        userName = userName,
-        avatarModifier = Modifier.size(110.dp)
-    )
+    ) {
+        Text(
+            text = "Hello, $userName!",
+            style = MaterialTheme.typography.titleMedium,
+        )
+        Spacer(modifier = Modifier.padding(PaddingValues(5.dp)))
+        Text(
+            text = stringResource(R.string.be_wellness),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        content()
+    }
 }

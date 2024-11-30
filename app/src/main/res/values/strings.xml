@@ -76,4 +76,7 @@
     <string name="indicator_attention">What pay attention to</string>
     <string name="init_indicator">Initial indicator</string>
     <string name="vitamin_B6">Vitamin B6</string>
+    <string name="next">Next</string>
+    <string name="personal_data">Personal data</string>
+    <string name="additional">Additional data</string>
 </resources>

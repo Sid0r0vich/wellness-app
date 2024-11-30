@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
-import com.example.wellness.ui.components.UserCard
+import com.example.wellness.ui.components.DefaultSpacer
+import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.viewModels.ProfileViewModel
 
 @Composable
@@ -28,26 +29,21 @@ fun ProfileScreen(
 ) {
     LazyScreen {
         item {
-            ProfileUserCard(viewModel.uiState.collectAsState().value.userName) {
-                viewModel.signOut()
-                onUnauthenticated()
+            HomeUserCard(userName = viewModel.uiState.collectAsState().value.userName)
+        }
+        item {
+            DefaultSpacer()
+            Button(
+                onClick = {
+                    viewModel.signOut()
+                    onUnauthenticated()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.sign_out))
             }
         }
     }
-}
-
-@Composable
-fun ProfileUserCard(
-    userName: String,
-    buttonOnClick: () -> Unit,
-) {
-    UserCard(
-        modifier = Modifier.fillMaxWidth(),
-        userName = userName,
-        addButton = true,
-        buttonOnClick = buttonOnClick,
-        avatarModifier = Modifier.size(140.dp)
-    )
 }
 
 @Composable

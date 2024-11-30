@@ -2,6 +2,7 @@ package com.example.wellness.ui.components
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -15,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -129,9 +131,10 @@ fun AuthButton(
             uiState.passwordIsValidated = true
         },
         enabled =
-        uiState.email.isNotEmpty() &&
-                uiState.password.isNotEmpty() &&
-                authState != AuthState.Loading,
+            uiState.email.isNotEmpty() &&
+            uiState.password.isNotEmpty() &&
+            authState != AuthState.Loading,
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(text = stringResource(textId))
     }

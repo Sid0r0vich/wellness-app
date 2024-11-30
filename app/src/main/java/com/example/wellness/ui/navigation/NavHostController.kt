@@ -28,9 +28,16 @@ fun NavHostController.navigateWithPopUp(
     }
 }
 
+fun NavHostController.navigateToNext() {
+    when(this.currentBackStackEntry?.destination?.route) {
+        "login" -> "enter_credentials"
+        "enter_credentials" -> "enter_personal"
+        "enter_personal" -> "enter_additional"
+        else -> null
+    }?.let { route -> this.navigate(route) }
+}
+
 fun NavHostController.navigateToUser() = navigateWithPopUp(User.route, Auth.route, true)
-fun NavHostController.navigateToLogin() = navigateWithPopUp(Login.route, Auth.route, false)
-fun NavHostController.navigateToRegister() = navigateWithPopUp(Register.route, Auth.route, false)
 fun NavHostController.navigateToAuth() = navigateWithPopUp(Auth.route, User.route, true)
 fun NavHostController.navigateToDynamic() = navigateWithPopUp(Dynamic.route, Home.route, false)
 fun NavHostController.navigateToHealthReport() = navigateWithPopUp(HealthReport.route, Home.route, false)

@@ -31,5 +31,5 @@ class LoginViewModel @Inject constructor(
         auth.signIn(authData, onComplete)
     }
 
-    fun isAutheticated(): Boolean = authState == AuthState.Authenticated
+    fun isAuthenticated(): Boolean = authState == AuthState.Authenticated
 }

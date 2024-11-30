@@ -38,6 +38,18 @@ object Register : NavDestination(
     label = R.string.navigation_register,
     route = "register"
 )
+object EnterCredentials : NavDestination(
+    label = R.string.navigation_register,
+    route = "enter_credentials"
+)
+object EnterPersonal : NavDestination(
+    label = R.string.navigation_register,
+    route = "enter_personal"
+)
+object EnterAdditional : NavDestination(
+    label = R.string.navigation_register,
+    route = "enter_additional"
+)
 
 object Home : NavBarDestination(
     label = R.string.bottom_navigation_home,
@@ -84,6 +96,10 @@ val navBarDestinations = listOf(
 
 val navDestinations = listOf(
     Login,
+    Register,
+    EnterCredentials,
+    EnterPersonal,
+    EnterAdditional,
     Home,
     Profile,
     Add,
