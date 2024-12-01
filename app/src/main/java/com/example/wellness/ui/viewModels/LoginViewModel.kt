@@ -11,16 +11,11 @@ import com.example.wellness.utils.toAuthStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-data class LoginViewModelParams(
-    val onPerformLogin: () -> Unit
-)
-
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val auth: FirebaseAuth,
 ) : ViewModel() {
     val authState = auth.authState
-    val authStateFlow = auth.authStateFlow
     val uiState: AuthUiState = AuthUiState()
 
     fun signIn(authData: AuthData, onComplete: (AuthStatus) -> Unit = {}) {

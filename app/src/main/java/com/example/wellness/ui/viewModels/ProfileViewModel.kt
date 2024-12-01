@@ -10,7 +10,5 @@ class ProfileViewModel @Inject constructor(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : UserViewModel(auth, userInfoRepository) {
-    val authState = auth.authState
-    val authStateFlow = auth.authStateFlow
     fun signOut() = auth.signOut()
 }

@@ -117,9 +117,8 @@ class FirebaseAuth @Inject constructor() : Auth {
     }
 
     override fun signOut() {
-        authState = AuthState.Loading
-        firebase.signOut()
         authState = AuthState.Unauthenticated
+        firebase.signOut()
     }
 
     private val onAuth = { onComplete: (AuthStatus) -> Unit ->
