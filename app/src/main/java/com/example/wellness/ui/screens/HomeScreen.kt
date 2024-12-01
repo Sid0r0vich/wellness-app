@@ -29,6 +29,7 @@ import com.example.wellness.ui.viewModels.HomeViewModel
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     onClicks: List<() -> Unit>,
 ) {

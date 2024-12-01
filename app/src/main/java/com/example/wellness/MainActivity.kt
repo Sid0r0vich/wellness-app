@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -23,11 +24,13 @@ import com.example.wellness.ui.navigation.navBarDestinations
 import com.example.wellness.ui.navigation.navDestinations
 import com.example.wellness.ui.navigation.navigateFromHome
 import com.example.wellness.ui.theme.WellnessAppTheme
+import com.example.wellness.ui.viewModels.EnterStepsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val viewModel: EnterStepsViewModel by viewModels()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

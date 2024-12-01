@@ -1,11 +1,16 @@
 package com.example.wellness.ui.screens
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -17,11 +22,10 @@ import com.example.wellness.auth.MessageNotifier
 import com.example.wellness.auth.RegisterUiState
 import com.example.wellness.data.UserInfo
 import com.example.wellness.ui.components.AuthButton
-import com.example.wellness.ui.components.AuthEmailField
+import com.example.wellness.ui.components.AuthEmailInputField
 import com.example.wellness.ui.components.AuthFieldsInvalidation
-import com.example.wellness.ui.components.AuthPasswordField
+import com.example.wellness.ui.components.AuthPasswordInputField
 import com.example.wellness.ui.components.Header
-import com.example.wellness.ui.screens.register.AgeChoice
 import com.example.wellness.ui.screens.register.SexChoice
 import com.example.wellness.ui.viewModels.RegisterViewModel
 
@@ -39,9 +43,9 @@ fun RegisterScreen(
     AuthScreen {
         Header(R.string.signup)
         Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
-        AuthEmailField(uiState = uiState)
+        AuthEmailInputField(uiState = uiState)
         Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-        AuthPasswordField(uiState = uiState)
+        AuthPasswordInputField(uiState = uiState)
         Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
         SexChoice(
             value = uiState.selectedSex,
@@ -75,6 +79,33 @@ fun RegisterScreen(
             onClick = onLoginClick,
         ) {
             Text(text = stringResource(R.string.have_account))
+        }
+    }
+}
+
+@Composable
+fun AgeChoice(
+    value: Int,
+    valueRange: IntRange,
+    onChangeValue: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.padding(PaddingValues(horizontal = 60.dp))
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "${stringResource(R.string.age)}: ${value}",
+                style = MaterialTheme.typography.titleLarge
+            )
+            Slider(
+                value = value.toFloat(),
+                onValueChange = { onChangeValue(it.toInt()) },
+                valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
+                steps = valueRange.last - valueRange.first - 1
+            )
         }
     }
 }

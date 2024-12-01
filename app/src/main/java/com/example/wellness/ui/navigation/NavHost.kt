@@ -4,6 +4,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,23 +21,26 @@ import com.example.wellness.ui.screens.RegisterScreen
 import com.example.wellness.ui.screens.register.EnterAdditionalScreen
 import com.example.wellness.ui.screens.register.EnterCredentialsScreen
 import com.example.wellness.ui.screens.register.EnterPersonalScreen
+import com.example.wellness.ui.viewModels.EnterStepsViewModel
 
 @Composable
 fun MyNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val enterStepsViewModel: EnterStepsViewModel = hiltViewModel()
     val stepByStepScreenList: List<@Composable () -> Unit> = listOf(
         { LoginScreen(
             onPerformLogin = { navController.navigateToUser() },
             onRegisterClick = { navController.navigateToNext() },
         ) },
         { EnterCredentialsScreen(
+            viewModel = enterStepsViewModel,
             onLoginClick = { navController.navigateToNext() },
             onNextClick = { navController.navigateToNext() }
         ) },
-        { EnterPersonalScreen { navController.navigateToNext() } },
-        { EnterAdditionalScreen { navController.navigateToNext() } }
+        { EnterPersonalScreen(viewModel = enterStepsViewModel) { navController.navigateToNext() } },
+        { EnterAdditionalScreen(viewModel = enterStepsViewModel) { navController.navigateToUser() } }
     )
 
     NavHost(

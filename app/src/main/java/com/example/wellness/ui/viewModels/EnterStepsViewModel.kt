@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.wellness.auth.Auth
 import com.example.wellness.auth.AuthData
 import com.example.wellness.auth.AuthStatus
-import com.example.wellness.auth.RegisterUiState
+import com.example.wellness.auth.EnterStepsUiState
 import com.example.wellness.data.UserInfo
 import com.example.wellness.data.UserInfoRepository
 import com.example.wellness.utils.DataValidator
@@ -13,12 +13,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class EnterStepsViewModel @Inject constructor(
     private val auth: Auth,
     private val userInfoRepository: UserInfoRepository
 ) : ViewModel() {
     val authState = auth.authState
-    val uiState: RegisterUiState = RegisterUiState()
+    val uiState: EnterStepsUiState = EnterStepsUiState()
+
+    fun validateCredentials(): Boolean {
+        return false
+    }
 
     fun signUp(userInfo: UserInfo, onComplete: (AuthStatus) -> Unit = {}) {
         val authData = AuthData(userInfo.email, userInfo.password)

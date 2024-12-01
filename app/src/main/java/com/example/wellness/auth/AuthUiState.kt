@@ -35,3 +35,31 @@ class RegisterUiState(
         val AGE_RANGE = 14..120
     }
 }
+
+
+class EnterStepsUiState(
+    name: MutableState<String> = mutableStateOf(""),
+    selectedSex: MutableState<Sex> = mutableStateOf(Sex.Man),
+    age: MutableState<Int> = mutableIntStateOf(DEFAULT_AGE),
+    height: MutableState<Int> = mutableIntStateOf(DEFAULT_HEIGHT),
+    weight: MutableState<Int> = mutableIntStateOf(DEFAULT_WEIGHT),
+    nameIsValidated: MutableState<Boolean> = mutableStateOf(false),
+    var nameSource: MutableInteractionSource = MutableInteractionSource()
+) : AuthUiState() {
+    var name by name
+    var selectedSex by selectedSex
+    var age by age
+    var height by height
+    var weight by weight
+    var nameIsValidated by nameIsValidated
+
+    companion object {
+        private const val DEFAULT_AGE = 18
+        private const val DEFAULT_HEIGHT = 175
+        private const val DEFAULT_WEIGHT = 70
+
+        val AGE_RANGE = 14..99
+        val HEIGHT_RANGE = 120..210
+        val WEIGHT_RANGE = 40..160
+    }
+}

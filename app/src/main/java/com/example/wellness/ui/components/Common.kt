@@ -3,6 +3,7 @@ package com.example.wellness.ui.components
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.chargemap.compose.numberpicker.NumberPicker
 import com.example.wellness.ui.navigation.NavDestination
 
 val LocalGridPadding = compositionLocalOf<Dp> { error("no value provided") }
@@ -91,13 +93,15 @@ fun WellnessTextFiled(
 }
 
 @Composable
-fun ArrowButton(
+fun RightArrowButton(
     modifier: Modifier = Modifier,
     textId: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier,
         shape = RectangleShape
     ) {
@@ -106,7 +110,7 @@ fun ArrowButton(
         ) {
             Text(
                 text = stringResource(textId),
-                style = MaterialTheme.typography.displayMedium,
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.align(Alignment.Center)
             )
             Icon(
@@ -115,5 +119,26 @@ fun ArrowButton(
                 modifier = Modifier.align(Alignment.CenterEnd)
             )
         }
+    }
+}
+
+@Composable
+fun DefaultPicker(
+    labelId: Int,
+    value: Int,
+    range: Iterable<Int>,
+    onValueChange: (Int) -> Unit
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = stringResource(labelId),
+            style = MaterialTheme.typography.titleLarge
+        )
+        DefaultSpacer()
+        NumberPicker(
+            value = value,
+            range = range,
+            onValueChange = onValueChange
+        )
     }
 }

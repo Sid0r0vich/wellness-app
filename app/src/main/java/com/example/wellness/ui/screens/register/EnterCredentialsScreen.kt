@@ -9,34 +9,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
-import com.example.wellness.ui.components.AuthEmailField
-import com.example.wellness.ui.components.AuthFieldsInvalidation
-import com.example.wellness.ui.components.AuthPasswordField
+import com.example.wellness.auth.AuthState
+import com.example.wellness.ui.components.AuthEmailInputField
+import com.example.wellness.ui.components.AuthNameInputField
+import com.example.wellness.ui.components.AuthPasswordInputField
 import com.example.wellness.ui.components.Header
+import com.example.wellness.ui.components.RegisterFieldsInvalidation
 import com.example.wellness.ui.screens.RegisterStepScreen
-import com.example.wellness.ui.viewModels.RegisterViewModel
+import com.example.wellness.ui.viewModels.EnterStepsViewModel
 
 @Composable
 fun EnterCredentialsScreen(
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = hiltViewModel(),
+    viewModel: EnterStepsViewModel,
     onLoginClick: () -> Unit,
     onNextClick: () -> Unit
 ) {
     val uiState = viewModel.uiState
-    AuthFieldsInvalidation(uiState)
+    RegisterFieldsInvalidation(uiState)
 
     RegisterStepScreen(
         buttonTextId = R.string.next,
-        onNextClick = onNextClick
+        onNextClick = onNextClick,
+        enabled =
+            uiState.email.isNotEmpty() &&
+            uiState.password.isNotEmpty() &&
+            uiState.name.isNotEmpty() &&
+            viewModel.authState != AuthState.Loading,
     ) {
-        Header(R.string.personal_data)
+        Header(R.string.credentials)
         Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
-        AuthEmailField(uiState = uiState)
+        AuthNameInputField(uiState = uiState)
         Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-        AuthPasswordField(uiState = uiState)
+        AuthEmailInputField(uiState = uiState)
+        Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
+        AuthPasswordInputField(uiState = uiState)
         Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
         TextButton(
             onClick = onLoginClick,

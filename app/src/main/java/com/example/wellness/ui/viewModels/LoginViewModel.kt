@@ -24,7 +24,7 @@ class LoginViewModel @Inject constructor(
     val uiState: AuthUiState = AuthUiState()
 
     fun signIn(authData: AuthData, onComplete: (AuthStatus) -> Unit = {}) {
-        DataValidator.validateAuthDataWithStatus(authData)
+        DataValidator.validateLoginDataWithStatus(authData)
             .toAuthStatus()
             .also { if (it != AuthStatus.SUCCESS) { onComplete(it); return@signIn } }
 

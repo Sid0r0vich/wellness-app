@@ -23,10 +23,27 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.example.wellness.R
 import com.example.wellness.auth.AuthState
 import com.example.wellness.auth.AuthUiState
+import com.example.wellness.auth.EnterStepsUiState
 import com.example.wellness.utils.DataValidator
 
 @Composable
-fun EmailField(
+fun NameInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    interactionSource: MutableInteractionSource,
+    isError: Boolean
+) {
+    WellnessTextFiled(
+        value = value,
+        onValueChange = onValueChange,
+        textId = R.string.name_label,
+        interactionSource = interactionSource,
+        isError = isError
+    )
+}
+
+@Composable
+fun EmailInputField(
     value: String,
     onValueChange: (String) -> Unit,
     interactionSource: MutableInteractionSource,
@@ -42,7 +59,7 @@ fun EmailField(
 }
 
 @Composable
-fun PasswordField(
+fun PasswordInputField(
     value: String,
     onValueChange: (String) -> Unit,
     interactionSource: MutableInteractionSource,
@@ -75,8 +92,18 @@ fun PasswordField(
 }
 
 @Composable
-fun AuthEmailField(uiState: AuthUiState) {
-    EmailField(
+fun AuthNameInputField(uiState: EnterStepsUiState) {
+    NameInputField(
+        value = uiState.name,
+        onValueChange = { uiState.name = it; uiState.nameIsValidated = false },
+        interactionSource = uiState.nameSource,
+        isError = uiState.nameIsValidated && !DataValidator.validateNameFormat(uiState.name)
+    )
+}
+
+@Composable
+fun AuthEmailInputField(uiState: AuthUiState) {
+    EmailInputField(
         value = uiState.email,
         onValueChange = { uiState.email = it; uiState.emailIsValidated = false },
         interactionSource = uiState.emailSource,
@@ -85,8 +112,8 @@ fun AuthEmailField(uiState: AuthUiState) {
 }
 
 @Composable
-fun AuthPasswordField(uiState: AuthUiState) {
-    PasswordField(
+fun AuthPasswordInputField(uiState: AuthUiState) {
+    PasswordInputField(
         value = uiState.password,
         onValueChange = { uiState.password = it; uiState.passwordIsValidated = false },
         interactionSource = uiState.passwordSource,
@@ -105,6 +132,15 @@ fun AuthFieldsInvalidation(
 }
 
 @Composable
+fun RegisterFieldsInvalidation(
+    uiState: EnterStepsUiState
+) {
+    AuthFieldsInvalidation(uiState = uiState)
+    if (uiState.nameSource.collectIsPressedAsStateValue())
+        uiState.nameIsValidated = false
+}
+
+@Composable
 fun MutableInteractionSource.collectIsPressedAsStateValue(): Boolean {
     return this.collectIsPressedAsState().value
 }
@@ -113,7 +149,7 @@ fun MutableInteractionSource.collectIsPressedAsStateValue(): Boolean {
 fun Header(textId: Int) {
     Text(
         text = stringResource(textId),
-        style = MaterialTheme.typography.displayMedium,
+        style = MaterialTheme.typography.displaySmall,
     )
 }
 

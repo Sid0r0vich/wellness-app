@@ -11,6 +11,7 @@ class MessageNotifier(private val context: Context) {
             AuthStatus.USER_NOT_FOUND -> R.string.user_not_found
             AuthStatus.INVALID_EMAIL_FORMAT -> R.string.invalid_email_format
             AuthStatus.INVALID_PASSWORD_FORMAT -> R.string.invalid_password_format
+            AuthStatus.INVALID_NAME_FORMAT -> R.string.invalid_name_format
             AuthStatus.INVALID_CREDENTIALS -> R.string.invalid_credentials
             AuthStatus.EMAIL_COLLISION -> R.string.email_collision
             AuthStatus.WEAK_PASSWORD -> R.string.weak_password

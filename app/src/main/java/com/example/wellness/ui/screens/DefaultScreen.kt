@@ -17,10 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.wellness.ui.components.ArrowButton
 import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.components.LocalGridPadding
+import com.example.wellness.ui.components.RightArrowButton
 import com.example.wellness.ui.viewModels.UserViewModel
 
 @Composable
@@ -62,6 +62,7 @@ fun AuthScreen(
 fun RegisterStepScreen(
     buttonTextId: Int,
     onNextClick: () -> Unit,
+    enabled: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     DefaultScreen {
@@ -74,9 +75,10 @@ fun RegisterStepScreen(
                 content()
             }
 
-            ArrowButton(
+            RightArrowButton(
                 textId = buttonTextId,
                 onClick = onNextClick,
+                enabled = enabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter),

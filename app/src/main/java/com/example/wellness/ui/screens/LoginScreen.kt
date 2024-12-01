@@ -16,9 +16,9 @@ import com.example.wellness.auth.AuthData
 import com.example.wellness.auth.AuthStatus
 import com.example.wellness.auth.MessageNotifier
 import com.example.wellness.ui.components.AuthButton
-import com.example.wellness.ui.components.AuthEmailField
+import com.example.wellness.ui.components.AuthEmailInputField
 import com.example.wellness.ui.components.AuthFieldsInvalidation
-import com.example.wellness.ui.components.AuthPasswordField
+import com.example.wellness.ui.components.AuthPasswordInputField
 import com.example.wellness.ui.components.Header
 import com.example.wellness.ui.viewModels.LoginViewModel
 
@@ -38,9 +38,9 @@ fun LoginScreen(
     AuthScreen {
         Header(R.string.login)
         Spacer(modifier = Modifier.padding(PaddingValues(12.dp)))
-        AuthEmailField(uiState = uiState)
+        AuthEmailInputField(uiState = uiState)
         Spacer(modifier = Modifier.padding(PaddingValues(8.dp)))
-        AuthPasswordField(uiState = uiState)
+        AuthPasswordInputField(uiState = uiState)
         TextButton(
             onClick = {  },
         ) {

@@ -79,4 +79,10 @@
     <string name="next">Next</string>
     <string name="personal_data">Personal data</string>
     <string name="additional">Additional data</string>
+    <string name="age_label">Age</string>
+    <string name="credentials">Credentials</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="name_label">Name</string>
+    <string name="invalid_name_format">invalid name</string>
 </resources>

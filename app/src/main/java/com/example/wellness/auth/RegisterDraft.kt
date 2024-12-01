@@ -1,4 +1,4 @@
-package com.example.wellness.auth.draft
+package com.example.wellness.auth
 
 import com.example.wellness.data.Sex
 
