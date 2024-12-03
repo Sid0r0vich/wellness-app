@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.chargemap.compose.numberpicker.NumberPicker
 import com.example.wellness.R
 import com.example.wellness.auth.EnterStepsUiState
 import com.example.wellness.data.Sex
@@ -46,17 +45,6 @@ fun EnterPersonalScreen(
             range = EnterStepsUiState.AGE_RANGE
         ) { uiState.age = it }
     }
-}
-
-@Composable
-fun AgePicker(uiState: EnterStepsUiState) {
-    NumberPicker(
-        value = uiState.age,
-        range = 14..99,
-        onValueChange = {
-            uiState.age = it
-        }
-    )
 }
 
 @Composable

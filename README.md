@@ -8,19 +8,19 @@
 
 ## Содержание
 - [Технологии](#технологии)
-- [To do](#to-do)
 - [License](#license)
 - [Команда проекта](#команда-проекта)
 
 ## Технологии
 - [Jetpack Compose](https://developer.android.com/compose)
+- [Firebase](https://firebase.google.com/)
+- [Hilt](https://dagger.dev/hilt/)
+- [Vico](https://github.com/patrykandpatrick/vico)
+- [NumberPicker](https://github.com/ChargeMap/Compose-NumberPicker)
 - [Figma](https://www.figma.com/design/KsD1pMncINOjiUprbiKvml/wellness?node-id=0-1&node-type=canvas&t=mbdPbDSC0sERPRoE-0)
 
-## To do
-- [x] Создать глобальный отчёт по здоровью
-
 ## License
-[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+[![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white)](./LICENSE)
 
 ## Команда проекта
 - [Дмитрий Сидоркин](https://t.me/sid00r) — Android разработчик
