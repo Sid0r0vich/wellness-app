@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.wellness.data.StepByStepRegistrationUIStorage.animationSpec
 import com.example.wellness.data.StepByStepRegistrationUIStorage.stepByStepScreenRoutes
+import com.example.wellness.ui.screens.DocumentsScreen
 import com.example.wellness.ui.screens.DynamicScreen
 import com.example.wellness.ui.screens.EmptyScreen
 import com.example.wellness.ui.screens.HealthReportScreen
@@ -55,7 +56,7 @@ fun MyNavHost(
             composable(Home.route) {
                 HomeScreen(
                     onClicks = listOf(
-                        {  },
+                        { navController.navigateToDocuments() },
                         { navController.navigateToDynamic() },
                         { navController.navigateToHealthReport() }
                     )
@@ -69,6 +70,7 @@ fun MyNavHost(
             }
             composable(Dynamic.route) { DynamicScreen() }
             composable(HealthReport.route) { HealthReportScreen() }
+            composable(Documents.route) { DocumentsScreen() }
         }
         navigation(
             route = Auth.route,

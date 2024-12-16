@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.wellness.ui.components.DefaultSpacer
 import com.example.wellness.ui.components.HomeUserCard
 import com.example.wellness.ui.components.LocalBoardPadding
 import com.example.wellness.ui.components.LocalGridPadding
@@ -112,5 +113,25 @@ fun UserScreen(
             HomeUserCard(userName = uiState.userName)
         }
         content()
+    }
+}
+
+@Composable
+fun ExperimentalUserScreen(
+    uiState: UserViewModel.UiState,
+    content: LazyListScope.() -> Unit = {}
+) {
+    DefaultScreen {
+        Column {
+            HomeUserCard(userName = uiState.userName)
+            DefaultSpacer()
+            LazyColumn(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                content()
+            }
+        }
     }
 }

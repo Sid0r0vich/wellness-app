@@ -40,6 +40,7 @@ fun NavHostController.navigateToNext() {
 fun NavHostController.navigateToUser() = navigateWithPopUp(User.route, Auth.route, true)
 fun NavHostController.navigateToAuth() = navigateWithPopUp(Auth.route, User.route, true)
 fun NavHostController.navigateToDynamic() = navigateWithPopUp(Dynamic.route, Home.route, false)
+fun NavHostController.navigateToDocuments() = navigateWithPopUp(Documents.route, Home.route, false)
 fun NavHostController.navigateToHealthReport() = navigateWithPopUp(HealthReport.route, Home.route, false)
 fun NavHostController.navigateFromHome(route: String) =
     this.navigate(route)

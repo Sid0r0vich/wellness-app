@@ -2,6 +2,8 @@ package com.example.wellness.di
 
 import com.example.wellness.auth.Auth
 import com.example.wellness.auth.FirebaseAuth
+import com.example.wellness.data.DocumentMockRepository
+import com.example.wellness.data.DocumentRepository
 import com.example.wellness.data.IndicatorMockRepository
 import com.example.wellness.data.IndicatorRepository
 import com.example.wellness.data.UserInfoFirebaseRepository
@@ -28,4 +30,7 @@ abstract class ViewModelModule {
     @Singleton
     abstract fun bindIndicatorRepository(impl: IndicatorMockRepository): IndicatorRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindDocumentRepository(impl: DocumentMockRepository): DocumentRepository
 }

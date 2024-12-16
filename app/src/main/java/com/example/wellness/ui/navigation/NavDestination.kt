@@ -85,6 +85,10 @@ object HealthReport : NavDestination(
     label = R.string.navigation_health_report,
     route = "health_report"
 )
+object Documents : NavDestination(
+    label = R.string.navigation_documents,
+    route = "documents"
+)
 
 val navBarDestinations = listOf(
     Home,
@@ -106,5 +110,6 @@ val navDestinations = listOf(
     Chat,
     Notifications,
     Dynamic,
-    HealthReport
+    HealthReport,
+    Documents
 )

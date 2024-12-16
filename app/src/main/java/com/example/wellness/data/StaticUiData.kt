@@ -8,6 +8,7 @@ import com.example.wellness.ui.navigation.EnterAdditional
 import com.example.wellness.ui.navigation.EnterCredentials
 import com.example.wellness.ui.navigation.EnterPersonal
 import com.example.wellness.ui.navigation.Login
+import java.time.LocalDate
 
 object HomeScreenUIStorage {
     val panelLabels = listOf(
@@ -63,4 +64,17 @@ object StepByStepRegistrationUIStorage {
         EnterAdditional.route
     )
     val animationSpec: FiniteAnimationSpec<IntOffset> = tween(durationMillis = SLIDE_DURATION)
+}
+
+object DocumentStorage {
+    private val documents: List<Document> = listOf(
+        Document(R.string.analysis_1, LocalDate.parse("2022-02-15")),
+        Document(R.string.analysis_2, LocalDate.parse("2023-03-11")),
+        Document(R.string.analysis_3, LocalDate.parse("2023-11-03")),
+        Document(R.string.analysis_4, LocalDate.parse("2024-07-06")),
+        Document(R.string.analysis_5, LocalDate.parse("2024-09-30")),
+        Document(R.string.analysis_5, LocalDate.parse("2024-10-28"))
+    )
+
+    fun getAll(): List<Document> = documents
 }

@@ -85,4 +85,11 @@
     <string name="weight">Weight</string>
     <string name="name_label">Name</string>
     <string name="invalid_name_format">invalid name</string>
+    <string name="analysis_1">blood test Med+</string>
+    <string name="analysis_2">ferritin test ProMed</string>
+    <string name="analysis_3">vitamins test Med+</string>
+    <string name="analysis_4">vitamin test ProMed</string>
+    <string name="analysis_5">sugar test MedExpert</string>
+    <string name="init_document">initial document</string>
+    <string name="navigation_documents">Documents</string>
 </resources>
