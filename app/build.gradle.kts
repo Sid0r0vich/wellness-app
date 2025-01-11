@@ -16,8 +16,8 @@ android {
     defaultConfig {
         applicationId = "com.example.wellness"
         minSdk = 29
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -97,10 +97,15 @@ dependencies {
     implementation(libs.vico.compose.m3)
     implementation(libs.vico.core)
     implementation(libs.vico.views)
-    implementation("com.chargemap.compose:numberpicker:1.0.3")
+    implementation(libs.numberpicker)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(platform("ru.rustore.sdk:bom:7.0.0"))
+    implementation("ru.rustore.sdk:review:7.0.0")
+    implementation("ru.rustore.sdk:appupdate:6.0.0")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
 }

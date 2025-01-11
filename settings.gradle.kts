@@ -16,7 +16,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://maven-central.storage.apis.com") }
+        maven {
+            url = uri("https://maven-central.storage.apis.com")
+            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")
+        }
         gradlePluginPortal()
     }
 }

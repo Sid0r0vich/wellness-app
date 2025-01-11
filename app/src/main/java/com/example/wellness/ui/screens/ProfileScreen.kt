@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onUnauthenticated: () -> Unit
 ) {
+    val context = LocalContext.current
     LazyScreen {
         item {
             HomeUserCard(userName = viewModel.uiState.collectAsState().value.userName)
@@ -41,6 +43,24 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = stringResource(R.string.sign_out))
+            }
+            DefaultSpacer()
+            Button(
+                onClick = {
+                    viewModel.review(context)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.review))
+            }
+            DefaultSpacer()
+            Button(
+                onClick = {
+                    viewModel.checkUpdates(context)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.check_updates))
             }
         }
     }

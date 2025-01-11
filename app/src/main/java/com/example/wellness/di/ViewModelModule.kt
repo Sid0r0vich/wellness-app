@@ -8,6 +8,8 @@ import com.example.wellness.data.IndicatorMockRepository
 import com.example.wellness.data.IndicatorRepository
 import com.example.wellness.data.UserInfoFirebaseRepository
 import com.example.wellness.data.UserInfoRepository
+import com.example.wellness.rustore.UpdateRepository
+import com.example.wellness.rustore.WorkManagerUpdateRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +35,8 @@ abstract class ViewModelModule {
     @Binds
     @Singleton
     abstract fun bindDocumentRepository(impl: DocumentMockRepository): DocumentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUpdateRepository(impl: WorkManagerUpdateRepository): UpdateRepository
 }

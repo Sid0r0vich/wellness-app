@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import com.example.wellness.R
 
-class MessageNotifier(private val context: Context) {
+class AuthMessageNotifier(private val context: Context) {
     fun notifyUser(errorType: AuthStatus) {
         val message = when (errorType) {
             AuthStatus.SUCCESS -> R.string.success

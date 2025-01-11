@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
+import com.example.wellness.auth.AuthMessageNotifier
 import com.example.wellness.auth.AuthStatus
-import com.example.wellness.auth.MessageNotifier
 import com.example.wellness.auth.RegisterUiState
 import com.example.wellness.data.UserInfo
 import com.example.wellness.ui.components.AuthButton
@@ -36,7 +36,7 @@ fun RegisterScreen(
     onPerformRegister: () -> Unit,
     onLoginClick: () -> Unit
 ) {
-    val messageNotifier = MessageNotifier(LocalContext.current)
+    val messageNotifier = AuthMessageNotifier(LocalContext.current)
     val uiState = viewModel.uiState
     AuthFieldsInvalidation(uiState)
 

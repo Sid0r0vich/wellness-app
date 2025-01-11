@@ -92,4 +92,14 @@
     <string name="analysis_5">sugar test MedExpert</string>
     <string name="init_document">initial document</string>
     <string name="navigation_documents">Documents</string>
+    <string name="review">Review app</string>
+    <string name="rustore_not_installed">RuStore not installed</string>
+    <string name="rustore_outdated">user RuStore is outdated</string>
+    <string name="rustore_unauthorized">user is unauthorized</string>
+    <string name="rustore_user_banned">user is banned</string>
+    <string name="rustore_app_banned">app is banned</string>
+    <string name="rustore_request_limit">request limit</string>
+    <string name="rustore_review_exists">review is exists</string>
+    <string name="rustore_review_info">invalid review info</string>
+    <string name="check_updates">Check updates</string>
 </resources>

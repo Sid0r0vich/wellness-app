@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.wellness.R
+import com.example.wellness.auth.AuthMessageNotifier
 import com.example.wellness.auth.AuthStatus
 import com.example.wellness.auth.EnterStepsUiState
-import com.example.wellness.auth.MessageNotifier
 import com.example.wellness.data.UserInfo
 import com.example.wellness.ui.components.DefaultPicker
 import com.example.wellness.ui.components.Header
@@ -23,7 +23,7 @@ fun EnterAdditionalScreen(
     viewModel: EnterStepsViewModel,
     onNextClick: () -> Unit
 ) {
-    val messageNotifier = MessageNotifier(LocalContext.current)
+    val messageNotifier = AuthMessageNotifier(LocalContext.current)
     val uiState = viewModel.uiState
 
     RegisterStepScreen(

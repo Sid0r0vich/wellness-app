@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wellness.R
 import com.example.wellness.auth.AuthData
+import com.example.wellness.auth.AuthMessageNotifier
 import com.example.wellness.auth.AuthStatus
-import com.example.wellness.auth.MessageNotifier
 import com.example.wellness.ui.components.AuthButton
 import com.example.wellness.ui.components.AuthEmailInputField
 import com.example.wellness.ui.components.AuthFieldsInvalidation
@@ -31,7 +31,7 @@ fun LoginScreen(
 ) {
     if (viewModel.isAuthenticated()) onPerformLogin()
 
-    val messageNotifier = MessageNotifier(LocalContext.current)
+    val messageNotifier = AuthMessageNotifier(LocalContext.current)
     val uiState = viewModel.uiState
     AuthFieldsInvalidation(uiState)
 
