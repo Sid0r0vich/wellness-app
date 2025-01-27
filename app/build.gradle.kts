@@ -16,8 +16,8 @@ android {
     defaultConfig {
         applicationId = "com.example.wellness"
         minSdk = 29
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -104,8 +104,14 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(platform("ru.rustore.sdk:bom:7.0.0"))
-    implementation("ru.rustore.sdk:review:7.0.0")
-    implementation("ru.rustore.sdk:appupdate:6.0.0")
+    implementation("ru.rustore.sdk:review")
+    implementation("ru.rustore.sdk:appupdate")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+
+    // messaging
+    implementation("com.google.firebase:firebase-messaging-ktx:23.2.1")
+
+    // notification permission
+    implementation("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
 
 }

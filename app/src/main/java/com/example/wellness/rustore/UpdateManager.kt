@@ -32,6 +32,7 @@ class UpdateManager(context: Context) {
     }
 
     fun update(appUpdateInfo: AppUpdateInfo) {
+        Log.d("update", "Update!")
         updateManager.registerListener { state ->
             when (state.installStatus) {
                 InstallStatus.DOWNLOADED -> {

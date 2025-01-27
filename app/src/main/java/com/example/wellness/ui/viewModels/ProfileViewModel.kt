@@ -5,6 +5,7 @@ import com.example.wellness.auth.Auth
 import com.example.wellness.data.UserInfoRepository
 import com.example.wellness.rustore.ReviewManager
 import com.example.wellness.rustore.UpdateRepository
+import com.example.wellness.ui.notifications.UpdateNotificationService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun checkUpdates(context: Context) {
+        UpdateNotificationService(context).showNotification("get updates")
         workManagerUpdateRepository.checkAndUpdates(context)
     }
 }

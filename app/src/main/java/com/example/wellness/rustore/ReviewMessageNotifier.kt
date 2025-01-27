@@ -1,6 +1,7 @@
 package com.example.wellness.rustore
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.example.wellness.R
 import ru.rustore.sdk.core.exception.RuStoreApplicationBannedException
@@ -29,6 +30,7 @@ class ReviewMessageNotifier(private val context: Context) {
             is RuStoreInvalidReviewInfo -> R.string.rustore_review_info
             else -> R.string.unknown_exception
         }
+        Log.e("Review", errorType.toString())
         showToast(message)
     }
 
