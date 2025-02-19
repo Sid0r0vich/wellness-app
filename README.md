@@ -24,3 +24,9 @@
 
 ## Команда проекта
 - [Дмитрий Сидоркин](https://t.me/sid00r) — Android разработчик
+
+## Как выглядит приложение
+
+
+https://github.com/user-attachments/assets/69639571-2382-49eb-990a-9aeb69138fb7
+
